@@ -1,0 +1,37 @@
+.login-image-column {
+  background: #e5f8ff;
+}
+
+.login-image-column .circle {
+  width: 500px;
+  height: 500px;
+  background: #fff;
+  padding: 20px;
+}
+.login-image-column .circle img {
+  width: 101%;
+  height: 101%;
+}
+
+.login-form {
+  width: 400px;
+  padding: 20px;
+}
+
+.login-form img {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 25px;
+}
+
+.login-form .btn {
+  width: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+  .login-image-column .circle {
+    width: 250px;
+    height: 250px;
+  }
+}

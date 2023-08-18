@@ -1,0 +1,36 @@
+.input-field-wrapper {
+  margin-bottom: 25px;
+}
+
+.input-field label {
+  color: #8c8c8c;
+  margin-bottom: 10px;
+}
+
+.input-field input {
+  margin-top: 5px;
+  border: 1px solid #8c8c8c;
+  border-radius: 5px;
+  padding: 15px;
+  cursor: text;
+  width: 100%;
+  font-size: 14px;
+}
+.input-field input:disabled{
+  background: #cdcdcd;
+}
+
+.input-field-wrapper.error .input-field input {
+  border: 1px solid red !important;
+}
+
+
+.input-field input:focus {
+  border-color: #03aeee !important;
+}
+
+.input-field-wrapper p {
+  margin-top: 5px;
+  color: red;
+  font-size: 14px;
+}

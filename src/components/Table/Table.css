@@ -1,0 +1,28 @@
+.table {
+  width: 100%;
+  border-spacing: 0 15px;
+}
+
+.table tr{
+  box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
+  height: 60px;
+}
+.table-head {
+  background: #eaf9ff;
+  color: #12779c;
+}
+
+.table-row {
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.table-row:hover{
+  background: #eaf9ff;
+}
+
+.table-row td span {
+  display: flex;
+  justify-content: center;
+}

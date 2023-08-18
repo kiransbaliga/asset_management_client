@@ -1,0 +1,9 @@
+.title-bar{
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.title-bar h2{
+    margin-right: auto;
+}

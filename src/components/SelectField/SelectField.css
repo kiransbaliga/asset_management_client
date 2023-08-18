@@ -1,0 +1,34 @@
+.select-field-wrapper {
+  margin-bottom: 25px;
+}
+
+.select-field label {
+  color: #8c8c8c;
+  margin-bottom: 10px;
+}
+
+.select-field select {
+  margin-top: 5px;
+  border: 1px solid #8c8c8c;
+  border-radius: 5px;
+  padding: 15px;
+  cursor: text;
+  width: 100%;
+  font-size: 14px;
+  background: #fff;
+  outline: none;
+}
+
+.select-field-wrapper.error .select-field select {
+  border: 1px solid red !important;
+}
+
+.select-field select:focus {
+  border-color: #03aeee !important;
+}
+
+.select-field-wrapper p {
+  margin-top: 5px;
+  color: red;
+  font-size: 14px;
+}

@@ -1,0 +1,54 @@
+.login-input-field-wrapper {
+  margin-bottom: 25px;
+}
+
+.login-input-field {
+  position: relative;
+}
+
+.login-input-field label {
+  color: #8c8c8c;
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  padding: 0px 5px;
+  transform: translateY(-50%);
+  transition: all 0.3s;
+  cursor: text;
+}
+
+.login-input-field input {
+  border: 1px solid #8c8c8c;
+  border-radius: 5px;
+  padding: 15px;
+  cursor: text;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.login-input-field-wrapper.error .login-input-field input{
+  border: 1px solid red !important;
+}
+
+.login-input-field input:focus {
+  border-color: #03aeee !important;
+}
+
+.login-input-field input:focus + label,
+.login-input-field input:not(:placeholder-shown) + label {
+  color: #03aeee;
+  top: 0px;
+  background: #fff;
+  font-size: 14px;
+}
+
+.login-input-field input:not(:placeholder-shown):not(:focus) + label {
+  color: #8c8c8c;
+}
+
+.login-input-field-wrapper p {
+  margin-top: 5px;
+  color: red;
+  font-size: 14px;
+}

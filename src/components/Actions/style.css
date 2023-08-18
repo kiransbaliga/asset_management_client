@@ -1,0 +1,11 @@
+.action-delete{
+    fill: var(--danger-color);
+    height: 100%;
+    margin: 10px;
+}
+
+.action-primary{
+    fill: var(--primary-color);
+    height: 100%;
+    margin: 10px;
+}

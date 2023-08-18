@@ -1,0 +1,9 @@
+.chip.status.active{
+    background: #D3F4BE;
+    color: #44682e;
+}
+
+.chip.status.in-active{
+    background: #FFBFBF;
+    color: #7e3333;
+}
