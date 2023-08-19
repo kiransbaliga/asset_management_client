@@ -1,7 +1,7 @@
 import Status from '../components/Status/Status';
 import AddressType from '../types/AddressType';
 
-export const status = (value: boolean) => <Status isActive={value} />;
+export const status = (value: string) => <Status value={value} />;
 
 export const experiance = (value: number) => (
   <>
@@ -23,8 +23,8 @@ export const address = ({ line1, line2, state, country, pincode, city }: Address
 export const employeeColumns = [
   { key: 'name', label: 'Employee Name' },
   { key: 'id', label: 'Employee ID' },
-  { key: 'joiningDate', label: 'Joining Date' },
+  { key: 'joining_date', label: 'Joining Date', adapter: (value) => value.split(' ')[0] },
   { key: 'role', label: 'Role' },
-  { key: 'isActive', label: 'Status', adapter: status },
+  { key: 'status', label: 'Status', adapter: status },
   { key: 'experience', label: 'Experience', adapter: experiance }
 ];

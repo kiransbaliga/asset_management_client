@@ -1,0 +1,9 @@
+insert into department ("name") values ('HR');
+
+INSERT INTO employees
+("name", username, age, "password", experience, joining_date, status, "role", department_id)
+VALUES('Sahal Mohamed', 'sahal', 25, '$2b$10$VYIItEN5kwKd2ghWccRum.v516BsAOjrhGqpGu0GupXN9NZyxTy0K', 4, now(), 'Active', 'Developer', 1);
+
+INSERT INTO public.address
+(address_line_1, address_line_2, city, state, country, pincode, employee_id)
+VALUES('KeyValue', 'Smart city', 'Kakkanad', 'Kerala', 'India', '423432', 1);

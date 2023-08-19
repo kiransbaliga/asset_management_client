@@ -4,7 +4,8 @@ import EmployeeType from '../../types/EmployeeType';
 
 export const statusOptions: OptionType[] = [
   { text: 'Active', value: 'active' },
-  { text: 'Inactive', value: 'inactive' }
+  { text: 'Inactive', value: 'inactive' },
+  { text: 'Probation', value: 'probation' }
 ];
 
 export const addressFields: AddressFieldType[] = [
@@ -19,7 +20,7 @@ export const addressFields: AddressFieldType[] = [
 export const emptyEmployee: EmployeeType = {
   id: '',
   name: '',
-  isActive: null,
+  status: 'Active',
   joiningDate: '',
   departmentId: '',
   role: '',

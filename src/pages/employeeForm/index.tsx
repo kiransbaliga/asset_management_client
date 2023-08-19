@@ -130,8 +130,8 @@ function EmployeeForm() {
               label='Status'
               placeholder='Choose a status'
               options={statusOptions}
-              value={employeeData.isActive === false ? 'inactive' : 'active'}
-              onChange={(value) => handleChange('isActive', value === 'active')}
+              value={employeeData.status}
+              onChange={(value) => handleChange('isActive', value)}
             />
           </div>
           <div className='column'>
