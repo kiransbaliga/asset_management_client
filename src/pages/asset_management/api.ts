@@ -23,7 +23,7 @@ export const assetApi = baseApi.injectEndpoints({
     }),
     updateAsset: builder.mutation<ResponseDataType, AssetType>({
       query: (body) => ({
-        url: '/assets/',
+        url: `/assets/${body.id}`,
         method: 'PUT',
         body
       })
