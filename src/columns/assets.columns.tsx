@@ -5,7 +5,6 @@ export const status = (value: string) => (
   <Status value={value} className={assetStatusToClassName[value]} />
 );
 
-
 export const assetColumns = [
   { key: 'serial_no', label: 'Serial No' },
   { key: 'name', label: 'Asset Name' },

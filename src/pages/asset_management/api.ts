@@ -7,6 +7,12 @@ export const assetApi = baseApi.injectEndpoints({
     getAssetList: builder.query<ResponseDataListType, void>({
       query: () => '/assets/'
     }),
+    getCategoryList: builder.query<ResponseDataListType, void>({
+      query: () => '/category/'
+    }),
+    getSubcategoryList: builder.query<ResponseDataListType, void>({
+      query: () => '/subcategory/'
+    }),
 
     createAsset: builder.mutation<ResponseDataType, AssetType>({
       query: (body) => ({
@@ -33,7 +39,9 @@ export const assetApi = baseApi.injectEndpoints({
 
 export const {
   useCreateAssetMutation,
-  useGetAssetListQuery,
+  useLazyGetAssetListQuery,
   useDeleteAssetMutation,
-  useUpdateAssetMutation
+  useUpdateAssetMutation,
+  useGetCategoryListQuery,
+  useLazyGetSubcategoryListQuery
 } = assetApi;
