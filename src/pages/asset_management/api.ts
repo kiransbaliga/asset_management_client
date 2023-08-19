@@ -5,7 +5,7 @@ import { ResponseDataListType, ResponseDataType } from '../../types/ResponseType
 export const assetApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAssetList: builder.query<ResponseDataListType, void>({
-      query: () => '/assets'
+      query: () => '/assets/'
     }),
 
     createAsset: builder.mutation<ResponseDataType, AssetType>({
@@ -14,8 +14,26 @@ export const assetApi = baseApi.injectEndpoints({
         method: 'POST',
         body
       })
+    }),
+    deleteAsset: builder.mutation({
+      query: (id) => ({
+        url: `/assets/${id}`,
+        method: 'DELETE'
+      })
+    }),
+    updateAsset: builder.mutation<ResponseDataType, AssetType>({
+      query: (body) => ({
+        url: '/assets/',
+        method: 'PUT',
+        body
+      })
     })
   })
 });
 
-export const { useCreateAssetMutation, useGetAssetListQuery } = assetApi;
+export const {
+  useCreateAssetMutation,
+  useGetAssetListQuery,
+  useDeleteAssetMutation,
+  useUpdateAssetMutation
+} = assetApi;
