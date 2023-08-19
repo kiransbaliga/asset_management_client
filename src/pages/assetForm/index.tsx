@@ -5,7 +5,7 @@ import { useState } from 'react';
 import SelectFied from '../../components/SelectField/SelectField';
 import { emptyAsset, statusOptions } from './consts';
 import './styles.css';
-import AssetType from '../../types/AssetTypes';
+import AssetType from '../../types/AssetType';
 import IconButton from '../../components/IconButton/IconButton';
 
 function AssetForm() {
