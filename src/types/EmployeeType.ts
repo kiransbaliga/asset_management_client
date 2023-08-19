@@ -1,7 +1,7 @@
 import AddressType from './AddressType';
 
 interface EmployeeType {
-  id: string;
+  id?: string;
   name: string;
   status: string;
   joiningDate: string;
