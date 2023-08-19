@@ -1,16 +1,16 @@
 import { FC } from 'react';
 import { classNames } from '../../utils/funcs';
 import './Status.css';
-import { statusToClassName } from './consts';
 
 interface StatusProps {
   value: string;
+  className?: string;
 }
 
-const Status: FC<StatusProps> = ({ value }) => {
+const Status: FC<StatusProps> = ({ value, className }) => {
   return (
     <>
-      <div className={classNames('chip status', statusToClassName[value])}>{value}</div>
+      <div className={classNames('chip status', className)}>{value}</div>
     </>
   );
 };

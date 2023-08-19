@@ -5,6 +5,7 @@ import './Dashboard.css';
 import Employees from '../../pages/employees';
 import Employee from '../../pages/employee';
 import EmployeeForm from '../../pages/employeeForm';
+import AssetList from '../../pages/asset_management/AssetList';
 
 function Dashboard() {
   return (
@@ -16,10 +17,11 @@ function Dashboard() {
             <Sidebar />
             <div className='dashboard-content'>
               <Routes>
-                <Route path='/' element={<Employees />} />
-                <Route path='/details/:id' element={<Employee />} />
-                <Route path='/create' element={<EmployeeForm />} />
-                <Route path='/edit/:id' element={<EmployeeForm />} />
+                <Route path='/employees' element={<Employees />} />
+                <Route path='/employees/details/:id' element={<Employee />} />
+                <Route path='/employees/create' element={<EmployeeForm />} />
+                <Route path='/employees/edit/:id' element={<EmployeeForm />} />
+                <Route path='/assets' element={<AssetList />} />
               </Routes>
             </div>
           </div>

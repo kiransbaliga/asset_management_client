@@ -22,7 +22,7 @@ const App: FC = () => {
             }
           />
           <Route
-            path='/employees/*'
+            path='/*'
             element={
               <AuthRequired>
                 <Dashboard />
