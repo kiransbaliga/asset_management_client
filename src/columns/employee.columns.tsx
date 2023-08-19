@@ -1,7 +1,10 @@
 import Status from '../components/Status/Status';
 import AddressType from '../types/AddressType';
+import { employeeStatusToClassName } from './consts';
 
-export const status = (value: string) => <Status value={value} />;
+export const status = (value: string) => (
+  <Status value={value} className={employeeStatusToClassName[value]} />
+);
 
 export const experiance = (value: number) => (
   <>

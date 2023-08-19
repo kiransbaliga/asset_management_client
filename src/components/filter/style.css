@@ -1,0 +1,12 @@
+.filter{
+    display: flex;
+    align-items: center;
+    margin: 20px;
+}
+
+.filter .chip{
+    background: var(--primary-tint-color);
+    border: none;
+    outline: none;
+    margin-left: 5px;
+}
