@@ -8,10 +8,9 @@ export const statusOptions: OptionType[] = [
 ];
 
 export const emptyAsset: AssetType = {
-  id: 0,
-  serialNumber: '',
+  serial_no: '',
   name: '',
   status: '',
   employeeId: 0,
-  subcategory: 0
+  subcategoryId: 0
 };

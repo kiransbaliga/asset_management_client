@@ -74,8 +74,8 @@ function AssetForm() {
               type='text'
               label='Serial Number'
               placeholder='Serial  Number'
-              value={assetData.serialNumber}
-              onChange={(value) => handleChange('serialNumber', value)}
+              value={assetData.serial_no}
+              onChange={(value) => handleChange('serial_no', value)}
             />
           </div>
           <div className='column'>
@@ -93,8 +93,8 @@ function AssetForm() {
               label='Sub-category'
               placeholder='Choose a sub-category'
               options={subcategoryOptions}
-              value={assetData.subcategory === 0 ? '' : assetData.subcategory}
-              onChange={(value) => handleChange('subcategory', value)}
+              value={assetData.subcategoryId === 0 ? '' : assetData.subcategoryId}
+              onChange={(value) => handleChange('subcategoryId', Number(value))}
             />
           </div>
           <div className='column'>
