@@ -3,7 +3,7 @@ import { classNames } from '../../utils/funcs';
 import './SelectField.css';
 
 export interface OptionType {
-  value: string;
+  value: string | number;
   text: string;
 }
 
@@ -11,7 +11,7 @@ interface SelectFiedProps {
   id: string;
   label: string;
   options: OptionType[];
-  value: string;
+  value: string | number;
   onChange?: (value: string) => void;
   errors?: string[];
   placeholder?: string;

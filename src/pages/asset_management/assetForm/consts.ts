@@ -1,5 +1,5 @@
-import { OptionType } from '../../components/SelectField/SelectField';
-import AssetType from '../../types/AssetType';
+import { OptionType } from '../../../components/SelectField/SelectField';
+import AssetType from '../../../types/AssetType';
 
 export const statusOptions: OptionType[] = [
   { text: 'Unallocated', value: 'unallocated' },
@@ -8,9 +8,10 @@ export const statusOptions: OptionType[] = [
 ];
 
 export const emptyAsset: AssetType = {
-  id: '',
+  id: 0,
   serialNumber: '',
   name: '',
   status: '',
-  employeeId: ''
+  employeeId: 0,
+  subcategory: 0
 };

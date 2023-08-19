@@ -5,7 +5,7 @@ import './Dashboard.css';
 import Employees from '../../pages/employees';
 import Employee from '../../pages/employee';
 import EmployeeForm from '../../pages/employeeForm';
-import AssetForm from '../../pages/assetForm';
+import AssetForm from '../../pages/asset_management/assetForm';
 
 function Dashboard() {
   return (

@@ -1,16 +1,16 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import TitleBar from '../../components/TitleBar/TitleBar';
-import InputField from '../../components/InputField/InputField';
-import { useState } from 'react';
-import SelectFied from '../../components/SelectField/SelectField';
+import TitleBar from '../../../components/TitleBar/TitleBar';
+import InputField from '../../../components/InputField/InputField';
+import { useEffect, useState } from 'react';
+import SelectFied, { OptionType } from '../../../components/SelectField/SelectField';
 import { emptyAsset, statusOptions } from './consts';
 import './styles.css';
-import AssetType from '../../types/AssetType';
-import IconButton from '../../components/IconButton/IconButton';
+import AssetType from '../../../types/AssetType';
+import IconButton from '../../../components/IconButton/IconButton';
 
 function AssetForm() {
   const [assetData, setAssetData] = useState<AssetType>(emptyAsset);
-
+  const [subcategoryOptions, setSubcategoryOptions] = useState<OptionType[]>([]);
   const { id } = useParams();
   const navigate = useNavigate();
   const handleEditClick = () => {
@@ -24,8 +24,38 @@ function AssetForm() {
 
   const handleSubmit = () => {
     console.log('submitted');
-    console.log('details');
+    console.log(assetData);
   };
+  const subcategories = {
+    data: [
+      {
+        name: 'mac-laptop',
+        id: 1
+      },
+      {
+        name: 'dell-laptop',
+        id: 2
+      },
+      {
+        name: 'thinkpad-laptop',
+        id: 3
+      },
+      {
+        name: 'logitech mouse',
+        id: 4
+      }
+    ]
+  };
+
+  useEffect(() => {
+    if (subcategories?.data)
+      setSubcategoryOptions(
+        subcategories.data.map((subcategory: { name: string; id: number }) => ({
+          text: subcategory.name,
+          value: subcategory.id
+        }))
+      );
+  }, [subcategories]);
 
   return (
     <div className='asset-form'>
@@ -59,6 +89,16 @@ function AssetForm() {
           </div>
           <div className='column'>
             <SelectFied
+              id='subCategoryField'
+              label='Sub-category'
+              placeholder='Choose a sub-category'
+              options={subcategoryOptions}
+              value={assetData.subcategory === 0 ? '' : assetData.subcategory}
+              onChange={(value) => handleChange('subcategory', value)}
+            />
+          </div>
+          <div className='column'>
+            <SelectFied
               id='statusField'
               label='Status'
               placeholder='Choose a status'
@@ -73,8 +113,8 @@ function AssetForm() {
                 id='EmployeeIdField'
                 label='Allocated Employee ID'
                 placeholder='Allocated Employee ID'
-                value={assetData.employeeId}
-                onChange={(value) => handleChange('employeeId', value)}
+                value={assetData.employeeId === 0 ? '' : assetData.employeeId}
+                onChange={(value) => handleChange('employeeId', Number(value))}
               />
             )}
           </div>

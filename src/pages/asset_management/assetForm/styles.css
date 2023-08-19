@@ -8,7 +8,7 @@
   }
   
   @media only screen and (max-width: 768px) {
-    .employee-form .flex-row .column {
+    .asset-form .flex-row .column {
       width: 100%;
     }
   }
