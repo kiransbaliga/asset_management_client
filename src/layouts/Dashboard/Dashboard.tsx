@@ -5,6 +5,7 @@ import './Dashboard.css';
 import Employees from '../../pages/employees';
 import Employee from '../../pages/employee';
 import EmployeeForm from '../../pages/employeeForm';
+import AssetForm from '../../pages/assetForm';
 
 function Dashboard() {
   return (
@@ -20,6 +21,7 @@ function Dashboard() {
                 <Route path='/details/:id' element={<Employee />} />
                 <Route path='/create' element={<EmployeeForm />} />
                 <Route path='/edit/:id' element={<EmployeeForm />} />
+                <Route path='/assets/create' element={<AssetForm />} />
               </Routes>
             </div>
           </div>
