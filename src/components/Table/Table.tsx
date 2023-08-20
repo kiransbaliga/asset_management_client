@@ -6,9 +6,10 @@ interface TableProps {
   columns: ColumnType[];
   dataset: object[];
   onClick: (data: any) => void;
+  emptyMessage?: string;
 }
 
-const Table: FC<TableProps> = ({ columns, dataset, onClick }) => {
+const Table: FC<TableProps> = ({ columns, dataset, onClick, emptyMessage = 'No data' }) => {
   const renderHeaders = () => {
     return columns.map((column, i) => <th key={`table-th-${column.key}-${i}`}>{column.label}</th>);
   };
@@ -46,7 +47,7 @@ const Table: FC<TableProps> = ({ columns, dataset, onClick }) => {
             src='/assets/icons/triangle-exclamation.svg'
             alt='No data exclamation icon'
           />
-          <div>No employee data</div>
+          <div>{emptyMessage}</div>
         </div>
       )}
     </>

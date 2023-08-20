@@ -1,9 +1,14 @@
-.chip.status.active{
+.chip.status.success{
     background: #D3F4BE;
     color: #44682e;
 }
 
-.chip.status.in-active{
+.chip.status.danger{
     background: #FFBFBF;
     color: #7e3333;
+}
+
+.chip.status.warning{
+    background: hsl(52, 100%, 87%);
+    color: #7e6c33;
 }

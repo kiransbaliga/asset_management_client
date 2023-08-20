@@ -7,7 +7,8 @@ import Dialog from '../Dialog/Dialog';
 import { useState } from 'react';
 
 const links: LinkType[] = [
-  { label: 'Employee List', icon: '/assets/icons/employees.svg', path: '/employees' }
+  { label: 'Employee List', icon: '/assets/icons/employees.svg', path: '/employees' },
+  { label: 'Asset List', icon: '/assets/icons/employees.svg', path: '/assets' }
 ];
 
 function Sidebar() {

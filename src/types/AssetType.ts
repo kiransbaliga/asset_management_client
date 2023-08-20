@@ -4,6 +4,7 @@ interface AssetType {
   name: string;
   status: string;
   subcategoryId: number;
+  subcategory?: string;
   employeeId?: number;
 }
 

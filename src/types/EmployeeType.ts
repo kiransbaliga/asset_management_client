@@ -1,9 +1,9 @@
 import AddressType from './AddressType';
 
 interface EmployeeType {
-  id: string;
+  id?: string;
   name: string;
-  isActive: boolean;
+  status: string;
   joiningDate: string;
   departmentId: string;
   role: string;

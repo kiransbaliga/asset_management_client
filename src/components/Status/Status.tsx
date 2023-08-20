@@ -3,15 +3,14 @@ import { classNames } from '../../utils/funcs';
 import './Status.css';
 
 interface StatusProps {
-  isActive: boolean;
+  value: string;
+  className?: string;
 }
 
-const Status: FC<StatusProps> = ({ isActive }) => {
+const Status: FC<StatusProps> = ({ value, className }) => {
   return (
     <>
-      <div className={classNames('chip status', isActive ? 'active' : 'in-active')}>
-        {isActive ? 'Active' : 'Inactive'}
-      </div>
+      <div className={classNames('chip status', className)}>{value}</div>
     </>
   );
 };

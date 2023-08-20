@@ -10,7 +10,7 @@ import Dialog from '../../components/Dialog/Dialog';
 import { setToken } from '../../utils/token';
 
 const Login: FC = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showErrorDialog, setShowErrorDialog] = useState({ show: false });
 
@@ -18,19 +18,19 @@ const Login: FC = () => {
   const [login, loginResponse] = useLoginMutation();
 
   function handleLogin() {
-    if (email && password)
+    if (username && password)
       login({
-        email,
+        username,
         password
       });
   }
 
-  const emailErrors = useValidator(
+  const usernameErrors = useValidator(
     [
-      requiredValidator('Email is required'),
-      includeBackendValidators((states) => states[1].error.data.errors.email)
+      requiredValidator('username is required'),
+      includeBackendValidators((states) => states[1].error.data.errors.username)
     ],
-    [email, loginResponse]
+    [username, loginResponse]
   );
 
   const passwordErrors = useValidator(
@@ -74,12 +74,12 @@ const Login: FC = () => {
             <div className='login-form'>
               <img src='/assets/img/kv-logo.png' alt='KeyValue Logo' />
               <LoginInputField
-                id='emailInputField'
-                label='Email'
+                id='usernameInputField'
+                label='username'
                 type='text'
-                value={email}
-                onChange={setEmail}
-                errors={emailErrors}
+                value={username}
+                onChange={setUsername}
+                errors={usernameErrors}
               />
               <LoginInputField
                 id='passwordInputField'
