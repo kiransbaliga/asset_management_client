@@ -8,71 +8,51 @@ import './styles.css';
 import RequestType from '../../../types/RequestType';
 import Table from '../../../components/Table/Table';
 import { requestListColumns } from '../../../columns/requestList.columns';
+import RequestItemType from '../../../types/RequestItemType';
 // import RequestItemType from '../../../types/RequestItemType';
 
 function RequestForm() {
   const [requestData, setRequestData] = useState<RequestType>(emptyRequest);
   const [subcategoryOptions, setSubcategoryOptions] = useState<OptionType[]>([]);
-  const [ownedAssetOptions, setOwndeAssetOptions] = useState<OptionType[]>([]);
-
+  const [ownedAssetOptions, setOwnedAssetOptions] = useState<OptionType[]>([]);
+  const [newItem, setNewItem] = useState<RequestItemType>({ count: 0, subcategoryId: 0 });
   const [requestType, setRequestType] = useState('new');
   // const [requestListWithSubcategories, setRequestListWithSubcategories] = useState<
   //   RequestItemType[]
   // >([]);
 
   const handleChange = (field: string, value?: any, subfield?: string) => {
-    if (field === 'requestItem' && subfield !== undefined) {
+    if (field === 'requestItem' && subfield !== undefined)
+      setNewItem((prevItem) => {
+        const updatedNewItem = { ...prevItem };
+
+        updatedNewItem[subfield] = value;
+
+        return updatedNewItem;
+      });
+    else if (field === 'requestType')
+      setRequestData((prevData) => {
+        setRequestType(value);
+        console.log(requestType);
+
+        return { ...prevData, requestItem: [] };
+      });
+    else if (field === 'addRequestItem')
       setRequestData((prevData) => {
         const updatedRequestItem = [...prevData.requestItem];
 
-        updatedRequestItem[0] = { ...updatedRequestItem[0], [subfield]: value };
+        if (newItem.count !== 0 && newItem.subcategoryId !== 0) updatedRequestItem.push(newItem);
+        setNewItem({ count: 0, subcategoryId: 0 });
 
         return { ...prevData, requestItem: updatedRequestItem };
       });
-    } else if (field === 'requestType') {
-      if (value === 'new')
-        setRequestData((prevData) => {
-          setRequestType(value);
-          console.log(requestType);
-
-          return {
-            ...prevData,
-            requestItem: [{ count: 0, subcategoryId: 0 }]
-          };
-        });
-      else if (value === 'exchange')
-        setRequestData((prevData) => {
-          setRequestType(value);
-          console.log(requestType);
-
-          return { ...prevData, requestItem: [] };
-        });
-    } else if (field === 'addRequestItem') {
-      setRequestData((prevData) => {
-        const updatedRequestItem = [...prevData.requestItem];
-
-        if (
-          requestData.requestItem[0].count !== 0 &&
-          requestData.requestItem[0].subcategoryId !== 0
-        ) {
-          const newItem = {
-            count: requestData.requestItem[0].count,
-            subcategoryId: requestData.requestItem[0].subcategoryId
-          };
-
-          updatedRequestItem.push(newItem);
-        }
-        updatedRequestItem[0] = { ...updatedRequestItem[0], count: 0, subcategoryId: 0 };
-
-        return { ...prevData, requestItem: updatedRequestItem };
-      });
-    } else {
-      setRequestData((prevData) => ({ ...prevData, [field]: value }));
-    }
+    else setRequestData((prevData) => ({ ...prevData, [field]: value }));
+    console.log(newItem);
     console.log(requestData);
   };
 
   const handleSubmit = () => {
+    handleChange('addRequestItem');
     console.log('submitted');
     console.log(requestData);
   };
@@ -133,7 +113,7 @@ function RequestForm() {
 
   useEffect(() => {
     if (ownedAssets?.data)
-      setOwndeAssetOptions(
+      setOwnedAssetOptions(
         ownedAssets.data.map((ownedAsset: { name: string; id: number }) => ({
           text: ownedAsset.name,
           value: ownedAsset.id
@@ -199,11 +179,7 @@ function RequestForm() {
                     label='Subcategory'
                     placeholder='Choose a subcategory'
                     options={subcategoryOptions}
-                    value={
-                      requestData.requestItem[0].subcategoryId === 0
-                        ? ''
-                        : requestData.requestItem[0].subcategoryId
-                    }
+                    value={newItem.subcategoryId === 0 ? '' : newItem.subcategoryId}
                     onChange={(value) => handleChange('requestItem', value, 'subcategoryId')}
                   />
                 </div>
@@ -212,9 +188,7 @@ function RequestForm() {
                     id='countField'
                     type='number'
                     label='Count'
-                    value={
-                      requestData.requestItem[0].count === 0 ? '' : requestData.requestItem[0].count
-                    }
+                    value={newItem.count === 0 ? '' : newItem.count}
                     onChange={(value) => handleChange('requestItem', value, 'count')}
                   />
                 </div>
@@ -260,7 +234,7 @@ function RequestForm() {
         </div>
         <div className='blank'></div>
         {requestType === 'new' &&
-          requestData.requestItem.length > 1 &&
+          requestData.requestItem.length > 0 &&
           JSON.stringify(requestData.requestItem) && (
             <div className='grow-scroll card '>
               <h2>Current request items</h2>

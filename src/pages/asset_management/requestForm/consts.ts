@@ -10,10 +10,5 @@ export const emptyRequest: RequestType = {
   assetId: 0,
   reason: '',
   employeeId: 0,
-  requestItem: [
-    {
-      count: 0,
-      subcategoryId: 0
-    }
-  ]
+  requestItem: []
 };
