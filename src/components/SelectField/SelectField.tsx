@@ -4,7 +4,6 @@ import './SelectField.css';
 
 import { OptionType } from '../../types/OptionType';
 
-
 interface SelectFiedProps {
   id: string;
   label: string;

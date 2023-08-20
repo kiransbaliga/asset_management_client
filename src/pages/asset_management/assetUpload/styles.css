@@ -1,0 +1,20 @@
+ .upload{
+    display: flex;
+    flex:1;
+    flex-direction: column;
+    justify-content: center; /* Vertically center content */
+    align-items: center; /* Horizontally center content */
+
+    position: absolute;
+    top:40%;
+    left: 45%;
+
+    padding: 5% 3% 5% 3%;
+  }
+ 
+  .upload>input{
+    padding: 20px;
+   padding-bottom: 15%;
+   margin-left: 30%;
+   align-self: center;
+  }

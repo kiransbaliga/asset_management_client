@@ -1,4 +1,4 @@
-import { OptionType } from '../../../components/SelectField/SelectField';
+import { OptionType } from '../../../types/OptionType';
 import AssetType from '../../../types/AssetType';
 
 export const statusOptions: OptionType[] = [
