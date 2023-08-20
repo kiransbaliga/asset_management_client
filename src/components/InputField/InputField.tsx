@@ -6,7 +6,7 @@ interface InputFieldProps {
   id: string;
   label: string;
   type?: 'text' | 'password' | 'date' | 'number';
-  value: string;
+  value: string | number;
   onChange?: (value: string) => void;
   errors?: string[];
   placeholder?: string;

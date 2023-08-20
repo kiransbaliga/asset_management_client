@@ -2,9 +2,9 @@ interface AssetType {
   id?: number;
   serial_no: string;
   name: string;
+  status: string;
   subcategoryId: number;
   subcategory?: string;
-  status: string;
   employeeId?: number;
 }
 
