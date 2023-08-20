@@ -1,6 +1,6 @@
 import { AddressFieldType } from '../../components/AddressField/types';
-import { OptionType } from '../../components/SelectField/SelectField';
 import EmployeeType from '../../types/EmployeeType';
+import { OptionType } from '../../types/OptionType';
 
 export const statusOptions: OptionType[] = [
   { text: 'Active', value: 'active' },
