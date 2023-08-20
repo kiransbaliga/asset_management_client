@@ -5,7 +5,13 @@ import { ResponseDataListType, ResponseDataType } from '../../types/ResponseType
 export const assetApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAssetList: builder.query<ResponseDataListType, void>({
-      query: () => '/assets'
+      query: () => '/assets/'
+    }),
+    getCategoryList: builder.query<ResponseDataListType, void>({
+      query: () => '/category/'
+    }),
+    getSubcategoryList: builder.query<ResponseDataListType, void>({
+      query: () => '/subcategory/'
     }),
 
     createAsset: builder.mutation<ResponseDataType, AssetType>({
@@ -14,8 +20,28 @@ export const assetApi = baseApi.injectEndpoints({
         method: 'POST',
         body
       })
+    }),
+    deleteAsset: builder.mutation({
+      query: (id) => ({
+        url: `/assets/${id}`,
+        method: 'DELETE'
+      })
+    }),
+    updateAsset: builder.mutation<ResponseDataType, AssetType>({
+      query: (body) => ({
+        url: `/assets/${body.id}`,
+        method: 'PUT',
+        body
+      })
     })
   })
 });
 
-export const { useCreateAssetMutation, useGetAssetListQuery } = assetApi;
+export const {
+  useCreateAssetMutation,
+  useLazyGetAssetListQuery,
+  useDeleteAssetMutation,
+  useUpdateAssetMutation,
+  useGetCategoryListQuery,
+  useLazyGetSubcategoryListQuery
+} = assetApi;

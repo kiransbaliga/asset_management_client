@@ -1,4 +1,4 @@
-import { OptionType } from '../../../components/SelectField/SelectField';
+import { OptionType } from '../../../types/OptionType';
 import RequestType from '../../../types/RequestType';
 
 export const requestTypeOptions: OptionType[] = [

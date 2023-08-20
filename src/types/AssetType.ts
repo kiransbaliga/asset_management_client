@@ -2,9 +2,10 @@ interface AssetType {
   id?: number;
   serial_no: string;
   name: string;
-  subcategory: number;
   status: string;
-  employee?: number;
+  subcategoryId: number;
+  subcategory?: string;
+  employeeId?: number;
 }
 
 export default AssetType;

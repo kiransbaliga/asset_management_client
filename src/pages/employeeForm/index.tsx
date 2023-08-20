@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import TitleBar from '../../components/TitleBar/TitleBar';
 import InputField from '../../components/InputField/InputField';
 import { useEffect, useState } from 'react';
-import SelectFied, { OptionType } from '../../components/SelectField/SelectField';
+import SelectFied from '../../components/SelectField/SelectField';
 import AddressField from '../../components/AddressField/AddressField';
 import { addressFields, emptyEmployee, statusOptions } from './consts';
 import {
@@ -13,6 +13,7 @@ import {
 } from './api';
 import EmployeeType from '../../types/EmployeeType';
 import './style.css';
+import { OptionType } from '../../types/OptionType';
 
 function EmployeeForm() {
   const [employeeData, setEmployeeData] = useState<EmployeeType>(emptyEmployee);

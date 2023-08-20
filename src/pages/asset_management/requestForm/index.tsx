@@ -1,7 +1,8 @@
 import TitleBar from '../../../components/TitleBar/TitleBar';
 import InputField from '../../../components/InputField/InputField';
 import { useEffect, useState } from 'react';
-import SelectField, { OptionType } from '../../../components/SelectField/SelectField';
+import SelectField from '../../../components/SelectField/SelectField';
+import { OptionType } from '../../../types/OptionType';
 import { emptyRequest, requestTypeOptions } from './consts';
 import './styles.css';
 import RequestType from '../../../types/RequestType';

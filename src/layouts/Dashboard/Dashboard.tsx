@@ -5,7 +5,11 @@ import './Dashboard.css';
 import Employees from '../../pages/employees';
 import Employee from '../../pages/employee';
 import EmployeeForm from '../../pages/employeeForm';
+
 import RequestForm from '../../pages/asset_management/requestForm';
+
+import AssetForm from '../../pages/asset_management/assetForm';
+import AssetList from '../../pages/asset_management/AssetList';
 
 function Dashboard() {
   return (
@@ -23,6 +27,9 @@ function Dashboard() {
                 <Route path='/edit/:id' element={<EmployeeForm />} />
 
                 <Route path='/requests/create' element={<RequestForm />} />
+
+                <Route path='/assets/create' element={<AssetForm />} />
+                <Route path='/assets' element={<AssetList />} />
               </Routes>
             </div>
           </div>

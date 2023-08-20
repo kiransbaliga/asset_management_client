@@ -2,10 +2,7 @@ import { FC } from 'react';
 import { classNames } from '../../utils/funcs';
 import './SelectField.css';
 
-export interface OptionType {
-  value: string | number;
-  text: string;
-}
+import { OptionType } from '../../types/OptionType';
 
 interface SelectFiedProps {
   id: string;
