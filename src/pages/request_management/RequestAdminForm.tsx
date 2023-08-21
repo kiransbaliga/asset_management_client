@@ -6,7 +6,7 @@ import { emptyAdminRequest, emptyRequest, requestTypeOptions } from './consts';
 import './styles.css';
 import RequestType from '../../types/RequestType';
 import Table from '../../components/Table/Table';
-import { requestListColumns } from '../../columns/requestList.columns';
+import { requestedItemColumns } from '../../columns/requestList.columns';
 import RequestItemType from '../../types/RequestItemType';
 import {
   useCreateRequestMutation,
@@ -21,13 +21,16 @@ import AssetType from '../../types/AssetType';
 import { useNavigate } from 'react-router';
 import { useGetEmployeeListQuery } from '../employees/api';
 import EmployeeType from '../../types/EmployeeType';
+import Actions from '../../components/Actions/inedx';
 
 function RequestAdminForm() {
   const [requestData, setRequestData] = useState<RequestType>(emptyAdminRequest);
+  const [listId, setListId] = useState(2);
   const [newItem, setNewItem] = useState<RequestItemType>({
     count: 0,
     subcategoryId: 0,
-    subcategoryName: ''
+    subcategoryName: '',
+    id: 1
   });
   const [requestType, setRequestType] = useState('new');
   const [category, setCategory] = useState(null);
@@ -110,7 +113,8 @@ function RequestAdminForm() {
         const updatedRequestItem = [...prevData.requestItem];
 
         if (newItem.count !== 0 && newItem.subcategoryId !== 0) updatedRequestItem.push(newItem);
-        setNewItem({ count: 0, subcategoryId: 0, subcategoryName: '' });
+        setListId(listId + 1);
+        setNewItem({ count: 0, subcategoryId: 0, subcategoryName: '', id: listId });
 
         return { ...prevData, requestItem: updatedRequestItem };
       });
@@ -143,6 +147,29 @@ function RequestAdminForm() {
   const handleRowClick = (rowData) => {
     console.log('Row clicked:', rowData);
   };
+
+  const action = (id: number) => {
+    return (
+      <Actions
+        onDelete={() => {
+          const updatedRequestItem = requestData.requestItem.filter((item) => item.id !== id);
+
+          setRequestData((prevData) => ({
+            ...prevData,
+            requestItem: updatedRequestItem
+          }));
+        }}
+        onEdit={() => {
+          console.log('edit clicked' + id);
+        }}
+      />
+    );
+  };
+
+  const requestItemColumns = [
+    ...requestedItemColumns,
+    { key: 'id', label: 'Action', adapter: action }
+  ];
 
   return (
     <div className='request-form '>
@@ -249,7 +276,7 @@ function RequestAdminForm() {
             <div className='grow-scroll card '>
               <h2>Currently requested items</h2>
               <Table
-                columns={requestListColumns}
+                columns={requestItemColumns}
                 dataset={requestData.requestItem}
                 onClick={handleRowClick}
               />

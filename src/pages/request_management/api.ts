@@ -56,6 +56,9 @@ export const assetApi = baseApi.injectEndpoints({
         body
       })
     }),
+    getRequestById: builder.query<requestResponseType, string>({
+      query: (id) => `/requests/${id}`
+    }),
     resolveRequest: builder.mutation<requestResponseType, number>({
       query: (id) => ({
         url: `/requests/${id}`,
@@ -75,5 +78,6 @@ export const {
   useLazyGetAssetByIdQuery,
   useCreateRequestMutation,
   useLazyGetOwnedAssetListQuery,
-  useResolveRequestMutation
+  useResolveRequestMutation,
+  useLazyGetRequestByIdQuery
 } = assetApi;

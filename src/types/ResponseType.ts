@@ -1,4 +1,4 @@
-import RequestType from "./RequestType";
+import RequestType from './RequestType';
 
 export interface ResponseDataType {
   status: number;

@@ -7,6 +7,7 @@ import Employees from '../../pages/employees';
 import RequestList from '../../pages/request_management/RequestList';
 import RequestForm from '../../pages/request_management/RequestForm';
 import RequestAdminForm from '../../pages/request_management/RequestAdminForm';
+import Request from '../../pages/request_management/Request';
 
 function Dashboard() {
   return (
@@ -23,6 +24,7 @@ function Dashboard() {
                 <Route path='/requests/' element={<RequestList />} />
                 <Route path='/requests/create' element={<RequestForm />} />
                 <Route path='/requests/create/admin' element={<RequestAdminForm />} />
+                <Route path='/requests/details/:id' element={<Request />} />
               </Routes>
             </div>
           </div>
