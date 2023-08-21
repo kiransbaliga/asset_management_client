@@ -7,8 +7,8 @@ interface SelectFiedProps {
   id: string;
   label: string;
   options: OptionType[];
-  value: string | number;
-  onChange?: (value: string) => void;
+  value: any;
+  onChange?: (value: any) => void;
   errors?: string[];
   placeholder?: string;
 }

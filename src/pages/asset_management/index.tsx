@@ -9,6 +9,7 @@ function AssetManagement() {
       <Route index element={<AssetList />} />
       <Route path='/create' element={<AssetForm />} />
       <Route path='/create/upload' element={<UploadExcel />} />
+      <Route path='/edit/:id' element={<AssetForm />} />
     </Routes>
   );
 }
