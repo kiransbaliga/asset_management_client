@@ -2,9 +2,9 @@ import AssetType from '../../types/AssetType';
 import { OptionType } from '../../types/OptionType';
 
 export const statusOptions: OptionType[] = [
-  { text: 'Unallocated', value: 'unallocated' },
-  { text: 'Damaged', value: 'damaged' },
-  { text: 'Allocated', value: 'allocated' }
+  { text: 'Unallocated', value: 'Unallocated' },
+  { text: 'Damaged', value: 'Damaged' },
+  { text: 'Allocated', value: 'Allocated' }
 ];
 
 export const emptyAsset: AssetType = {

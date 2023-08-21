@@ -7,13 +7,37 @@ import { emptyAsset, statusOptions } from './consts';
 import './styles.css';
 import AssetType from '../../types/AssetType';
 import IconButton from '../../components/IconButton/IconButton';
-import { OptionType } from '../../types/OptionType';
+import {
+  useCreateAssetMutation,
+  useGetCategoryListQuery,
+  useLazyGetSubcategoryListQuery
+} from './api';
+import CategoryType from '../../types/CategoryType';
+import subcategoryType from '../../types/SubcategoryType';
 
 function AssetForm() {
   const [assetData, setAssetData] = useState<AssetType>(emptyAsset);
-  const [subcategoryOptions, setSubcategoryOptions] = useState<OptionType[]>([]);
+  const [currentCategory, setCurrentCategory] = useState<any>(null); // Initialize with null
   const { id } = useParams();
   const navigate = useNavigate();
+  const [getSubCategories, { data: subcategoriesDateset }] = useLazyGetSubcategoryListQuery();
+  const { data: categoriesDateset } = useGetCategoryListQuery();
+  const [createAsset, { isSuccess }] = useCreateAssetMutation();
+  const categories = categoriesDateset?.data as CategoryType[];
+  const subcategories = subcategoriesDateset?.data as subcategoryType[];
+
+  const categoryOptions = categories
+    ? categories.map((category) => ({ value: category.id, text: category.name }))
+    : [];
+  const subcategoryOptions = subcategories
+    ? subcategories
+        .filter((subcategory) => subcategory.categoryId == currentCategory)
+        .map((subcategory) => ({
+          value: subcategory.id,
+          text: subcategory.name
+        }))
+    : [];
+
   const handleEditClick = () => {
     navigate('/employees/assets/create/upload');
   };
@@ -24,39 +48,17 @@ function AssetForm() {
   };
 
   const handleSubmit = () => {
-    console.log('submitted');
-    console.log(assetData);
-  };
-  const subcategories = {
-    data: [
-      {
-        name: 'mac-laptop',
-        id: 1
-      },
-      {
-        name: 'dell-laptop',
-        id: 2
-      },
-      {
-        name: 'thinkpad-laptop',
-        id: 3
-      },
-      {
-        name: 'logitech mouse',
-        id: 4
-      }
-    ]
+    createAsset(assetData);
   };
 
   useEffect(() => {
-    if (subcategories?.data)
-      setSubcategoryOptions(
-        subcategories.data.map((subcategory: { name: string; id: number }) => ({
-          text: subcategory.name,
-          value: subcategory.id
-        }))
-      );
-  }, []);
+    if (isSuccess) navigate('/assets/');
+  }, [isSuccess]);
+
+  useEffect(() => {
+    getSubCategories();
+    handleChange('subcategoryId', '');
+  }, [currentCategory]);
 
   return (
     <div className='asset-form'>
@@ -90,24 +92,36 @@ function AssetForm() {
           </div>
           <div className='column'>
             <SelectFied
-              id='subCategoryField'
-              label='Sub-category'
-              placeholder='Choose a sub-category'
-              options={subcategoryOptions}
-              value={assetData.subcategoryId === 0 ? '' : assetData.subcategoryId}
-              onChange={(value) => handleChange('subcategoryId', Number(value))}
+              id='categoryField'
+              label='category'
+              placeholder='Choose a category'
+              options={categoryOptions}
+              value={currentCategory}
+              onChange={setCurrentCategory}
             />
           </div>
           <div className='column'>
             <SelectFied
-              id='statusField'
-              label='Status'
-              placeholder='Choose a status'
-              options={statusOptions}
-              value={assetData.status}
-              onChange={(value) => handleChange('status', value)}
+              id='subCategoryField'
+              label='Sub-category'
+              placeholder='Choose a sub-category'
+              options={subcategoryOptions}
+              value={assetData.subcategoryId}
+              onChange={(value) => handleChange('subcategoryId', Number(value))}
             />
           </div>
+          {id && (
+            <div className='column'>
+              <SelectFied
+                id='statusField'
+                label='Status'
+                placeholder='Choose a status'
+                options={statusOptions}
+                value={assetData.status}
+                onChange={(value) => handleChange('status', value)}
+              />
+            </div>
+          )}
           <div className='column'>
             {assetData.status === 'allocated' && (
               <InputField
