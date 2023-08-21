@@ -2,15 +2,17 @@ import React, { useState } from 'react';
 // import { read, utils } from 'xlsx';
 import TitleBar from '../../../components/TitleBar/TitleBar';
 import './styles.css';
+import { useUploadFileMutation } from './api';
 
 const UploadExcel = () => {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [uploadFile] = useUploadFileMutation();
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
   };
 
-  const handleUpload = (e) => {
+  const handleUpload = async (e) => {
     e.preventDefault();
     // if (selectedFile) {
     //   const reader = new FileReader();
@@ -32,7 +34,19 @@ const UploadExcel = () => {
     //   };
     //   reader.readAsArrayBuffer(selectedFile);
     // }
-    console.log(selectedFile);
+    if (!selectedFile) return;
+
+    const formData = new FormData();
+
+    formData.append('file', selectedFile);
+
+    try {
+      await uploadFile(formData);
+      console.log(selectedFile);
+      console.log('File uploaded successfully');
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
   };
 
   return (
