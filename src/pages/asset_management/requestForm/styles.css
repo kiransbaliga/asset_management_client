@@ -7,8 +7,8 @@
     width: 33.3%;
   }
 
-  .request-btn > button{
-   margin-top: 15%;
+  .request-btn {
+   margin-top: 1.5%;
   }
  
   .blank{
@@ -16,6 +16,10 @@
   }
   .card{
     width: 100%;
+    margin-bottom: 10px;
+  }
+  .add-item{
+    margin-left: 43%;
   }
   
   @media only screen and (max-width: 768px) {

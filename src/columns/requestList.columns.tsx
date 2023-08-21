@@ -1,4 +1,4 @@
 export const requestListColumns = [
-  { key: 'subcategoryId', label: 'Subcategory' },
+  { key: 'subcategoryName', label: 'Subcategory Name' },
   { key: 'count', label: 'Count' }
 ];
