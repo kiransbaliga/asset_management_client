@@ -5,10 +5,11 @@ import { OptionType } from '../../types/OptionType';
 interface FilterProps {
   label: string;
   options: OptionType[];
+  value: any;
   onSelect?: (value: any) => void;
 }
 
-const Filter: FC<FilterProps> = ({ label, options, onSelect }) => {
+const Filter: FC<FilterProps> = ({ label, options, onSelect, value }) => {
   const handleChange = (e) => {
     onSelect(e.target.value);
   };
@@ -16,8 +17,8 @@ const Filter: FC<FilterProps> = ({ label, options, onSelect }) => {
   return (
     <div className='filter'>
       <label>{label}</label>
-      <select className='chip' onChange={handleChange}>
-        <option value='' disabled selected>
+      <select className='chip' onChange={handleChange} value={value}>
+        <option value='' selected>
           select
         </option>
         {options.map((option) => (

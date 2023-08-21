@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { API_BASE_URL } from '../consts/config';
 import { getToken } from '../utils/token';
+import { getObjectValues } from '../utils/funcs';
+import { ASSET_API_TAGS } from '../pages/asset_management/consts';
 
 const PUBLIC_ENDPOINTS = ['login'];
 
@@ -19,7 +21,7 @@ const baseApi = createApi({
   refetchOnMountOrArgChange: true,
   refetchOnReconnect: true,
   endpoints: () => ({}),
-  tagTypes: []
+  tagTypes: [...getObjectValues(ASSET_API_TAGS)]
 });
 
 export default baseApi;
