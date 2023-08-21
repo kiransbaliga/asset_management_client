@@ -21,3 +21,15 @@ export const assetStatusToClassName = {
   [AssetsStatusEnum.UNALLOCATED]: 'warning',
   [AssetsStatusEnum.DAMAGED]: 'danger'
 };
+
+export enum RequestStatusEnum {
+  ALLOCATED = 'Resolved',
+  UNALLOCATED = 'Pending',
+  DAMAGED = 'Rejected'
+}
+
+export const requestStatusToClassName = {
+  [RequestStatusEnum.ALLOCATED]: 'success',
+  [RequestStatusEnum.UNALLOCATED]: 'warning',
+  [RequestStatusEnum.DAMAGED]: 'danger'
+};
