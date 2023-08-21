@@ -30,9 +30,12 @@ export const assetApi = baseApi.injectEndpoints({
     updateAsset: builder.mutation<ResponseDataType, AssetType>({
       query: (body) => ({
         url: `/assets/${body.id}`,
-        method: 'PUT',
+        method: 'PATCH',
         body
       })
+    }),
+    getAssetById: builder.query({
+      query: (id) => `/assets/${id}`
     })
   })
 });
@@ -43,5 +46,6 @@ export const {
   useDeleteAssetMutation,
   useUpdateAssetMutation,
   useGetCategoryListQuery,
-  useLazyGetSubcategoryListQuery
+  useLazyGetSubcategoryListQuery,
+  useLazyGetAssetByIdQuery
 } = assetApi;
