@@ -21,6 +21,8 @@ function Dashboard() {
             <Sidebar />
             <div className='dashboard-content'>
               <Routes>
+                <Route path='/employees/*' element={<Employees />} />
+                <Route path='/assets/*' element={<AssetManagement />} />
                 <Route path='/' element={<Employees />} />
                 <Route path='/details/:id' element={<Employee />} />
                 <Route path='/create' element={<EmployeeForm />} />
