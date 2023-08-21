@@ -3,16 +3,17 @@ import IconButton from '../../components/IconButton/IconButton';
 import Table from '../../components/Table/Table';
 import TitleBar from '../../components/TitleBar/TitleBar';
 import Employee from '../../types/EmployeeType';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Actions from '../../components/Actions/inedx';
 import { employeeColumns } from '../../columns/employee.columns';
 import Dialog, { DialogStateType } from '../../components/Dialog/Dialog';
-import { useGetEmployeeListQuery } from './api';
+import { useDeleteEmployeeMutation, useGetEmployeeListQuery } from './api';
 
 const EmployeeList: FC = () => {
   const [deleteDialogState, setDeleteDialogState] = useState<DialogStateType>({ show: false });
 
   const { data } = useGetEmployeeListQuery();
+  const [deleteEmplyee, { isSuccess: isDeleted }] = useDeleteEmployeeMutation();
   const employeesDataset = data?.data as object[];
 
   const navigate = useNavigate();
@@ -39,17 +40,23 @@ const EmployeeList: FC = () => {
     navigate('/employees/create/');
   };
 
+  const handleDelete = (params) => {
+    deleteEmplyee(params.id);
+  };
+
   const handleTableClick = (data: Employee) => {
     navigate(`/employees/details/${data.id}`);
   };
+
+  useEffect(() => {
+    if (isDeleted) setDeleteDialogState({ show: false, params: {} });
+  }, [isDeleted]);
 
   return (
     <>
       <Dialog
         title='Are you sure?'
-        onSuccess={(params) => {
-          console.log(params.id);
-        }}
+        onSuccess={handleDelete}
         successLabel='Confirm'
         state={deleteDialogState}
         setState={setDeleteDialogState}
