@@ -1,0 +1,15 @@
+.asset-form .flex-row {
+    flex-wrap: wrap;
+    padding: 20px 0px;
+  }
+  
+  .asset-form .flex-row .column {
+    width: 33.3%;
+  }
+  
+  @media only screen and (max-width: 768px) {
+    .asset-form .flex-row .column {
+      width: 100%;
+    }
+  }
+  

@@ -3,14 +3,14 @@ import EmployeeType from '../../types/EmployeeType';
 import { OptionType } from '../../types/OptionType';
 
 export const statusOptions: OptionType[] = [
-  { text: 'Active', value: 'active' },
-  { text: 'Inactive', value: 'inactive' },
-  { text: 'Probation', value: 'probation' }
+  { text: 'Active', value: 'Active' },
+  { text: 'Inactive', value: 'Inactive' },
+  { text: 'Probation', value: 'Probation' }
 ];
 
 export const addressFields: AddressFieldType[] = [
-  { key: 'line1', placeholder: 'Line 1' },
-  { key: 'line2', placeholder: 'Line 2' },
+  { key: 'address_line_1', placeholder: 'Line 1' },
+  { key: 'address_line_2', placeholder: 'Line 2' },
   { key: 'city', placeholder: 'City' },
   { key: 'state', placeholder: 'State' },
   { key: 'country', placeholder: 'Country' },
@@ -20,17 +20,23 @@ export const addressFields: AddressFieldType[] = [
 export const emptyEmployee: EmployeeType = {
   id: '',
   name: '',
+  username: '',
+  password: '',
   status: 'Active',
-  joiningDate: '',
+  joining_date: '',
   departmentId: '',
   role: '',
   experience: '',
   address: {
-    line1: '',
-    line2: '',
+    address_line_1: '',
+    address_line_2: '',
     city: '',
     state: '',
     country: '',
     pincode: ''
   }
+};
+
+export const EMPLOYEE_API_TAGS = {
+  ON_EMPLOYEE_DELETE: 'onEmployeeDelete'
 };

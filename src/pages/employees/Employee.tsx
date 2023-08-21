@@ -4,8 +4,8 @@ import IconButton from '../../components/IconButton/IconButton';
 import DetailsViewer from '../../components/DetailsViewer/DetailsViewer';
 import { useEffect, useState } from 'react';
 import { address, employeeColumns } from '../../columns/employee.columns';
-import { useLazyGetEmployeeQuery } from './api';
 import EmployeeType from '../../types/EmployeeType';
+import { useLazyGetEmployeeQuery } from './api';
 
 const employeeDetailsRow = [
   employeeColumns.slice(0, 5),

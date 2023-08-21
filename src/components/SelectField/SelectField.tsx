@@ -1,15 +1,14 @@
 import { FC } from 'react';
 import { classNames } from '../../utils/funcs';
 import './SelectField.css';
-
 import { OptionType } from '../../types/OptionType';
 
 interface SelectFiedProps {
   id: string;
   label: string;
   options: OptionType[];
-  value: string | number;
-  onChange?: (value: string) => void;
+  value: any;
+  onChange?: (value: any) => void;
   errors?: string[];
   placeholder?: string;
 }

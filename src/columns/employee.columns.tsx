@@ -12,10 +12,17 @@ export const experiance = (value: number) => (
   </>
 );
 
-export const address = ({ line1, line2, state, country, pincode, city }: AddressType) => (
+export const address = ({
+  address_line_1,
+  address_line_2,
+  state,
+  country,
+  pincode,
+  city
+}: AddressType) => (
   <>
-    <div>{line1}</div>
-    <div>{line2}</div>
+    <div>{address_line_1}</div>
+    <div>{address_line_2}</div>
     <div>{city}</div>
     <div>{state}</div>
     <div>{country}</div>

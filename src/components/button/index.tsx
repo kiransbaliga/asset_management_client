@@ -4,7 +4,7 @@ import './style.css';
 
 interface ButtonProps {
   text: string;
-  onClick?: () => void;
+  onClick?: (e) => void;
   className?: string;
   loading?: boolean;
 }
