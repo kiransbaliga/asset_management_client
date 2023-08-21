@@ -1,12 +1,13 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import TitleBar from '../../../components/TitleBar/TitleBar';
-import InputField from '../../../components/InputField/InputField';
+import TitleBar from '../../components/TitleBar/TitleBar';
+import InputField from '../../components/InputField/InputField';
 import { useEffect, useState } from 'react';
-import SelectFied, { OptionType } from '../../../components/SelectField/SelectField';
+import SelectFied from '../../components/SelectField/SelectField';
 import { emptyAsset, statusOptions } from './consts';
 import './styles.css';
-import AssetType from '../../../types/AssetType';
-import IconButton from '../../../components/IconButton/IconButton';
+import AssetType from '../../types/AssetType';
+import IconButton from '../../components/IconButton/IconButton';
+import { OptionType } from '../../types/OptionType';
 
 function AssetForm() {
   const [assetData, setAssetData] = useState<AssetType>(emptyAsset);
