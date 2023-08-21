@@ -2,12 +2,8 @@ import { Route, Routes } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import './Dashboard.css';
+import AssetManagement from '../../pages/asset_management';
 import Employees from '../../pages/employees';
-import Employee from '../../pages/employee';
-import EmployeeForm from '../../pages/employeeForm';
-import AssetForm from '../../pages/asset_management/assetForm';
-import AssetList from '../../pages/asset_management/AssetList';
-import UploadExcel from '../../pages/asset_management/assetUpload';
 
 function Dashboard() {
   return (
@@ -19,13 +15,8 @@ function Dashboard() {
             <Sidebar />
             <div className='dashboard-content'>
               <Routes>
-                <Route path='/' element={<Employees />} />
-                <Route path='/details/:id' element={<Employee />} />
-                <Route path='/create' element={<EmployeeForm />} />
-                <Route path='/edit/:id' element={<EmployeeForm />} />
-                <Route path='/assets/create' element={<AssetForm />} />
-                <Route path='/assets' element={<AssetList />} />
-                <Route path='/assets/create/upload' element={<UploadExcel />} />
+                <Route path='/employees/*' element={<Employees />} />
+                <Route path='/assets/*' element={<AssetManagement />} />
               </Routes>
             </div>
           </div>
