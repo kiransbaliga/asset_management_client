@@ -109,7 +109,7 @@ function RequestForm() {
           value: subcategory.id
         }))
       );
-  }, [subcategories]);
+  }, []);
 
   useEffect(() => {
     if (ownedAssets?.data)
@@ -119,7 +119,7 @@ function RequestForm() {
           value: ownedAsset.id
         }))
       );
-  }, [ownedAssets]);
+  }, []);
 
   const handleRowClick = (rowData) => {
     console.log('Row clicked:', rowData); // This will be the data of the clicked row
