@@ -2,7 +2,11 @@ import baseApi from '../../services';
 // import AssetFilterType from '../../types/AssetFilterType';
 import AssetType from '../../types/AssetType';
 import RequestType from '../../types/RequestType';
-import { ResponseDataListType, ResponseDataType } from '../../types/ResponseType';
+import {
+  ResponseDataListType,
+  ResponseDataType,
+  requestResponseType
+} from '../../types/ResponseType';
 // import { createQueryUrl } from '../../utils/funcs';
 import { ASSET_API_TAGS } from '../asset_management/consts';
 
@@ -45,11 +49,17 @@ export const assetApi = baseApi.injectEndpoints({
     getOwnedAssetList: builder.query<ResponseDataListType, number>({
       query: (employeeId) => `/assets/employee/${employeeId}/`
     }),
-    createRequest: builder.mutation<ResponseDataType, RequestType>({
+    createRequest: builder.mutation<requestResponseType, RequestType>({
       query: (body) => ({
         url: '/requests/',
         method: 'POST',
         body
+      })
+    }),
+    resolveRequest: builder.mutation<requestResponseType, number>({
+      query: (id) => ({
+        url: `/requests/${id}`,
+        method: 'POST'
       })
     })
   })
@@ -64,5 +74,6 @@ export const {
   useLazyGetSubcategoryListQuery,
   useLazyGetAssetByIdQuery,
   useCreateRequestMutation,
-  useLazyGetOwnedAssetListQuery
+  useLazyGetOwnedAssetListQuery,
+  useResolveRequestMutation
 } = assetApi;

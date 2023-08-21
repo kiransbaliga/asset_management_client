@@ -12,3 +12,9 @@ export const emptyRequest: RequestType = {
   employeeId: Number(localStorage.getItem('employeeId')),
   requestItem: []
 };
+export const emptyAdminRequest: RequestType = {
+  assetId: null,
+  reason: '',
+  employeeId: null,
+  requestItem: []
+};

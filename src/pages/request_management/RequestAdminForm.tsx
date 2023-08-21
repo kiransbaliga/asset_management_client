@@ -2,7 +2,7 @@ import TitleBar from '../../components/TitleBar/TitleBar';
 import InputField from '../../components/InputField/InputField';
 import { useEffect, useState } from 'react';
 import SelectField from '../../components/SelectField/SelectField';
-import { emptyRequest, requestTypeOptions } from './consts';
+import { emptyAdminRequest, emptyRequest, requestTypeOptions } from './consts';
 import './styles.css';
 import RequestType from '../../types/RequestType';
 import Table from '../../components/Table/Table';
@@ -12,15 +12,18 @@ import {
   useCreateRequestMutation,
   useGetCategoryListQuery,
   useLazyGetOwnedAssetListQuery,
-  useLazyGetSubcategoryListQuery
+  useLazyGetSubcategoryListQuery,
+  useResolveRequestMutation
 } from './api';
 import CategoryType from '../../types/CategoryType';
 import subcategoryType from '../../types/SubcategoryType';
 import AssetType from '../../types/AssetType';
 import { useNavigate } from 'react-router';
+import { useGetEmployeeListQuery } from '../employees/api';
+import EmployeeType from '../../types/EmployeeType';
 
-function RequestForm() {
-  const [requestData, setRequestData] = useState<RequestType>(emptyRequest);
+function RequestAdminForm() {
+  const [requestData, setRequestData] = useState<RequestType>(emptyAdminRequest);
   const [newItem, setNewItem] = useState<RequestItemType>({
     count: 0,
     subcategoryId: 0,
@@ -30,12 +33,16 @@ function RequestForm() {
   const [category, setCategory] = useState(null);
   const [getSubCategories, { data: subcategoriesDateset }] = useLazyGetSubcategoryListQuery();
   const [getOwnedAssets, { data: OwnedAssetsDateset }] = useLazyGetOwnedAssetListQuery();
-  const [createRequest, { isSuccess }] = useCreateRequestMutation();
+  const [createRequest, { data, isSuccess }] = useCreateRequestMutation();
+  const [resolveRequest, { isSuccess: resolveSucccess }] = useResolveRequestMutation();
   const { data: categoriesDateset } = useGetCategoryListQuery();
+  const { data: employeeDataset } = useGetEmployeeListQuery();
   const categories = categoriesDateset?.data as CategoryType[];
   const subcategories = subcategoriesDateset?.data as subcategoryType[];
+  const employees = employeeDataset?.data as EmployeeType[];
   const ownedAssets = OwnedAssetsDateset?.data as AssetType[];
   const navigate = useNavigate();
+
   const categoryOptions = categories
     ? categories.map((category) => ({ value: category.id, text: category.name }))
     : [];
@@ -47,6 +54,10 @@ function RequestForm() {
           value: subcategory.id,
           text: subcategory.name
         }))
+    : [];
+
+  const employeeOptions = employees
+    ? employees.map((employee) => ({ value: employee.id, text: employee.name }))
     : [];
 
   const ownedAssetOptions = ownedAssets
@@ -86,6 +97,9 @@ function RequestForm() {
 
         return { ...prevData, requestItem: [] };
       });
+    } else if (field === 'employeeId') {
+      getOwnedAssets(Number(value));
+      setRequestData((prevData) => ({ ...prevData, [field]: value }));
     } else if (field === 'category') {
       setCategory(value);
       getSubCategories();
@@ -112,8 +126,15 @@ function RequestForm() {
   };
 
   useEffect(() => {
-    if (isSuccess) navigate('/requests/');
+    if (isSuccess) {
+      console.log(data.data.id);
+      resolveRequest(data.data.id);
+    }
   }, [isSuccess]);
+  useEffect(() => {
+    if (resolveSucccess) navigate('/requests');
+  }, [resolveSucccess]);
+
   const handleReset = () => {
     console.log('submitted');
     setRequestData(emptyRequest);
@@ -125,7 +146,7 @@ function RequestForm() {
 
   return (
     <div className='request-form '>
-      <TitleBar title={'Create Request'}></TitleBar>
+      <TitleBar title={'Allocate Assets'}></TitleBar>
       <div className='flex-column center'>
         <div className='card'>
           <div className='flex-row'>
@@ -141,6 +162,16 @@ function RequestForm() {
             </div>
             <div className='column'>
               <SelectField
+                id='employeeId'
+                label='Employee Name'
+                placeholder='Employee name'
+                options={employeeOptions}
+                value={requestData.employeeId}
+                onChange={(value) => handleChange('employeeId', value)}
+              />
+            </div>
+            <div className='column'>
+              <SelectField
                 id='requestType'
                 label='Request Type'
                 placeholder='Request Type'
@@ -149,11 +180,12 @@ function RequestForm() {
                 onChange={(value) => handleChange('requestType', value)}
               />
             </div>
-
-            <div className='column request-btn '>
+            <div className='column'></div>
+            <div className='column'></div>
+            <div className='column requestadmin-btn '>
               <div className='btn-group'>
                 <button className='btn btn-primary' onClick={handleSubmit}>
-                  {'Create'}
+                  {'Allocate'}
                 </button>
                 <button className='btn btn-secondary' onClick={handleReset}>
                   Reset{' '}
@@ -250,4 +282,4 @@ function RequestForm() {
   );
 }
 
-export default RequestForm;
+export default RequestAdminForm;

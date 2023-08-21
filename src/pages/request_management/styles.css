@@ -22,7 +22,7 @@
  width: 100%;
  margin-bottom: 10px;
   }
-  
+ 
   @media only screen and (max-width: 768px) {
     .request-form .flex-row .column {
       width: 100%;
