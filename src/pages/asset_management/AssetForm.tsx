@@ -10,7 +10,9 @@ import IconButton from '../../components/IconButton/IconButton';
 import {
   useCreateAssetMutation,
   useGetCategoryListQuery,
-  useLazyGetSubcategoryListQuery
+  useLazyGetAssetByIdQuery,
+  useLazyGetSubcategoryListQuery,
+  useUpdateAssetMutation
 } from './api';
 import CategoryType from '../../types/CategoryType';
 import subcategoryType from '../../types/SubcategoryType';
@@ -22,7 +24,9 @@ function AssetForm() {
   const navigate = useNavigate();
   const [getSubCategories, { data: subcategoriesDateset }] = useLazyGetSubcategoryListQuery();
   const { data: categoriesDateset } = useGetCategoryListQuery();
-  const [createAsset, { isSuccess }] = useCreateAssetMutation();
+  const [createAsset, { isSuccess: isCreateSuccess }] = useCreateAssetMutation();
+  const [updateAsset, { isSuccess: isUpdateSuccess }] = useUpdateAssetMutation();
+  const [getAssetById, { data: getAssetData }] = useLazyGetAssetByIdQuery();
   const categories = categoriesDateset?.data as CategoryType[];
   const subcategories = subcategoriesDateset?.data as subcategoryType[];
 
@@ -31,11 +35,11 @@ function AssetForm() {
     : [];
   const subcategoryOptions = subcategories
     ? subcategories
-        .filter((subcategory) => subcategory.categoryId == currentCategory)
-        .map((subcategory) => ({
-          value: subcategory.id,
-          text: subcategory.name
-        }))
+      .filter((subcategory) => subcategory.categoryId == currentCategory)
+      .map((subcategory) => ({
+        value: subcategory.id,
+        text: subcategory.name
+      }))
     : [];
 
   const handleEditClick = () => {
@@ -48,12 +52,28 @@ function AssetForm() {
   };
 
   const handleSubmit = () => {
-    createAsset(assetData);
+    if (id) updateAsset(assetData);
+    else createAsset(assetData);
   };
 
   useEffect(() => {
-    if (isSuccess) navigate('/assets/');
-  }, [isSuccess]);
+    if (id) getAssetById(id);
+  }, [id]);
+  useEffect(() => {
+    if (isCreateSuccess) navigate('/assets/');
+  }, [isCreateSuccess]);
+
+  useEffect(() => {
+    if (getAssetData?.data) {
+      const assetData = getAssetData.data as AssetType;
+
+      setAssetData(assetData);
+    }
+  }, [getAssetData]);
+
+  useEffect(() => {
+    if (isUpdateSuccess) navigate('/assets/');
+  }, [isUpdateSuccess]);
 
   useEffect(() => {
     getSubCategories();
@@ -63,11 +83,13 @@ function AssetForm() {
   return (
     <div className='asset-form'>
       <TitleBar title={id ? 'Edit Asset' : 'Create Asset'}>
-        <IconButton
-          text='Create via Excel'
-          icon='/assets/icons/upload.png'
-          onClick={handleEditClick}
-        />
+        {id === undefined && (
+          <IconButton
+            text='Create via Excel'
+            icon='/assets/icons/upload.png'
+            onClick={handleEditClick}
+          />
+        )}
       </TitleBar>
       <div className='card'>
         <div className='flex-row'>

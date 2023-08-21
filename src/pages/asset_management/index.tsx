@@ -7,6 +7,7 @@ function AssetManagement() {
     <Routes>
       <Route index element={<AssetList />} />
       <Route path='/create' element={<AssetForm />} />
+      <Route path='/edit/:id' element={<AssetForm />} />
     </Routes>
   );
 }
