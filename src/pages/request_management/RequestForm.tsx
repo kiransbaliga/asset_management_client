@@ -1,22 +1,22 @@
-import TitleBar from '../../../components/TitleBar/TitleBar';
-import InputField from '../../../components/InputField/InputField';
+import TitleBar from '../../components/TitleBar/TitleBar';
+import InputField from '../../components/InputField/InputField';
 import { useEffect, useState } from 'react';
-import SelectField from '../../../components/SelectField/SelectField';
+import SelectField from '../../components/SelectField/SelectField';
 import { emptyRequest, requestTypeOptions } from './consts';
 import './styles.css';
-import RequestType from '../../../types/RequestType';
-import Table from '../../../components/Table/Table';
-import { requestListColumns } from '../../../columns/requestList.columns';
-import RequestItemType from '../../../types/RequestItemType';
+import RequestType from '../../types/RequestType';
+import Table from '../../components/Table/Table';
+import { requestListColumns } from '../../columns/requestList.columns';
+import RequestItemType from '../../types/RequestItemType';
 import {
   useCreateRequestMutation,
   useGetCategoryListQuery,
   useLazyGetOwnedAssetListQuery,
   useLazyGetSubcategoryListQuery
 } from './api';
-import CategoryType from '../../../types/CategoryType';
-import subcategoryType from '../../../types/SubcategoryType';
-import AssetType from '../../../types/AssetType';
+import CategoryType from '../../types/CategoryType';
+import subcategoryType from '../../types/SubcategoryType';
+import AssetType from '../../types/AssetType';
 import { useNavigate } from 'react-router';
 
 function RequestForm() {

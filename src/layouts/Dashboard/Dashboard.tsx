@@ -4,8 +4,8 @@ import Sidebar from '../../components/Sidebar/Sidebar';
 import './Dashboard.css';
 import AssetManagement from '../../pages/asset_management';
 import Employees from '../../pages/employees';
-import RequestList from '../../pages/request_management/request_list';
-import RequestForm from '../../pages/asset_management/requestForm';
+import RequestList from '../../pages/request_management/RequestList';
+import RequestForm from '../../pages/request_management/RequestForm';
 
 function Dashboard() {
   return (

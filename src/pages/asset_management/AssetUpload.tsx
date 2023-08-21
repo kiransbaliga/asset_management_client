@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-// import { read, utils } from 'xlsx';
-import TitleBar from '../../../components/TitleBar/TitleBar';
+import TitleBar from '../../components/TitleBar/TitleBar';
 import './styles.css';
 import { useUploadFileMutation } from './api';
 
@@ -52,7 +51,7 @@ const UploadExcel = () => {
   return (
     <div>
       <TitleBar title={'Create assets via Excel'}></TitleBar>
-      <div className='card flex-column upload '>
+      <div className='upload-card  card flex-column upload '>
         <input type='file' onChange={handleFileChange} />
         <button className='btn btn-primary' onClick={handleUpload}>
           Upload

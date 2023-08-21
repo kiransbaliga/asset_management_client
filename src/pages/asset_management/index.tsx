@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import AssetForm from './AssetForm';
 import AssetList from './AssetList';
-import UploadExcel from './assetUpload';
+import UploadExcel from './AssetUpload';
 
 function AssetManagement() {
   return (

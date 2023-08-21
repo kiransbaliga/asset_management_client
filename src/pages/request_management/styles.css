@@ -14,12 +14,13 @@
   .blank{
     height: 5px;
   }
-  .card{
-    width: 100%;
-    margin-bottom: 10px;
-  }
+
   .add-item{
     margin-left: 43%;
+  }
+  .flex-column>.card{
+ width: 100%;
+ margin-bottom: 10px;
   }
   
   @media only screen and (max-width: 768px) {
