@@ -9,7 +9,8 @@ import {
   useGetDepartmentListQuery,
   useGetRoleListQuery,
   useLazyCreateEmployeeQuery,
-  useLazyGetEmployeeQuery
+  useLazyGetEmployeeQuery,
+  useUpdateEmployeeMutation
 } from './api';
 import EmployeeType from '../../types/EmployeeType';
 import './style.css';
@@ -26,6 +27,7 @@ function EmployeeForm() {
 
   const { data: departments } = useGetDepartmentListQuery();
   const { data: roles } = useGetRoleListQuery();
+  const [updateEmployee, { isSuccess: isUpdated }] = useUpdateEmployeeMutation();
   const [createEmployee, { isSuccess: isCreated }] = useLazyCreateEmployeeQuery();
   const [getEmployeeById, { data: employeeDataResponse }] = useLazyGetEmployeeQuery();
 
@@ -34,7 +36,8 @@ function EmployeeForm() {
   };
 
   const handleSubmit = () => {
-    createEmployee(employeeData);
+    if (id) updateEmployee(employeeData);
+    else createEmployee(employeeData);
   };
 
   useEffect(() => {
@@ -44,7 +47,7 @@ function EmployeeForm() {
   useEffect(() => {
     if (departments?.data)
       setDepartementOptions(
-        departments.data.map((department: { name: string; id: string }) => ({
+        departments.data.map((department: { name: string; id: number }) => ({
           text: department.name,
           value: department.id
         }))
@@ -52,18 +55,18 @@ function EmployeeForm() {
   }, [departments]);
 
   useEffect(() => {
-    if (roles?.data)
+    if (roles?.data['data'])
       setRoleOptions(
-        roles.data.map((role: { name: string; id: string }) => ({
-          text: role.name,
-          value: role.id
+        roles.data['data'].map((role: { name: string; id: string }) => ({
+          text: role,
+          value: role
         }))
       );
   }, [roles]);
 
   useEffect(() => {
-    if (isCreated) navigate('/employees');
-  }, [isCreated]);
+    if (isCreated || isUpdated) navigate('/employees');
+  }, [isCreated, isUpdated]);
 
   useEffect(() => {
     if (employeeDataResponse?.data) {
@@ -80,6 +83,24 @@ function EmployeeForm() {
         <div className='flex-row'>
           <div className='column'>
             <InputField
+              id='usernameField'
+              label='Username'
+              placeholder='Username'
+              value={employeeData.username}
+              onChange={(value) => handleChange('username', value)}
+            />
+          </div>
+          <div className='column'>
+            <InputField
+              id='passwordField'
+              label='Password'
+              placeholder='Password'
+              value={employeeData.password}
+              onChange={(value) => handleChange('password', value)}
+            />
+          </div>
+          <div className='column'>
+            <InputField
               id='employeeNameField'
               label='Name'
               placeholder='Employee name'
@@ -92,8 +113,8 @@ function EmployeeForm() {
               id='joiningDateField'
               type='date'
               label='Joining Date'
-              value={employeeData.joiningDate}
-              onChange={(value) => handleChange('joiningDate', value)}
+              value={employeeData.joining_date}
+              onChange={(value) => handleChange('joining_date', value)}
             />
           </div>
           <div className='column'>
@@ -112,7 +133,7 @@ function EmployeeForm() {
               placeholder='Choose a department'
               options={departmentOptions}
               value={employeeData.departmentId}
-              onChange={(value) => handleChange('department', value)}
+              onChange={(value) => handleChange('departmentId', Number(value))}
             />
           </div>
           <div className='column'>
@@ -132,7 +153,7 @@ function EmployeeForm() {
               placeholder='Choose a status'
               options={statusOptions}
               value={employeeData.status}
-              onChange={(value) => handleChange('isActive', value)}
+              onChange={(value) => handleChange('status', value)}
             />
           </div>
           <div className='column'>
