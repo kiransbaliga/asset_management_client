@@ -4,6 +4,7 @@ import Sidebar from '../../components/Sidebar/Sidebar';
 import './Dashboard.css';
 import AssetManagement from '../../pages/asset_management';
 import Employees from '../../pages/employees';
+import RequestList from '../../pages/request_management/request_list';
 
 function Dashboard() {
   return (
@@ -17,6 +18,7 @@ function Dashboard() {
               <Routes>
                 <Route path='/employees/*' element={<Employees />} />
                 <Route path='/assets/*' element={<AssetManagement />} />
+                <Route path='/requests/' element={<RequestList />} />
               </Routes>
             </div>
           </div>
