@@ -1,11 +1,15 @@
 import baseApi from '../../services';
+import AssetFilterType from '../../types/AssetFilterType';
 import AssetType from '../../types/AssetType';
 import { ResponseDataListType, ResponseDataType } from '../../types/ResponseType';
+import { createQueryUrl } from '../../utils/funcs';
+import { ASSET_API_TAGS } from './consts';
 
 export const assetApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAssetList: builder.query<ResponseDataListType, void>({
-      query: () => '/assets/'
+    getAssetList: builder.query<ResponseDataListType, AssetFilterType>({
+      query: (filter) => createQueryUrl('/assets', filter),
+      providesTags: [ASSET_API_TAGS.ON_ASSET_DELETE]
     }),
     getCategoryList: builder.query<ResponseDataListType, void>({
       query: () => '/category/'
@@ -25,7 +29,8 @@ export const assetApi = baseApi.injectEndpoints({
       query: (id) => ({
         url: `/assets/${id}`,
         method: 'DELETE'
-      })
+      }),
+      invalidatesTags: [ASSET_API_TAGS.ON_ASSET_DELETE]
     }),
     updateAsset: builder.mutation<ResponseDataType, AssetType>({
       query: (body) => ({

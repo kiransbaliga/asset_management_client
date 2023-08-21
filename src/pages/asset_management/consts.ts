@@ -1,3 +1,4 @@
+import AssetFilterType from '../../types/AssetFilterType';
 import AssetType from '../../types/AssetType';
 import { OptionType } from '../../types/OptionType';
 
@@ -13,4 +14,14 @@ export const emptyAsset: AssetType = {
   status: '',
   employeeId: 0,
   subcategoryId: 0
+};
+
+export const empltyAssetFilter: AssetFilterType = {
+  status: '',
+  subcategory: '',
+  category: ''
+};
+
+export const ASSET_API_TAGS = {
+  ON_ASSET_DELETE: 'onAssetDelete'
 };

@@ -1,5 +1,6 @@
 import { FC, ReactElement, useRef } from 'react';
 import './Dialog.css';
+import Button from '../button';
 
 export interface DialogStateType {
   show: boolean;
@@ -15,6 +16,7 @@ interface DialogProps {
   cancelLabel?: string;
   onSuccess: (params: any) => void;
   onCancel?: () => void;
+  isLoading?: boolean;
 }
 
 const Dialog: FC<DialogProps> = ({
@@ -24,6 +26,7 @@ const Dialog: FC<DialogProps> = ({
   setState,
   successLabel,
   cancelLabel = 'Cancel',
+  isLoading = false,
   onSuccess,
   onCancel = () => {}
 }) => {
@@ -48,12 +51,13 @@ const Dialog: FC<DialogProps> = ({
             <h3>{title}</h3>
             <div className='dialog-content'>{children}</div>
             <div className='btn-group'>
-              <button className='btn btn-primary' onClick={handleSuccess}>
-                {successLabel}
-              </button>
-              <button className='btn btn-secondary' onClick={handleCancel}>
-                {cancelLabel}
-              </button>
+              <Button
+                className='btn btn-primary'
+                onClick={handleSuccess}
+                text={successLabel}
+                loading={isLoading}
+              />
+              <Button className='btn btn-secondary' onClick={handleCancel} text={cancelLabel} />
             </div>
           </div>
         </div>
