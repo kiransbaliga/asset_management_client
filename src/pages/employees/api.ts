@@ -1,18 +1,35 @@
 import baseApi from '../../services';
-import { ResponseDataListType } from '../../types/ResponseType';
+import EmployeeType from '../../types/EmployeeType';
+import { ResponseDataListType, ResponseDataType } from '../../types/ResponseType';
 
 export const employeesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getEmployeeList: builder.query<ResponseDataListType, void>({
       query: () => '/employees'
+    }),
+    getDepartmentList: builder.query<ResponseDataListType, void>({
+      query: () => '/departments'
+    }),
+    getRoleList: builder.query<ResponseDataListType, void>({
+      query: () => '/roles'
+    }),
+    createEmployee: builder.query<ResponseDataType, EmployeeType>({
+      query: (body) => ({
+        url: '/employees',
+        method: 'POST',
+        body
+      })
+    }),
+    getEmployee: builder.query<ResponseDataType, string>({
+      query: (id) => `/employees/${id}`
     })
-    // removeEmployee: builder.mutation<ResponseType, string>({
-    //   query: (id) => {
-    //     url: `/employees/${id}`,
-    //     method: 'DELETE'
-    //   }
-    // })
   })
 });
 
-export const { useGetEmployeeListQuery } = employeesApi;
+export const {
+  useGetDepartmentListQuery,
+  useGetRoleListQuery,
+  useLazyCreateEmployeeQuery,
+  useLazyGetEmployeeQuery,
+  useGetEmployeeListQuery
+} = employeesApi;
