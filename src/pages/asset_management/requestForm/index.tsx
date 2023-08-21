@@ -2,146 +2,128 @@ import TitleBar from '../../../components/TitleBar/TitleBar';
 import InputField from '../../../components/InputField/InputField';
 import { useEffect, useState } from 'react';
 import SelectField from '../../../components/SelectField/SelectField';
-import { OptionType } from '../../../types/OptionType';
 import { emptyRequest, requestTypeOptions } from './consts';
 import './styles.css';
 import RequestType from '../../../types/RequestType';
 import Table from '../../../components/Table/Table';
 import { requestListColumns } from '../../../columns/requestList.columns';
 import RequestItemType from '../../../types/RequestItemType';
-// import RequestItemType from '../../../types/RequestItemType';
+import {
+  useCreateRequestMutation,
+  useGetCategoryListQuery,
+  useLazyGetOwnedAssetListQuery,
+  useLazyGetSubcategoryListQuery
+} from './api';
+import CategoryType from '../../../types/CategoryType';
+import subcategoryType from '../../../types/SubcategoryType';
+import AssetType from '../../../types/AssetType';
+import { useNavigate } from 'react-router';
 
 function RequestForm() {
   const [requestData, setRequestData] = useState<RequestType>(emptyRequest);
-  const [subcategoryOptions, setSubcategoryOptions] = useState<OptionType[]>([]);
-  const [ownedAssetOptions, setOwnedAssetOptions] = useState<OptionType[]>([]);
-  const [newItem, setNewItem] = useState<RequestItemType>({ count: 0, subcategoryId: 0 });
+  const [newItem, setNewItem] = useState<RequestItemType>({
+    count: 0,
+    subcategoryId: 0,
+    subcategoryName: ''
+  });
   const [requestType, setRequestType] = useState('new');
-  // const [requestListWithSubcategories, setRequestListWithSubcategories] = useState<
-  //   RequestItemType[]
-  // >([]);
+  const [category, setCategory] = useState(null);
+  const [getSubCategories, { data: subcategoriesDateset }] = useLazyGetSubcategoryListQuery();
+  const [getOwnedAssets, { data: OwnedAssetsDateset }] = useLazyGetOwnedAssetListQuery();
+  const [createRequest, { isSuccess }] = useCreateRequestMutation();
+  const { data: categoriesDateset } = useGetCategoryListQuery();
+  const categories = categoriesDateset?.data as CategoryType[];
+  const subcategories = subcategoriesDateset?.data as subcategoryType[];
+  const ownedAssets = OwnedAssetsDateset?.data as AssetType[];
+  const navigate = useNavigate();
+  const categoryOptions = categories
+    ? categories.map((category) => ({ value: category.id, text: category.name }))
+    : [];
+
+  const subcategoryOptions = subcategories
+    ? subcategories
+        .filter((subcategory) => subcategory.categoryId == category)
+        .map((subcategory) => ({
+          value: subcategory.id,
+          text: subcategory.name
+        }))
+    : [];
+
+  const ownedAssetOptions = ownedAssets
+    ? ownedAssets.map((ownedAsset) => ({
+        value: ownedAsset.id,
+        text: ownedAsset.name
+      }))
+    : [];
+
+  const findSubcategoryName = (id: number) => {
+    const subcategory = subcategories.find((subcategory) => {
+      return Number(subcategory.id) === Number(id);
+    });
+
+    return subcategory.name;
+  };
 
   const handleChange = (field: string, value?: any, subfield?: string) => {
-    if (field === 'requestItem' && subfield !== undefined)
+    if (field === 'requestItem' && subfield !== undefined) {
       setNewItem((prevItem) => {
         const updatedNewItem = { ...prevItem };
 
-        updatedNewItem[subfield] = value;
+        updatedNewItem[subfield] = Number(value);
+        console.log(value);
+        if (subfield === 'subcategoryId')
+          updatedNewItem['subcategoryName'] = findSubcategoryName(Number(value));
 
         return updatedNewItem;
       });
-    else if (field === 'requestType')
+    } else if (field === 'requestType') {
       setRequestData((prevData) => {
         setRequestType(value);
+        const employeeId = localStorage.getItem('employeeId');
+
+        if (value === 'exchange') getOwnedAssets(Number(employeeId));
         console.log(requestType);
 
         return { ...prevData, requestItem: [] };
       });
-    else if (field === 'addRequestItem')
+    } else if (field === 'category') {
+      setCategory(value);
+      getSubCategories();
+      console.log(requestType);
+    } else if (field === 'addRequestItem') {
+      setCategory(null);
       setRequestData((prevData) => {
         const updatedRequestItem = [...prevData.requestItem];
 
         if (newItem.count !== 0 && newItem.subcategoryId !== 0) updatedRequestItem.push(newItem);
-        setNewItem({ count: 0, subcategoryId: 0 });
+        setNewItem({ count: 0, subcategoryId: 0, subcategoryName: '' });
 
         return { ...prevData, requestItem: updatedRequestItem };
       });
-    else setRequestData((prevData) => ({ ...prevData, [field]: value }));
+    } else {
+      setRequestData((prevData) => ({ ...prevData, [field]: value }));
+    }
     console.log(newItem);
     console.log(requestData);
   };
 
   const handleSubmit = () => {
     handleChange('addRequestItem');
-    console.log('submitted');
-    console.log(requestData);
+
+    createRequest(requestData);
   };
+
+  useEffect(() => {
+    if (isSuccess) navigate('/requests/');
+  }, [isSuccess]);
   const handleReset = () => {
     console.log('submitted');
     setRequestData(emptyRequest);
   };
-  const subcategories = {
-    data: [
-      {
-        name: 'mac-laptop',
-        id: 1
-      },
-      {
-        name: 'dell-laptop',
-        id: 2
-      },
-      {
-        name: 'thinkpad-laptop',
-        id: 3
-      },
-      {
-        name: 'logitech mouse',
-        id: 4
-      }
-    ]
-  };
-  const ownedAssets = {
-    data: [
-      {
-        name: 'mac-laptop 54',
-        id: 1
-      },
-      {
-        name: 'dell-laptop 754',
-        id: 2
-      },
-      {
-        name: 'thinkpad-laptop 853',
-        id: 3
-      },
-      {
-        name: 'logitech mouse 567',
-        id: 4
-      }
-    ]
-  };
-
-  useEffect(() => {
-    if (subcategories?.data)
-      setSubcategoryOptions(
-        subcategories.data.map((subcategory: { name: string; id: number }) => ({
-          text: subcategory.name,
-          value: subcategory.id
-        }))
-      );
-  }, []);
-
-  useEffect(() => {
-    if (ownedAssets?.data)
-      setOwnedAssetOptions(
-        ownedAssets.data.map((ownedAsset: { name: string; id: number }) => ({
-          text: ownedAsset.name,
-          value: ownedAsset.id
-        }))
-      );
-  }, []);
 
   const handleRowClick = (rowData) => {
-    console.log('Row clicked:', rowData); // This will be the data of the clicked row
+    console.log('Row clicked:', rowData);
   };
-
-  // to be looked into after api integration
-  // useEffect(() => {
-  //   const updatedRequestList = requestData.requestItem.map((item) => {
-  //     console.log(' hereeeee ');
-  //     subcategories.data.forEach((subcategory) => {
-  //       if (subcategory.id === item.subcategoryId) {
-  //         console.log(subcategory.id, item.subcategoryId);
-
-  //         return { ...item, subcategoryId: subcategory.name };
-  //       }
-  //     });
-
-  //     return { ...item, subcategoryId: 'unknown' };
-  //   });
-
-  //   setRequestListWithSubcategories(updatedRequestList);
-  // }, [requestData.requestItem, subcategories.data]);
 
   return (
     <div className='request-form '>
@@ -169,58 +151,8 @@ function RequestForm() {
                 onChange={(value) => handleChange('requestType', value)}
               />
             </div>
-            <div className='column'></div>
 
-            {requestType === 'new' && (
-              <>
-                <div className='column'>
-                  <SelectField
-                    id='subcategoryField'
-                    label='Subcategory'
-                    placeholder='Choose a subcategory'
-                    options={subcategoryOptions}
-                    value={newItem.subcategoryId === 0 ? '' : newItem.subcategoryId}
-                    onChange={(value) => handleChange('requestItem', value, 'subcategoryId')}
-                  />
-                </div>
-                <div className='column'>
-                  <InputField
-                    id='countField'
-                    type='number'
-                    label='Count'
-                    value={newItem.count === 0 ? '' : newItem.count}
-                    onChange={(value) => handleChange('requestItem', value, 'count')}
-                  />
-                </div>
-                <div className='request-btn'>
-                  <button
-                    className='btn btn-primary'
-                    onClick={() => handleChange('addRequestItem')}
-                  >
-                    Add new item
-                  </button>
-                </div>
-              </>
-            )}
-            {requestType === 'exchange' && (
-              <>
-                <div className='column'>
-                  <SelectField
-                    id='ownedAssetsField'
-                    label='Choose the asset'
-                    placeholder='Choose the asset'
-                    options={ownedAssetOptions}
-                    value={requestData.assetId === 0 ? '' : requestData.assetId}
-                    onChange={(value) => handleChange('assetId', Number(value))}
-                  />
-                </div>
-                <div className='column'></div>
-                <div className='column'></div>
-              </>
-            )}
-
-            <div className='column'></div>
-            <div className='column'>
+            <div className='column request-btn '>
               <div className='btn-group'>
                 <button className='btn btn-primary' onClick={handleSubmit}>
                   {'Create'}
@@ -232,12 +164,60 @@ function RequestForm() {
             </div>
           </div>
         </div>
-        <div className='blank'></div>
+        {requestType === 'new' && (
+          <div className='card'>
+            <div className='flex-row'>
+              <div className='column'>
+                <SelectField
+                  id='categoryId'
+                  label='Category'
+                  placeholder='Choose a category'
+                  options={categoryOptions}
+                  value={category === null ? '' : category}
+                  onChange={(value) => handleChange('category', value)}
+                />
+              </div>
+              <div className='column'>
+                <SelectField
+                  id='subcategoryField'
+                  label='Subcategory'
+                  placeholder='Choose a subcategory'
+                  options={subcategoryOptions}
+                  value={newItem.subcategoryId === 0 ? '' : newItem.subcategoryId}
+                  onChange={(value) => handleChange('requestItem', value, 'subcategoryId')}
+                />
+              </div>
+              <div className='column'>
+                <InputField
+                  id='countField'
+                  type='number'
+                  label='Count'
+                  placeholder='Enter the count'
+                  value={newItem.count === 0 ? '' : newItem.count}
+                  onChange={(value) => handleChange('requestItem', value, 'count')}
+                />
+              </div>
+
+              <div className='column'></div>
+              <div className='column add-item'>
+                <div className='request-btn'>
+                  <button
+                    className='btn btn-primary'
+                    onClick={() => handleChange('addRequestItem')}
+                  >
+                    Add new item
+                  </button>
+                </div>
+                <div className='column'></div>
+              </div>
+            </div>
+          </div>
+        )}
         {requestType === 'new' &&
           requestData.requestItem.length > 0 &&
           JSON.stringify(requestData.requestItem) && (
             <div className='grow-scroll card '>
-              <h2>Current request items</h2>
+              <h2>Currently requested items</h2>
               <Table
                 columns={requestListColumns}
                 dataset={requestData.requestItem}
@@ -245,6 +225,28 @@ function RequestForm() {
               />
             </div>
           )}
+        {requestType === 'exchange' && (
+          <div className='card'>
+            <div className='flex-row'>
+              <div className='column'>
+                <SelectField
+                  id='ownedAssetsField'
+                  label='Choose the asset'
+                  placeholder='Choose the asset'
+                  options={ownedAssetOptions}
+                  value={requestData.assetId === 0 ? '' : requestData.assetId}
+                  onChange={(value) => handleChange('assetId', Number(value))}
+                />
+              </div>
+              <div className='column'></div>
+              <div className='column'></div>
+            </div>
+          </div>
+        )}
+
+        <div className='column'></div>
+
+        <div className='blank'></div>
       </div>
     </div>
   );

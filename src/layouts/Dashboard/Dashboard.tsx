@@ -8,7 +8,7 @@ import EmployeeForm from '../../pages/employeeForm';
 
 import RequestForm from '../../pages/asset_management/requestForm';
 
-import AssetForm from '../../pages/asset_management/assetForm';
+// import AssetForm from '../../pages/asset_management/assetForm';
 import AssetList from '../../pages/asset_management/AssetList';
 
 function Dashboard() {
@@ -22,7 +22,7 @@ function Dashboard() {
             <div className='dashboard-content'>
               <Routes>
                 <Route path='/employees/*' element={<Employees />} />
-                <Route path='/assets/*' element={<AssetManagement />} />
+                {/* <Route path='/assets/*' element={<AssetManagement />} /> */}
                 <Route path='/' element={<Employees />} />
                 <Route path='/details/:id' element={<Employee />} />
                 <Route path='/create' element={<EmployeeForm />} />
@@ -30,7 +30,7 @@ function Dashboard() {
 
                 <Route path='/requests/create' element={<RequestForm />} />
 
-                <Route path='/assets/create' element={<AssetForm />} />
+                {/* <Route path='/assets/create' element={<AssetForm />} /> */}
                 <Route path='/assets' element={<AssetList />} />
               </Routes>
             </div>

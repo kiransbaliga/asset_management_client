@@ -7,8 +7,8 @@ export const requestTypeOptions: OptionType[] = [
 ];
 
 export const emptyRequest: RequestType = {
-  assetId: 0,
+  assetId: null,
   reason: '',
-  employeeId: 0,
+  employeeId: Number(localStorage.getItem('employeeId')),
   requestItem: []
 };
