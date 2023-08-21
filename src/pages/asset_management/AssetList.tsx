@@ -39,11 +39,11 @@ function AssetList() {
     : [];
 
   const handleCreate = () => {
-    navigate('/asset/create/');
+    navigate('/assets/create/');
   };
 
   const handleTableClick = (data) => {
-    navigate(`/asset/details/${data.id}`);
+    navigate(`/assets/details/${data.id}`);
   };
 
   useEffect(() => {

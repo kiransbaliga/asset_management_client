@@ -56,7 +56,7 @@ function AssetForm() {
           value: subcategory.id
         }))
       );
-  }, [subcategories]);
+  }, []);
 
   return (
     <div className='asset-form'>
