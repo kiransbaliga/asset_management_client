@@ -21,6 +21,12 @@
 
     padding: 3% 0 3% 0;
   }
+  .count-card .count-value{
+    color: var(--primary-color);
+    font-size: 40px;
+    font-weight: bold;
+    
+  }
  
   .upload>input{
     padding: 20px;
