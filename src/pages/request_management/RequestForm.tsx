@@ -137,9 +137,6 @@ function RequestForm() {
             requestItem: updatedRequestItem
           }));
         }}
-        onEdit={() => {
-          console.log('edit clicked' + id);
-        }}
       />
     );
   };
@@ -176,7 +173,7 @@ function RequestForm() {
               />
             </div>
 
-            <div className='column request-btn '>
+            <div className=' request-btn '>
               <div className='btn-group'>
                 <button className='btn btn-primary' onClick={handleSubmit}>
                   {'Create'}
@@ -190,7 +187,7 @@ function RequestForm() {
         </div>
         {requestType === 'new' && (
           <div className='card'>
-            <div className='flex-row'>
+            <div className='flex-row center'>
               <div className='column'>
                 <SelectField
                   id='categoryId'
@@ -201,16 +198,18 @@ function RequestForm() {
                   onChange={(value) => handleChange('category', value)}
                 />
               </div>
-              <div className='column'>
-                <SelectField
-                  id='subcategoryField'
-                  label='Subcategory'
-                  placeholder='Choose a subcategory'
-                  options={subcategoryOptions}
-                  value={newItem.subcategoryId === 0 ? '' : newItem.subcategoryId}
-                  onChange={(value) => handleChange('requestItem', value, 'subcategoryId')}
-                />
-              </div>
+              {category && (
+                <div className='column'>
+                  <SelectField
+                    id='subcategoryField'
+                    label='Subcategory'
+                    placeholder='Choose a subcategory'
+                    options={subcategoryOptions}
+                    value={newItem.subcategoryId === 0 ? '' : newItem.subcategoryId}
+                    onChange={(value) => handleChange('requestItem', value, 'subcategoryId')}
+                  />
+                </div>
+              )}
               <div className='column'>
                 <InputField
                   id='countField'
@@ -222,8 +221,7 @@ function RequestForm() {
                 />
               </div>
 
-              <div className='column'></div>
-              <div className='column add-item'>
+              <div className=''>
                 <div className='request-btn'>
                   <button
                     className='btn btn-primary'
@@ -232,7 +230,6 @@ function RequestForm() {
                     Add new item
                   </button>
                 </div>
-                <div className='column'></div>
               </div>
             </div>
           </div>
@@ -240,7 +237,7 @@ function RequestForm() {
         {requestType === 'new' &&
           requestData.requestItem.length > 0 &&
           JSON.stringify(requestData.requestItem) && (
-            <div className='grow-scroll card '>
+            <div className='grow-scroll  '>
               <h2>Currently requested items</h2>
               <Table
                 columns={requestItemColumns}

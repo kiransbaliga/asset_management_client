@@ -159,9 +159,6 @@ function RequestAdminForm() {
             requestItem: updatedRequestItem
           }));
         }}
-        onEdit={() => {
-          console.log('edit clicked' + id);
-        }}
       />
     );
   };
@@ -174,9 +171,9 @@ function RequestAdminForm() {
   return (
     <div className='request-form '>
       <TitleBar title={'Allocate Assets'}></TitleBar>
-      <div className='flex-column center'>
+      <div className='flex-column'>
         <div className='card'>
-          <div className='flex-row'>
+          <div className='flex-row center'>
             <div className='column'>
               <InputField
                 id='requestReason'
@@ -207,9 +204,7 @@ function RequestAdminForm() {
                 onChange={(value) => handleChange('requestType', value)}
               />
             </div>
-            <div className='column'></div>
-            <div className='column'></div>
-            <div className='column requestadmin-btn '>
+            <div className=' requestadmin-btn '>
               <div className='btn-group'>
                 <button className='btn btn-primary' onClick={handleSubmit}>
                   {'Allocate'}
@@ -223,40 +218,43 @@ function RequestAdminForm() {
         </div>
         {requestType === 'new' && (
           <div className='card'>
-            <div className='flex-row'>
-              <div className='column'>
-                <SelectField
-                  id='categoryId'
-                  label='Category'
-                  placeholder='Choose a category'
-                  options={categoryOptions}
-                  value={category === null ? '' : category}
-                  onChange={(value) => handleChange('category', value)}
-                />
-              </div>
-              <div className='column'>
-                <SelectField
-                  id='subcategoryField'
-                  label='Subcategory'
-                  placeholder='Choose a subcategory'
-                  options={subcategoryOptions}
-                  value={newItem.subcategoryId === 0 ? '' : newItem.subcategoryId}
-                  onChange={(value) => handleChange('requestItem', value, 'subcategoryId')}
-                />
-              </div>
-              <div className='column'>
-                <InputField
-                  id='countField'
-                  type='number'
-                  label='Count'
-                  placeholder='Enter the count'
-                  value={newItem.count === 0 ? '' : newItem.count}
-                  onChange={(value) => handleChange('requestItem', value, 'count')}
-                />
-              </div>
+            <div className='flex-row center'>
+              <div className='flex-row column'>
+                <div className='column'>
+                  <SelectField
+                    id='categoryId'
+                    label='Category'
+                    placeholder='Choose a category'
+                    options={categoryOptions}
+                    value={category === null ? '' : category}
+                    onChange={(value) => handleChange('category', value)}
+                  />
+                </div>
+                {category && (
+                  <div className='column'>
+                    <SelectField
+                      id='subcategoryField'
+                      label='Subcategory'
+                      placeholder='Choose a subcategory'
+                      options={subcategoryOptions}
+                      value={newItem.subcategoryId === 0 ? '' : newItem.subcategoryId}
+                      onChange={(value) => handleChange('requestItem', value, 'subcategoryId')}
+                    />
+                  </div>
+                )}
 
-              <div className='column'></div>
-              <div className='column add-item'>
+                <div className='column'>
+                  <InputField
+                    id='countField'
+                    type='number'
+                    label='Count'
+                    placeholder='Enter the count'
+                    value={newItem.count === 0 ? '' : newItem.count}
+                    onChange={(value) => handleChange('requestItem', value, 'count')}
+                  />
+                </div>
+              </div>
+              <div className=''>
                 <div className='request-btn'>
                   <button
                     className='btn btn-primary'
@@ -265,7 +263,6 @@ function RequestAdminForm() {
                     Add new item
                   </button>
                 </div>
-                <div className='column'></div>
               </div>
             </div>
           </div>
@@ -273,7 +270,7 @@ function RequestAdminForm() {
         {requestType === 'new' &&
           requestData.requestItem.length > 0 &&
           JSON.stringify(requestData.requestItem) && (
-            <div className='grow-scroll card '>
+            <div className=' '>
               <h2>Currently requested items</h2>
               <Table
                 columns={requestItemColumns}

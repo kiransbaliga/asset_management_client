@@ -85,7 +85,7 @@ function AssetForm() {
       <TitleBar title={id ? 'Edit Asset' : 'Create Asset'}>
         {id === undefined && (
           <IconButton
-            text='Create via Excel'
+            text='Upload via Excel'
             icon='/assets/icons/upload.png'
             onClick={handleEditClick}
           />
@@ -115,23 +115,27 @@ function AssetForm() {
           <div className='column'>
             <SelectFied
               id='categoryField'
-              label='category'
+              label='Category'
               placeholder='Choose a category'
               options={categoryOptions}
               value={currentCategory}
               onChange={setCurrentCategory}
             />
           </div>
-          <div className='column'>
-            <SelectFied
-              id='subCategoryField'
-              label='Sub-category'
-              placeholder='Choose a sub-category'
-              options={subcategoryOptions}
-              value={assetData.subcategoryId}
-              onChange={(value) => handleChange('subcategoryId', Number(value))}
-            />
-          </div>
+          {!currentCategory && <div className='column'> </div>}
+          {currentCategory && (
+            <div className='column'>
+              <SelectFied
+                id='subCategoryField'
+                label='Sub-category'
+                placeholder='Choose a sub-category'
+                options={subcategoryOptions}
+                value={assetData.subcategoryId}
+                onChange={(value) => handleChange('subcategoryId', Number(value))}
+              />
+            </div>
+          )}
+
           {id && (
             <div className='column'>
               <SelectFied
@@ -158,7 +162,7 @@ function AssetForm() {
             </div>
           )}
           <div className='column'></div>
-          <div className='column'>
+          <div className='column request-btn'>
             <div className='btn-group'>
               <button className='btn btn-primary' onClick={handleSubmit}>
                 {id ? 'Edit' : 'Create'}

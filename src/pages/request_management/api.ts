@@ -1,4 +1,5 @@
 import baseApi from '../../services';
+import AssetFilterType from '../../types/AssetFilterType';
 // import AssetFilterType from '../../types/AssetFilterType';
 import AssetType from '../../types/AssetType';
 import RequestType from '../../types/RequestType';
@@ -7,13 +8,16 @@ import {
   ResponseDataType,
   requestResponseType
 } from '../../types/ResponseType';
+import { createQueryUrl } from '../../utils/funcs';
 // import { createQueryUrl } from '../../utils/funcs';
 import { ASSET_API_TAGS } from '../asset_management/consts';
+import { REQUEST_API_TAGS } from './consts';
 
 export const assetApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getRequestsList: builder.query<ResponseDataListType, void>({
-      query: () => '/requests'
+    getRequestsList: builder.query<ResponseDataListType, AssetFilterType>({
+      query: (filter) => createQueryUrl('/requests', filter),
+      providesTags: [REQUEST_API_TAGS.GET_LIST]
     }),
     getCategoryList: builder.query<ResponseDataListType, void>({
       query: () => '/category/'
@@ -59,6 +63,20 @@ export const assetApi = baseApi.injectEndpoints({
     getRequestById: builder.query<requestResponseType, string>({
       query: (id) => `/requests/${id}`
     }),
+    deleteRequest: builder.mutation({
+      query: (id) => ({
+        url: `/requests/${id}`,
+        method: 'DELETE'
+      }),
+      invalidatesTags: [REQUEST_API_TAGS.GET_LIST]
+    }),
+    updateRequest: builder.mutation<requestResponseType, RequestType>({
+      query: (body) => ({
+        url: `/requests/${body.id}`,
+        method: 'PUT',
+        body
+      })
+    }),
     resolveRequest: builder.mutation<requestResponseType, number>({
       query: (id) => ({
         url: `/requests/${id}`,
@@ -79,5 +97,8 @@ export const {
   useCreateRequestMutation,
   useLazyGetOwnedAssetListQuery,
   useResolveRequestMutation,
-  useLazyGetRequestByIdQuery
+  useLazyGetRequestByIdQuery,
+  useDeleteRequestMutation,
+  useUpdateRequestMutation,
+  useLazyGetRequestsListQuery
 } = assetApi;
