@@ -6,6 +6,7 @@
   font-weight: bold;
   transition: all 0.3s;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .btn:disabled{
@@ -33,6 +34,9 @@
   border: 1px solid var(--primary-shade-color);
 }
 
+.btn-group{
+  display: flex;
+}
 .btn-group .btn:first-of-type {
   margin-right: 10px;
   margin-left: 0px;

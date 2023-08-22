@@ -1,10 +1,8 @@
 .request-form .flex-row {
-    flex-wrap: wrap;
     padding: 20px 0px;
   }
   
   .request-form .flex-row .column {
-    width: 33.3%;
   }
 
   .request-btn {
@@ -22,7 +20,13 @@
  width: 100%;
  margin-bottom: 10px;
   }
- 
+.column-card{
+  padding: 10%;
+}
+.align-center{
+  text-align: center;
+}
+
   @media only screen and (max-width: 768px) {
     .request-form .flex-row .column {
       width: 100%;
