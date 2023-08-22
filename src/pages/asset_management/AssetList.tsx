@@ -103,6 +103,8 @@ function AssetList() {
     if (isDeleted) setDeleteDialogState({ show: false, params: {} });
   }, [isDeleted]);
 
+  console.log(assets.filter((asset) => asset.status === 'Allocated'));
+
   return (
     <>
       <Dialog
@@ -137,6 +139,32 @@ function AssetList() {
           />
           <IconButton icon='/assets/icons/plus.png' text='Create asset' onClick={handleCreate} />
         </TitleBar>
+        <div className='card-group'>
+          <div className='card count-card'>
+            <div className='text-muted'>Total Assets</div>
+            <div className='count-value'>{assetDataset?.meta.tot}</div>
+          </div>
+          <div className='card count-card'>
+            <div className='text-muted'>Allocated Assets</div>
+            <div className='count-value'>
+              {assets.filter((asset) => asset.status === 'Allocated').length}
+            </div>
+          </div>
+          <div className='card count-card'>
+            <div className='text-muted'>Unallocated Assets</div>
+            <div className='count-value'>
+              {assets.filter((asset) => asset.status === 'Unallocated').length}
+            </div>
+          </div>
+          <div className='card count-card'>
+            <div className='text-muted'>Damaged Assets</div>
+            <div className='count-value '>
+              {' '}
+              {assets.filter((asset) => asset.status === 'Damaged').length}
+            </div>
+          </div>
+        </div>
+
         <div className='grow-scroll'>
           <Table columns={assetTableColumns} dataset={assets} onClick={handleTableClick} />
         </div>
