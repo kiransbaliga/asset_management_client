@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import Sidebar from '../../components/Sidebar/Sidebar';
-import './Dashboard.css';
+import './style.css';
 import AssetManagement from '../../pages/asset_management';
 import Employees from '../../pages/employees';
 import RequestList from '../../pages/request_management/RequestList';

@@ -1,0 +1,22 @@
+.dropdown{
+    position: relative;
+}
+
+.dropdown .dropdown-toggler{
+    cursor: pointer;
+}
+
+.dropdown .dropdown-content{
+    position: absolute;
+    min-width: 200px;
+    top: calc(100% + 10px);
+    z-index: 1;
+}
+
+.dropdown .dropdown-content.show{
+    display: block;
+}
+
+.dropdown .dropdown-content.hide{
+    display: none;
+}
