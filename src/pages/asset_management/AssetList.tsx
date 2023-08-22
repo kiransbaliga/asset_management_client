@@ -30,7 +30,7 @@ function AssetList() {
     useDeleteAssetMutation();
   const { data: categoriesDateset } = useGetCategoryListQuery();
 
-  const assets = assetDataset.data as AssetType[];
+  const assets = (assetDataset ? assetDataset.data : []) as AssetType[];
 
   const categories = categoriesDateset?.data as CategoryType[];
   const subcategories = subcategoriesDateset?.data as subcategoryType[];
