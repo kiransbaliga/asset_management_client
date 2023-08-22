@@ -1,41 +1,51 @@
-import TitleBar from '../../../components/TitleBar/TitleBar';
-import InputField from '../../../components/InputField/InputField';
+import TitleBar from '../../components/TitleBar/TitleBar';
+import InputField from '../../components/InputField/InputField';
 import { useEffect, useState } from 'react';
-import SelectField from '../../../components/SelectField/SelectField';
-import { emptyRequest, requestTypeOptions } from './consts';
+import SelectField from '../../components/SelectField/SelectField';
+import { emptyAdminRequest, emptyRequest, requestTypeOptions } from './consts';
 import './styles.css';
-import RequestType from '../../../types/RequestType';
-import Table from '../../../components/Table/Table';
-import { requestListColumns } from '../../../columns/requestList.columns';
-import RequestItemType from '../../../types/RequestItemType';
+import RequestType from '../../types/RequestType';
+import Table from '../../components/Table/Table';
+import { requestedItemColumns } from '../../columns/requestList.columns';
+import RequestItemType from '../../types/RequestItemType';
 import {
   useCreateRequestMutation,
   useGetCategoryListQuery,
   useLazyGetOwnedAssetListQuery,
-  useLazyGetSubcategoryListQuery
+  useLazyGetSubcategoryListQuery,
+  useResolveRequestMutation
 } from './api';
-import CategoryType from '../../../types/CategoryType';
-import subcategoryType from '../../../types/SubcategoryType';
-import AssetType from '../../../types/AssetType';
+import CategoryType from '../../types/CategoryType';
+import subcategoryType from '../../types/SubcategoryType';
+import AssetType from '../../types/AssetType';
 import { useNavigate } from 'react-router';
+import { useGetEmployeeListQuery } from '../employees/api';
+import EmployeeType from '../../types/EmployeeType';
+import Actions from '../../components/Actions/inedx';
 
-function RequestForm() {
-  const [requestData, setRequestData] = useState<RequestType>(emptyRequest);
+function RequestAdminForm() {
+  const [requestData, setRequestData] = useState<RequestType>(emptyAdminRequest);
+  const [listId, setListId] = useState(2);
   const [newItem, setNewItem] = useState<RequestItemType>({
     count: 0,
     subcategoryId: 0,
-    subcategoryName: ''
+    subcategoryName: '',
+    id: 1
   });
   const [requestType, setRequestType] = useState('new');
   const [category, setCategory] = useState(null);
   const [getSubCategories, { data: subcategoriesDateset }] = useLazyGetSubcategoryListQuery();
   const [getOwnedAssets, { data: OwnedAssetsDateset }] = useLazyGetOwnedAssetListQuery();
-  const [createRequest, { isSuccess }] = useCreateRequestMutation();
+  const [createRequest, { data, isSuccess }] = useCreateRequestMutation();
+  const [resolveRequest, { isSuccess: resolveSucccess }] = useResolveRequestMutation();
   const { data: categoriesDateset } = useGetCategoryListQuery();
+  const { data: employeeDataset } = useGetEmployeeListQuery();
   const categories = categoriesDateset?.data as CategoryType[];
   const subcategories = subcategoriesDateset?.data as subcategoryType[];
+  const employees = employeeDataset?.data as EmployeeType[];
   const ownedAssets = OwnedAssetsDateset?.data as AssetType[];
   const navigate = useNavigate();
+
   const categoryOptions = categories
     ? categories.map((category) => ({ value: category.id, text: category.name }))
     : [];
@@ -47,6 +57,10 @@ function RequestForm() {
           value: subcategory.id,
           text: subcategory.name
         }))
+    : [];
+
+  const employeeOptions = employees
+    ? employees.map((employee) => ({ value: employee.id, text: employee.name }))
     : [];
 
   const ownedAssetOptions = ownedAssets
@@ -86,6 +100,9 @@ function RequestForm() {
 
         return { ...prevData, requestItem: [] };
       });
+    } else if (field === 'employeeId') {
+      getOwnedAssets(Number(value));
+      setRequestData((prevData) => ({ ...prevData, [field]: value }));
     } else if (field === 'category') {
       setCategory(value);
       getSubCategories();
@@ -96,7 +113,8 @@ function RequestForm() {
         const updatedRequestItem = [...prevData.requestItem];
 
         if (newItem.count !== 0 && newItem.subcategoryId !== 0) updatedRequestItem.push(newItem);
-        setNewItem({ count: 0, subcategoryId: 0, subcategoryName: '' });
+        setListId(listId + 1);
+        setNewItem({ count: 0, subcategoryId: 0, subcategoryName: '', id: listId });
 
         return { ...prevData, requestItem: updatedRequestItem };
       });
@@ -108,14 +126,19 @@ function RequestForm() {
   };
 
   const handleSubmit = () => {
-    handleChange('addRequestItem');
-
     createRequest(requestData);
   };
 
   useEffect(() => {
-    if (isSuccess) navigate('/requests/');
+    if (isSuccess) {
+      console.log(data.data.id);
+      resolveRequest(data.data.id);
+    }
   }, [isSuccess]);
+  useEffect(() => {
+    if (resolveSucccess) navigate('/requests');
+  }, [resolveSucccess]);
+
   const handleReset = () => {
     console.log('submitted');
     setRequestData(emptyRequest);
@@ -125,9 +148,32 @@ function RequestForm() {
     console.log('Row clicked:', rowData);
   };
 
+  const action = (id: number) => {
+    return (
+      <Actions
+        onDelete={() => {
+          const updatedRequestItem = requestData.requestItem.filter((item) => item.id !== id);
+
+          setRequestData((prevData) => ({
+            ...prevData,
+            requestItem: updatedRequestItem
+          }));
+        }}
+        onEdit={() => {
+          console.log('edit clicked' + id);
+        }}
+      />
+    );
+  };
+
+  const requestItemColumns = [
+    ...requestedItemColumns,
+    { key: 'id', label: 'Action', adapter: action }
+  ];
+
   return (
     <div className='request-form '>
-      <TitleBar title={'Create Request'}></TitleBar>
+      <TitleBar title={'Allocate Assets'}></TitleBar>
       <div className='flex-column center'>
         <div className='card'>
           <div className='flex-row'>
@@ -143,6 +189,16 @@ function RequestForm() {
             </div>
             <div className='column'>
               <SelectField
+                id='employeeId'
+                label='Employee Name'
+                placeholder='Employee name'
+                options={employeeOptions}
+                value={requestData.employeeId}
+                onChange={(value) => handleChange('employeeId', value)}
+              />
+            </div>
+            <div className='column'>
+              <SelectField
                 id='requestType'
                 label='Request Type'
                 placeholder='Request Type'
@@ -151,11 +207,12 @@ function RequestForm() {
                 onChange={(value) => handleChange('requestType', value)}
               />
             </div>
-
-            <div className='column request-btn '>
+            <div className='column'></div>
+            <div className='column'></div>
+            <div className='column requestadmin-btn '>
               <div className='btn-group'>
                 <button className='btn btn-primary' onClick={handleSubmit}>
-                  {'Create'}
+                  {'Allocate'}
                 </button>
                 <button className='btn btn-secondary' onClick={handleReset}>
                   Reset{' '}
@@ -219,7 +276,7 @@ function RequestForm() {
             <div className='grow-scroll card '>
               <h2>Currently requested items</h2>
               <Table
-                columns={requestListColumns}
+                columns={requestItemColumns}
                 dataset={requestData.requestItem}
                 onClick={handleRowClick}
               />
@@ -252,4 +309,4 @@ function RequestForm() {
   );
 }
 
-export default RequestForm;
+export default RequestAdminForm;

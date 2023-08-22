@@ -41,6 +41,16 @@ export const assetApi = baseApi.injectEndpoints({
     }),
     getAssetById: builder.query({
       query: (id) => `/assets/${id}`
+    }),
+    uploadFile: builder.mutation<ResponseDataType, FormData>({
+      query: (formData) => ({
+        url: '/assets/upload/', // Replace with your upload URL
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
     })
   })
 });
@@ -52,5 +62,6 @@ export const {
   useUpdateAssetMutation,
   useGetCategoryListQuery,
   useLazyGetSubcategoryListQuery,
-  useLazyGetAssetByIdQuery
+  useLazyGetAssetByIdQuery,
+  useUploadFileMutation
 } = assetApi;

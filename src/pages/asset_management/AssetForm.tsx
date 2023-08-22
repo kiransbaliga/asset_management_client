@@ -35,15 +35,15 @@ function AssetForm() {
     : [];
   const subcategoryOptions = subcategories
     ? subcategories
-      .filter((subcategory) => subcategory.categoryId == currentCategory)
-      .map((subcategory) => ({
-        value: subcategory.id,
-        text: subcategory.name
-      }))
+        .filter((subcategory) => subcategory.categoryId == currentCategory)
+        .map((subcategory) => ({
+          value: subcategory.id,
+          text: subcategory.name
+        }))
     : [];
 
   const handleEditClick = () => {
-    navigate('/employees/assets/create/upload');
+    navigate('/assets/create/upload');
   };
 
   const handleChange = (field: string, value: any) => {

@@ -1,5 +1,5 @@
-import { OptionType } from '../../../types/OptionType';
-import RequestType from '../../../types/RequestType';
+import { OptionType } from '../../types/OptionType';
+import RequestType from '../../types/RequestType';
 
 export const requestTypeOptions: OptionType[] = [
   { text: 'New', value: 'new' },
@@ -10,5 +10,11 @@ export const emptyRequest: RequestType = {
   assetId: null,
   reason: '',
   employeeId: Number(localStorage.getItem('employeeId')),
+  requestItem: []
+};
+export const emptyAdminRequest: RequestType = {
+  assetId: null,
+  reason: '',
+  employeeId: null,
   requestItem: []
 };

@@ -7,6 +7,27 @@
     width: 33.3%;
   }
   
+  .upload{
+    display: flex;
+    flex:1;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+
+    position: absolute;
+    top:42%;
+    left: 47.5%;
+    width: 20%;
+
+    padding: 3% 0 3% 0;
+  }
+ 
+  .upload>input{
+    padding: 20px;
+   padding-bottom: 8%;
+   margin-left: 15%;
+   align-self: center;
+  }
   @media only screen and (max-width: 768px) {
     .asset-form .flex-row .column {
       width: 100%;
