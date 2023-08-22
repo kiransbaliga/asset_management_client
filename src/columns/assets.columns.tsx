@@ -8,6 +8,6 @@ export const status = (value: string) => (
 export const assetColumns = [
   { key: 'serial_no', label: 'Serial No' },
   { key: 'name', label: 'Asset Name' },
-  { key: 'subcategory', label: 'Subcategory' },
+  { key: 'subcategory', label: 'Subcategory', adapter: (subcategory) => subcategory.name },
   { key: 'status', label: 'Status', adapter: status }
 ];

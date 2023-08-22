@@ -119,6 +119,16 @@ a {
   border-radius: 50px;
 }
 
+.chip-sm{
+  font-size: small;
+  padding: 5px;
+} 
+
+.chip-primary{
+  background: var(--primary-color);
+  color: var(--light-color);
+}
+
 .icon-sm {
   width: 20px;
 }

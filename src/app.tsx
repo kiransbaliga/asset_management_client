@@ -3,7 +3,7 @@ import './styles/global.css';
 import Login from './pages/login/Login';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/home/Home';
-import Dashboard from './layouts/Dashboard/Dashboard';
+import Dashboard from './layouts/Dashboard';
 import AuthRequired from './wrappers/AuthRequired';
 import DoNotAuth from './wrappers/DoNotAuth';
 
