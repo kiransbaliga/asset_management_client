@@ -8,7 +8,7 @@ export interface ResponseDataType {
   meta: {
     length: number;
     took: number;
-    total: number;
+    tot: number;
   };
 }
 
@@ -20,7 +20,7 @@ export interface ResponseDataListType {
   meta: {
     length: number;
     took: number;
-    total: number;
+    tot: number;
   };
 }
 
@@ -32,6 +32,6 @@ export interface requestResponseType {
   meta: {
     length: number;
     took: number;
-    total: number;
+    tot: number;
   };
 }
