@@ -17,6 +17,7 @@ import AssetFilterType from '../../types/AssetFilterType';
 import { empltyAssetFilter, statusOptions } from './consts';
 import Dialog, { DialogStateType } from '../../components/Dialog/Dialog';
 import Actions from '../../components/Actions/inedx';
+import AssetType from '../../types/AssetType';
 
 function AssetList() {
   const [filterData, setFilterData] = useState<AssetFilterType>(empltyAssetFilter);
@@ -28,6 +29,8 @@ function AssetList() {
   const [deleteAsset, { isSuccess: isDeleted, isLoading: isDeleteLoading }] =
     useDeleteAssetMutation();
   const { data: categoriesDateset } = useGetCategoryListQuery();
+
+  const assets = assetDataset.data as AssetType[];
 
   const categories = categoriesDateset?.data as CategoryType[];
   const subcategories = subcategoriesDateset?.data as subcategoryType[];
