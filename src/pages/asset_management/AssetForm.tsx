@@ -144,17 +144,19 @@ function AssetForm() {
               />
             </div>
           )}
-          <div className='column'>
-            {assetData.status === 'allocated' && (
-              <InputField
-                id='EmployeeIdField'
-                label='Allocated Employee ID'
-                placeholder='Allocated Employee ID'
-                value={assetData.employeeId === 0 ? '' : assetData.employeeId}
-                onChange={(value) => handleChange('employeeId', Number(value))}
-              />
-            )}
-          </div>
+          {id && (
+            <div className='column'>
+              {assetData.status === 'Allocated' && (
+                <InputField
+                  id='EmployeeIdField'
+                  label='Allocated Employee ID'
+                  placeholder='Allocated Employee ID'
+                  value={assetData.employeeId === 0 ? '' : assetData.employeeId}
+                  onChange={(value) => handleChange('employeeId', Number(value))}
+                />
+              )}
+            </div>
+          )}
           <div className='column'></div>
           <div className='column'>
             <div className='btn-group'>
