@@ -41,7 +41,18 @@ function AssetDetails() {
   }, [data, isSuccess]);
 
   useEffect(() => {
-    if (HistoryResponseData && isHistorySuccess) setHistoryData(HistoryResponseData.data as HistoryType[]);
+    if (HistoryResponseData && isHistorySuccess) {
+      let histories = HistoryResponseData.data;
+
+      histories = histories.map((history) => {
+        const newHistory = { ...history };
+
+        if (newHistory.createdAt === newHistory.updatedAt) newHistory.updatedAt = '-T';
+
+        return newHistory;
+      });
+      setHistoryData(histories as HistoryType[]);
+    }
   }, [HistoryResponseData, isHistorySuccess]);
 
   return (
