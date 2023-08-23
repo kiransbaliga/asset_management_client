@@ -19,6 +19,10 @@ export const assetApi = baseApi.injectEndpoints({
       query: (filter) => createQueryUrl('/requests', filter),
       providesTags: [REQUEST_API_TAGS.GET_LIST]
     }),
+    getRequestsOfEmployee: builder.query<ResponseDataListType, number>({
+      query: (id) => `/requests/employee/${id}`,
+      providesTags: [REQUEST_API_TAGS.GET_LIST]
+    }),
     getCategoryList: builder.query<ResponseDataListType, void>({
       query: () => '/category/'
     }),
@@ -100,5 +104,6 @@ export const {
   useLazyGetRequestByIdQuery,
   useDeleteRequestMutation,
   useUpdateRequestMutation,
-  useLazyGetRequestsListQuery
+  useLazyGetRequestsListQuery,
+  useLazyGetRequestsOfEmployeeQuery
 } = assetApi;

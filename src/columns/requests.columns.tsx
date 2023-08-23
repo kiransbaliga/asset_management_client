@@ -4,8 +4,6 @@ import { requestStatusToClassName } from './consts';
 export const status = (value: string) => (
   <Status value={value} className={requestStatusToClassName[value]} />
 );
-export const status1 = (value) => value.id;
-
 export const requestColumns = [
   { key: 'employee', label: 'Employee', adapter: (value: any) => value.name },
   { key: 'reason', label: 'Reason' },

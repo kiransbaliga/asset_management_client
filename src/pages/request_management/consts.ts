@@ -19,7 +19,8 @@ export const emptyAdminRequest: RequestType = {
   requestItem: []
 };
 export const REQUEST_API_TAGS = {
-  GET_LIST: 'get list'
+  GET_LIST: 'get list',
+  GET_LIST_EMPLOYEE: 'get list associated with employee'
 };
 
 export const requestStatusOptions: OptionType[] = [

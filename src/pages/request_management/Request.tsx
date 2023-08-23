@@ -16,8 +16,11 @@ import {
 import Table from '../../components/Table/Table';
 import { requestedListColumns } from '../../columns/requestList.columns';
 import subcategoryType from '../../types/SubcategoryType';
+// import { useSelector } from 'react-redux';
 
 function Request() {
+  // const user = useSelector((state: any) => state.auth.user);
+
   const { id } = useParams();
   const [requestData, setRequestData] = useState<RequestType>();
   const [updatedData, setUpdatedData] = useState<RequestType>();
