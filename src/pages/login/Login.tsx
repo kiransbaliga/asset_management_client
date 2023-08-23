@@ -3,7 +3,7 @@ import './Login.css';
 import LoginInputField from '../../components/LoginInputField/LoginInputField';
 import { useNavigate } from 'react-router-dom';
 import useValidator from '../../hooks/validator.hook';
-import { useLoginMutation } from './api';
+import { useLoginMutation } from '../../services/auth/api';
 import { includeBackendValidators, requiredValidator } from '../../utils/validators.utils';
 import Button from '../../components/button';
 import Dialog from '../../components/Dialog/Dialog';

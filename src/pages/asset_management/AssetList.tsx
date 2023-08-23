@@ -13,11 +13,11 @@ import {
 import { useEffect, useState } from 'react';
 import CategoryType from '../../types/CategoryType';
 import subcategoryType from '../../types/SubcategoryType';
-import AssetType from '../../types/AssetType';
 import AssetFilterType from '../../types/AssetFilterType';
 import { empltyAssetFilter, statusOptions } from './consts';
 import Dialog, { DialogStateType } from '../../components/Dialog/Dialog';
 import Actions from '../../components/Actions/inedx';
+import AssetType from '../../types/AssetType';
 
 function AssetList() {
   const [filterData, setFilterData] = useState<AssetFilterType>(empltyAssetFilter);
@@ -29,6 +29,8 @@ function AssetList() {
   const [deleteAsset, { isSuccess: isDeleted, isLoading: isDeleteLoading }] =
     useDeleteAssetMutation();
   const { data: categoriesDateset } = useGetCategoryListQuery();
+
+  const assets = (assetDataset ? assetDataset.data : []) as AssetType[];
 
   const categories = categoriesDateset?.data as CategoryType[];
   const subcategories = subcategoriesDateset?.data as subcategoryType[];
@@ -44,19 +46,6 @@ function AssetList() {
 
   const categoriesOptions = categories
     ? categories.map((category) => ({ value: category.id, text: category.name }))
-    : [];
-
-  const assets = assetDataset
-    ? assetDataset.data.map((asset: AssetType) => {
-        const newAsset = {
-          ...asset,
-          subcategory: subcategories
-            ? subcategories.find((subcategory) => subcategory.id === asset.subcategoryId).name
-            : ''
-        };
-
-        return newAsset;
-      })
     : [];
 
   const action = (id: string) => {
@@ -166,7 +155,11 @@ function AssetList() {
         </div>
 
         <div className='grow-scroll'>
-          <Table columns={assetTableColumns} dataset={assets} onClick={handleTableClick} />
+          <Table
+            columns={assetTableColumns}
+            dataset={assetDataset?.data}
+            onClick={handleTableClick}
+          />
         </div>
       </div>
     </>
