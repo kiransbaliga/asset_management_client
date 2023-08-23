@@ -5,7 +5,7 @@ import ColumnType from '../../types/ColumnType';
 interface TableProps {
   columns: ColumnType[];
   dataset: object[];
-  onClick: (data: any) => void;
+  onClick?: (data: any) => void;
   emptyMessage?: string;
 }
 

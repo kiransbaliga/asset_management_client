@@ -38,7 +38,7 @@ export const assetApi = baseApi.injectEndpoints({
         method: 'PATCH',
         body
       }),
-      invalidatesTags:[ASSET_API_TAGS.ON_ASSET_DELETE]
+      invalidatesTags: [ASSET_API_TAGS.ON_ASSET_DELETE]
     }),
     getAssetById: builder.query({
       query: (id) => `/assets/${id}`

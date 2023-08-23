@@ -9,7 +9,13 @@ import {
   useUpdateRequestMutation
 } from './api';
 import RequestType from '../../types/RequestType';
-import { requestDetailColumns } from '../../columns/requests.columns';
+import {
+  requestExchangeDetailColumns,
+  requestNewDetailColumns
+} from '../../columns/requests.columns';
+import Table from '../../components/Table/Table';
+import { requestedListColumns } from '../../columns/requestList.columns';
+import subcategoryType from '../../types/SubcategoryType';
 
 function Request() {
   const { id } = useParams();
@@ -52,7 +58,17 @@ function Request() {
     if (rejectSuccess) navigate('/requests');
   }, [rejectSuccess]);
 
-  const detailsColumns = [requestDetailColumns.slice(0, 5), requestDetailColumns.slice(5)];
+  const detailsExchangeColumns = [
+    requestExchangeDetailColumns.slice(0, 4),
+    requestExchangeDetailColumns.slice(4, 8)
+  ];
+
+  const detailsNewColumns = [requestNewDetailColumns];
+
+  const requestListColumns = [
+    { key: 'subcategory', label: 'Subcategory', adapter: (value: subcategoryType) => value.name },
+    ...requestedListColumns
+  ];
 
   return (
     <div>
@@ -68,7 +84,25 @@ function Request() {
           </div>
         )}
       </TitleBar>
-      <DetailsViewer rows={detailsColumns} data={requestData} />
+      {requestData && (
+        <>
+          <DetailsViewer
+            rows={requestData && requestData.assetId ? detailsExchangeColumns : detailsNewColumns}
+            data={requestData}
+          />
+          {requestData.requestItem.length !== 0 && (
+            <div>
+              <div className='table-heading'> Requested items</div>
+              <Table
+                columns={requestListColumns}
+                dataset={requestData.requestItem}
+                onClick={() => {}}
+                emptyMessage='No data'
+              />
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }
