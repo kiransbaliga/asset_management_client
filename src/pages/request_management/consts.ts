@@ -1,4 +1,5 @@
 import { OptionType } from '../../types/OptionType';
+import RequestFilterType from '../../types/RequestFilterType';
 import RequestType from '../../types/RequestType';
 
 export const requestTypeOptions: OptionType[] = [
@@ -27,3 +28,7 @@ export const requestStatusOptions: OptionType[] = [
   { text: 'Resolved', value: 'Resolved' },
   { text: 'Rejected', value: 'Rejected' }
 ];
+
+export const empltyRequestFilter: RequestFilterType = {
+  status: ''
+};

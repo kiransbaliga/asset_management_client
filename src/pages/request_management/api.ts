@@ -1,7 +1,6 @@
 import baseApi from '../../services';
-import AssetFilterType from '../../types/AssetFilterType';
-// import AssetFilterType from '../../types/AssetFilterType';
 import AssetType from '../../types/AssetType';
+import RequestFilterType from '../../types/RequestFilterType';
 import RequestType from '../../types/RequestType';
 import {
   ResponseDataListType,
@@ -9,13 +8,12 @@ import {
   requestResponseType
 } from '../../types/ResponseType';
 import { createQueryUrl } from '../../utils/funcs';
-// import { createQueryUrl } from '../../utils/funcs';
 import { ASSET_API_TAGS } from '../asset_management/consts';
 import { REQUEST_API_TAGS } from './consts';
 
 export const assetApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getRequestsList: builder.query<ResponseDataListType, AssetFilterType>({
+    getRequestsList: builder.query<ResponseDataListType, RequestFilterType>({
       query: (filter) => createQueryUrl('/requests', filter),
       providesTags: [REQUEST_API_TAGS.GET_LIST]
     }),
