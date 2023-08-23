@@ -58,9 +58,6 @@ function RequestList() {
         onDelete={() => {
           setDeleteDialogState({ show: true, params: { id } });
         }}
-        onEdit={() => {
-          navigate(`/assets/edit/${id}`);
-        }}
       />
     );
   };
@@ -106,7 +103,12 @@ function RequestList() {
           <IconButton icon='/assets/icons/plus.png' text='Create Request' onClick={handleCreate} />
         </TitleBar>
         <div className='grow-scroll'>
-          <Table columns={requestsColumn} dataset={requests} onClick={handleTableClick} />
+          <Table
+            columns={requestsColumn}
+            dataset={requests}
+            onClick={handleTableClick}
+            emptyMessage='No items requested'
+          />
         </div>
       </div>
     </>

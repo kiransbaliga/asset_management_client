@@ -10,7 +10,6 @@ const links: LinkType[] = [
   { label: 'Employee', icon: '/assets/icons/employees.svg', path: '/employees' },
   { label: 'Asset', icon: '/assets/icons/employees.svg', path: '/assets' },
   { label: 'Request', icon: '/assets/icons/employees.svg', path: '/requests' }
-
 ];
 
 function Sidebar() {
