@@ -68,10 +68,12 @@ export const assetApi = baseApi.injectEndpoints({
         method: 'POST',
         body
       })
+    }),
+    getHistoryByAssetId: builder.query({
+      query: (id) => `/history/assets/${id}`
     })
   })
 });
-
 export const {
   useCreateAssetMutation,
   useLazyGetAssetListQuery,
@@ -82,5 +84,6 @@ export const {
   useLazyGetAssetByIdQuery,
   useUploadFileMutation,
   useCreateCategoryMutation,
-  useCreateSubcategoryMutation
+  useCreateSubcategoryMutation,
+  useLazyGetHistoryByAssetIdQuery
 } = assetApi;
