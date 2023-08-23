@@ -38,7 +38,7 @@ export const assetApi = baseApi.injectEndpoints({
         method: 'PATCH',
         body
       }),
-      invalidatesTags:[ASSET_API_TAGS.ON_ASSET_DELETE]
+      invalidatesTags: [ASSET_API_TAGS.ON_ASSET_DELETE]
     }),
     getAssetById: builder.query({
       query: (id) => `/assets/${id}`
@@ -52,6 +52,9 @@ export const assetApi = baseApi.injectEndpoints({
           'Content-Type': 'multipart/form-data'
         }
       })
+    }),
+    getHistoryByAssetId: builder.query({
+      query: (id) => `/history/assets/${id}`
     })
   })
 });
@@ -64,5 +67,6 @@ export const {
   useGetCategoryListQuery,
   useLazyGetSubcategoryListQuery,
   useLazyGetAssetByIdQuery,
-  useUploadFileMutation
+  useUploadFileMutation,
+  useLazyGetHistoryByAssetIdQuery
 } = assetApi;
