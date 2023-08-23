@@ -1,7 +1,9 @@
-interface subcategoryType {
+interface SubcategoryType {
   id?: number;
   name: string;
   categoryId: number;
+  count?: number;
+  perishable?: boolean;
 }
 
-export default subcategoryType;
+export default SubcategoryType;

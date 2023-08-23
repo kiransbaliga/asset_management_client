@@ -13,26 +13,6 @@ const UploadExcel = () => {
 
   const handleUpload = async (e) => {
     e.preventDefault();
-    // if (selectedFile) {
-    //   const reader = new FileReader();
-
-    //   reader.onload = (e) => {
-    //     const data = e.target.result;
-    //     const workbook = read(data, { type: 'array' });
-    //     const sheetName = workbook.SheetNames[0];
-    //     const worksheet = workbook.Sheets[sheetName];
-    //     const json = utils.sheet_to_json(worksheet);
-    //     console.log(json);
-    //     const filteredData = json.map(({ name, serial_no, subcategoryId }) => ({
-    //       name,
-    //       serial_no,
-    //       subcategoryId
-    //     }));
-
-    //     console.log(filteredData);
-    //   };
-    //   reader.readAsArrayBuffer(selectedFile);
-    // }
     if (!selectedFile) return;
 
     const formData = new FormData();
