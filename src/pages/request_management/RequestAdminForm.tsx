@@ -22,9 +22,15 @@ import { useNavigate } from 'react-router';
 import { useGetEmployeeListQuery } from '../employees/api';
 import EmployeeType from '../../types/EmployeeType';
 import Actions from '../../components/Actions/inedx';
+import { useSelector } from 'react-redux';
 
 function RequestAdminForm() {
   const [requestData, setRequestData] = useState<RequestType>(emptyAdminRequest);
+  const user = useSelector((state: any) => state.auth.user);
+
+  useEffect(() => {
+    setRequestData((prevData) => ({ ...prevData, ['employeeId']: user.id }));
+  }, [user]);
   const [listId, setListId] = useState(2);
   const [newItem, setNewItem] = useState<RequestItemType>({
     count: 0,

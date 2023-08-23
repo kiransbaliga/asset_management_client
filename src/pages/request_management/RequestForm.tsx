@@ -19,9 +19,16 @@ import subcategoryType from '../../types/SubcategoryType';
 import AssetType from '../../types/AssetType';
 import { useNavigate } from 'react-router';
 import Actions from '../../components/Actions/inedx';
+import { useSelector } from 'react-redux';
 
 function RequestForm() {
   const [requestData, setRequestData] = useState<RequestType>(emptyRequest);
+
+  const user = useSelector((state: any) => state.auth.user);
+
+  useEffect(() => {
+    setRequestData((prevData) => ({ ...prevData, ['employeeId']: user.id }));
+  }, [user]);
   const [listId, setListId] = useState(2);
   const [newItem, setNewItem] = useState<RequestItemType>({
     count: 0,

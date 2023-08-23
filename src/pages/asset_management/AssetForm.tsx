@@ -23,12 +23,13 @@ function AssetForm() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [getSubCategories, { data: subcategoriesDateset }] = useLazyGetSubcategoryListQuery();
-  const { data: categoriesDateset } = useGetCategoryListQuery();
+  const subcategories = subcategoriesDateset?.data as subcategoryType[];
+
   const [createAsset, { isSuccess: isCreateSuccess }] = useCreateAssetMutation();
   const [updateAsset, { isSuccess: isUpdateSuccess }] = useUpdateAssetMutation();
   const [getAssetById, { data: getAssetData }] = useLazyGetAssetByIdQuery();
+  const { data: categoriesDateset } = useGetCategoryListQuery();
   const categories = categoriesDateset?.data as CategoryType[];
-  const subcategories = subcategoriesDateset?.data as subcategoryType[];
 
   const categoryOptions = categories
     ? categories.map((category) => ({ value: category.id, text: category.name }))

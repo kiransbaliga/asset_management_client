@@ -9,7 +9,7 @@ export const requestTypeOptions: OptionType[] = [
 export const emptyRequest: RequestType = {
   assetId: null,
   reason: '',
-  employeeId: Number(localStorage.getItem('employeeId')),
+  employeeId: null,
   requestItem: []
 };
 export const emptyAdminRequest: RequestType = {

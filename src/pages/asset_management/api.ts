@@ -1,7 +1,9 @@
 import baseApi from '../../services';
 import AssetFilterType from '../../types/AssetFilterType';
 import AssetType from '../../types/AssetType';
+import CategoryType from '../../types/CategoryType';
 import { ResponseDataListType, ResponseDataType } from '../../types/ResponseType';
+import SubcategoryType from '../../types/SubcategoryType';
 import { createQueryUrl } from '../../utils/funcs';
 import { ASSET_API_TAGS } from './consts';
 
@@ -53,12 +55,25 @@ export const assetApi = baseApi.injectEndpoints({
         }
       })
     }),
+    createCategory: builder.mutation<ResponseDataType, CategoryType>({
+      query: (body) => ({
+        url: '/category/',
+        method: 'POST',
+        body
+      })
+    }),
+    createSubcategory: builder.mutation<ResponseDataType, SubcategoryType>({
+      query: (body) => ({
+        url: '/subcategory/',
+        method: 'POST',
+        body
+      })
+    }),
     getHistoryByAssetId: builder.query({
       query: (id) => `/history/assets/${id}`
     })
   })
 });
-
 export const {
   useCreateAssetMutation,
   useLazyGetAssetListQuery,
@@ -68,5 +83,7 @@ export const {
   useLazyGetSubcategoryListQuery,
   useLazyGetAssetByIdQuery,
   useUploadFileMutation,
+  useCreateCategoryMutation,
+  useCreateSubcategoryMutation,
   useLazyGetHistoryByAssetIdQuery
 } = assetApi;
