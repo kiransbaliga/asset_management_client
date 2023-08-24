@@ -17,6 +17,10 @@ export const assetApi = baseApi.injectEndpoints({
       query: (id) => `/assets/employee/${id}`,
       providesTags: [ASSET_API_TAGS.ON_ASSET_DELETE]
     }),
+    getPerishableAssetsOfEmployee: builder.query<ResponseDataListType, number>({
+      query: (id) => `/subcategory/employee/${id}`,
+      providesTags: [ASSET_API_TAGS.ON_ASSET_DELETE]
+    }),
     getCategoryList: builder.query<ResponseDataListType, void>({
       query: () => '/category/'
     }),
@@ -88,5 +92,6 @@ export const {
   useCreateCategoryMutation,
   useCreateSubcategoryMutation,
   useLazyGetHistoryByAssetIdQuery,
-  useLazyGetAssetsOfEmployeeQuery
+  useLazyGetAssetsOfEmployeeQuery,
+  useLazyGetPerishableAssetsOfEmployeeQuery
 } = assetApi;

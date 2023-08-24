@@ -43,7 +43,7 @@ const SubcategoryForm = () => {
     <PermissionGuard>
       <div className='subcategory-form'>
         <TitleBar title={'Create Subcategory'}></TitleBar>
-        <div className='card flex-row center'>
+        <div className='card flex-row '>
           <div className='column'>
             <InputField
               id='subcategoryNameField'

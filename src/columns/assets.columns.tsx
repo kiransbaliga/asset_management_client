@@ -19,3 +19,7 @@ export const perishableAssetsColumns = [
   { key: 'name', label: 'Subcategory' },
   { key: 'count', label: 'Count' }
 ];
+export const perishableAssetsofEmployeeColumns = [
+  { key: 'subcategory', label: 'Subcategory', adapter: (value) => (value ? value.name : null) },
+  { key: 'count', label: 'Count' }
+];
