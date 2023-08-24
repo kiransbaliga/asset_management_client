@@ -1,42 +1,53 @@
 .asset-form .flex-row {
-    flex-wrap: wrap;
-    padding: 20px 0px;
-  }
-  
+  flex-wrap: wrap;
+  padding: 20px 0px;
+}
+
+.asset-form .flex-row .column {
+  width: 33.3%;
+}
+
+.upload {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  top: 42%;
+  left: 47.5%;
+  width: 20%;
+
+  padding: 3% 0 3% 0;
+}
+.count-card .count-value {
+  color: var(--primary-color);
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.upload > input {
+  padding: 20px;
+  padding-bottom: 8%;
+  margin-left: 15%;
+  align-self: center;
+}
+@media only screen and (max-width: 768px) {
   .asset-form .flex-row .column {
-    width: 33.3%;
+    width: 100%;
   }
-  
-  .upload{
-    display: flex;
-    flex:1;
-    flex-direction: column;
-    justify-content: center; 
-    align-items: center; 
+}
 
-    position: absolute;
-    top:42%;
-    left: 47.5%;
-    width: 20%;
+.hidenow {
+  display: none;
+}
 
-    padding: 3% 0 3% 0;
-  }
-  .count-card .count-value{
-    color: var(--primary-color);
-    font-size: 40px;
-    font-weight: bold;
-    
-  }
- 
-  .upload>input{
-    padding: 20px;
-   padding-bottom: 8%;
-   margin-left: 15%;
-   align-self: center;
-  }
-  @media only screen and (max-width: 768px) {
-    .asset-form .flex-row .column {
-      width: 100%;
-    }
-  }
-  
+.blur {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.089);
+  position: absolute;
+  top: 0;
+  left: 0;
+}

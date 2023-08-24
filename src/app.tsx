@@ -6,6 +6,7 @@ import Home from './pages/home/Home';
 import Dashboard from './layouts/Dashboard';
 import AuthRequired from './wrappers/AuthRequired';
 import DoNotAuth from './wrappers/DoNotAuth';
+import { Tooltip } from 'react-tooltip';
 
 const App: FC = () => {
   return (
@@ -31,6 +32,7 @@ const App: FC = () => {
           />
         </Routes>
       </Router>
+      <Tooltip id='my-tooltip' />
     </>
   );
 };
