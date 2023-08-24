@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import TitleBar from '../../components/TitleBar/TitleBar';
 import IconButton from '../../components/IconButton/IconButton';
 import Table from '../../components/Table/Table';
-import { assetColumns } from '../../columns/assets.columns';
+import { assetColumns, perishableAssetsColumns } from '../../columns/assets.columns';
 import Filter from '../../components/filter';
 import {
   useDeleteAssetMutation,
@@ -123,6 +123,7 @@ function AssetList() {
   }, [isDeleted]);
 
   console.log(assets.filter((asset) => asset.status === 'Allocated'));
+  console.log(perishableSubcategories);
 
   return (
     <>
@@ -202,14 +203,16 @@ function AssetList() {
             emptyMessage='No assets found'
           />
         </div>
-        <div className='grow-scroll padding-top'>
-          <Table
-            columns={perishableAssetsColumn}
-            dataset={perishableAssetDataset?.data}
-            onClick={handleTableClick}
-            emptyMessage='No assets found'
-          />
-        </div>
+        <PermissionGuard>
+          <div className='grow-scroll padding-top'>
+            <Table
+              columns={perishableAssetsColumns}
+              dataset={perishableSubcategories ? perishableSubcategories : []}
+              onClick={handleTableClick}
+              emptyMessage='No perishable assets found'
+            />
+          </div>
+        </PermissionGuard>
       </div>
     </>
   );
