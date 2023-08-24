@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { classNames } from '../../utils/funcs';
 import './InputField.css';
 
@@ -23,17 +23,25 @@ const InputField: FC<InputFieldProps> = ({
   placeholder,
   disabled
 }) => {
+  const [_errors, setErrors] = useState<string[]>();
+
   const handleChange = (e: any) => {
     let value = e.target.value;
 
     if (type === 'number') value = Number(value);
 
+    setErrors([]);
+
     onChange(value);
   };
 
+  useEffect(() => {
+    setErrors(errors);
+  }, [errors]);
+
   return (
     <>
-      <div className={classNames('input-field-wrapper', errors?.length ? 'error' : '')}>
+      <div className={classNames('input-field-wrapper', _errors?.length ? 'error' : '')}>
         <div className='input-field'>
           <label htmlFor={id}>{label}</label>
           <input
@@ -43,7 +51,7 @@ const InputField: FC<InputFieldProps> = ({
             disabled={disabled}
           />
         </div>
-        {errors?.map((error, i) => <p key={i}>{error}</p>)}
+        {_errors?.map((error, i) => <p key={i}>{error}</p>)}
       </div>
     </>
   );

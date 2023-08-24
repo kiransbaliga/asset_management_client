@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import './LoginInputField.css';
 import { classNames } from '../../utils/funcs';
 
@@ -19,13 +19,23 @@ const LoginInputField: FC<LoginInputFieldProps> = ({
   onChange,
   errors
 }) => {
+  const [_errors, setErrors] = useState<string[]>();
+
   const handleChange = (e: any) => {
-    onChange(e.target.value);
+    let value = e.target.value;
+
+    setErrors([]);
+
+    onChange(value);
   };
+
+  useEffect(() => {
+    setErrors(errors);
+  }, [errors]);
 
   return (
     <>
-      <div className={classNames('login-input-field-wrapper', errors?.length ? 'error' : '')}>
+      <div className={classNames('login-input-field-wrapper', _errors?.length ? 'error' : '')}>
         <div className='login-input-field'>
           <input
             onChange={handleChange}
@@ -35,7 +45,7 @@ const LoginInputField: FC<LoginInputFieldProps> = ({
           />
           <label htmlFor={id}>{label}</label>
         </div>
-        {errors?.map((error, i) => <p key={i}>{error}</p>)}
+        {_errors?.map((error, i) => <p key={i}>{error}</p>)}
       </div>
     </>
   );

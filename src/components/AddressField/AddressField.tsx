@@ -12,15 +12,25 @@ interface AddressFieldProps {
 }
 
 const AddressField: FC<AddressFieldProps> = ({ label, fields, values, onChange, errors = {} }) => {
+  const [_errors, setErrors] = useState(errors);
   const [address, setAddress] = useState<AddressType>();
 
   const handleChange = (field: string, value: string) => {
     setAddress((prevAddress) => ({ ...prevAddress, [field]: value }));
+    setErrors((prevErrors) => {
+      prevErrors[field] = [];
+
+      return prevErrors;
+    });
   };
 
   useEffect(() => {
     if (address) onChange(address);
   }, [address]);
+
+  useEffect(() => {
+    setErrors(errors);
+  }, [errors]);
 
   return (
     <div className='address-fields-wrapper'>
@@ -34,7 +44,7 @@ const AddressField: FC<AddressFieldProps> = ({ label, fields, values, onChange, 
               placeholder={field.placeholder}
               value={values[field.key] || ''}
             />
-            {errors[field.key]?.map((error, i) => <p key={i}>{error}</p>)}
+            {_errors[field.key]?.map((error, i) => <p key={i}>{error}</p>)}
           </div>
         ))}
       </div>

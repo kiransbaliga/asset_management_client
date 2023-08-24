@@ -1,0 +1,14 @@
+.icon.clickable {
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.icon.clickable:hover {
+  color: var(--primary-color);
+}
+.icon.clickable:active {
+  color: var(--primary-shade-color);
+}
+.icon.disabled {
+  color: var(--muted-color);
+}
