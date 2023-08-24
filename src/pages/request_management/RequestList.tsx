@@ -134,6 +134,10 @@ function RequestList() {
             dataset={requests}
             onClick={handleTableClick}
             emptyMessage='No requests found'
+            onPaginate={(offset) => {
+              handleFilterSelect('offset', offset);
+            }}
+            total={requestDataset?.meta.tot}
           />
         </div>
       </div>

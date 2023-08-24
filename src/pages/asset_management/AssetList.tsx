@@ -159,6 +159,10 @@ function AssetList() {
             columns={assetTableColumns}
             dataset={assetDataset?.data}
             onClick={handleTableClick}
+            onPaginate={(offset) => {
+              handleFilterSelect('offset', offset);
+            }}
+            total={assetDataset?.meta.tot}
           />
         </div>
       </div>

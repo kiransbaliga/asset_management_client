@@ -1,15 +1,26 @@
 import { FC } from 'react';
 import './Table.css';
 import ColumnType from '../../types/ColumnType';
+import Pagination from '../Pagination/Pagination';
+// import { classNames } from '../../utils/funcs';
 
 interface TableProps {
   columns: ColumnType[];
   dataset: object[];
   onClick?: (data: any) => void;
   emptyMessage?: string;
+  onPaginate?: (offset: number) => void;
+  total?: number;
 }
 
-const Table: FC<TableProps> = ({ columns, dataset, onClick, emptyMessage = 'No data' }) => {
+const Table: FC<TableProps> = ({
+  columns,
+  dataset,
+  onClick,
+  emptyMessage = 'No data',
+  onPaginate,
+  total = 10
+}) => {
   const renderHeaders = () => {
     return columns.map((column, i) => <th key={`table-th-${column.key}-${i}`}>{column.label}</th>);
   };
@@ -50,6 +61,7 @@ const Table: FC<TableProps> = ({ columns, dataset, onClick, emptyMessage = 'No d
           <div>{emptyMessage}</div>
         </div>
       )}
+      <Pagination onChange={onPaginate} total={total ? total : 0}></Pagination>
     </>
   );
 };
