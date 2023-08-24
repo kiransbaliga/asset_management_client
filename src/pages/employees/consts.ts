@@ -17,7 +17,7 @@ export const addressFields: AddressFieldType[] = [
   { key: 'pincode', placeholder: 'Pincode' }
 ];
 
-export const emptyEmployee: EmployeeType = {
+export const initialEmployeeData: EmployeeType = {
   id: '',
   name: '',
   username: '',

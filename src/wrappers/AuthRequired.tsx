@@ -9,11 +9,9 @@ interface AuthRequiredProps {
 
 const AuthRequired: FC<AuthRequiredProps> = ({ children }) => {
   const token = getToken();
-  const { data } = useGetCurrentUserQuery();
+  const { data: user } = useGetCurrentUserQuery();
 
-  console.log(data);
-
-  return token ? children : <Navigate to='/login' />;
+  return token && user !== undefined ? children : <Navigate to='/login' />;
 };
 
 export default AuthRequired;

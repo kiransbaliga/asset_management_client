@@ -5,8 +5,8 @@ import { EMPLOYEE_API_TAGS } from './consts';
 
 export const employeesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getEmployeeList: builder.query<ResponseDataListType, void>({
-      query: () => '/employees',
+    getEmployeeList: builder.query<ResponseDataListType, { offset: number; take: number }>({
+      query: ({ offset: offset, take: take }) => `/employees?offset=${offset}&length=${take}`,
       providesTags: [EMPLOYEE_API_TAGS.ON_EMPLOYEE_DELETE]
     }),
     getDepartmentList: builder.query<ResponseDataListType, void>({

@@ -6,10 +6,11 @@ import Home from './pages/home/Home';
 import Dashboard from './layouts/Dashboard';
 import AuthRequired from './wrappers/AuthRequired';
 import DoNotAuth from './wrappers/DoNotAuth';
+import UIProvider from './contexts/UIContexts';
 
 const App: FC = () => {
   return (
-    <>
+    <UIProvider>
       <Router>
         <Routes>
           <Route path='' element={<Home />} />
@@ -31,7 +32,7 @@ const App: FC = () => {
           />
         </Routes>
       </Router>
-    </>
+    </UIProvider>
   );
 };
 

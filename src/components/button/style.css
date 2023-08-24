@@ -7,6 +7,7 @@
   transition: all 0.3s;
   cursor: pointer;
   white-space: nowrap;
+  height: fit-content;
 }
 
 .btn:disabled{

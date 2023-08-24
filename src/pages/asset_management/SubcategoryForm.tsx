@@ -28,7 +28,7 @@ const SubcategoryForm = () => {
   };
 
   useEffect(() => {
-    if (isCreateSubcategorySuccess) navigate('/assets');
+    if (isCreateSubcategorySuccess) navigate('/assets/create');
   }, [isCreateSubcategorySuccess]);
   console.log(subcategoryData);
 

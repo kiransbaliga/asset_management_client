@@ -16,10 +16,10 @@ const EmployeeList: FC = () => {
   const [deleteDialogState, setDeleteDialogState] = useState<DialogStateType>({ show: false });
 
   const user = useSelector((state: any) => state.auth.user);
-
-  const { data } = useGetEmployeeListQuery();
+  const [offset, setOffset] = useState(0);
+  const { data } = useGetEmployeeListQuery({ offset: offset, take: 10 });
   const [deleteEmplyee, { isSuccess: isDeleted }] = useDeleteEmployeeMutation();
-  const employeesDataset = data?.data as object[];
+  const employeesDataset = data?.data;
 
   const navigate = useNavigate();
 
@@ -83,6 +83,10 @@ const EmployeeList: FC = () => {
             columns={employeeTableColumns}
             dataset={employeesDataset}
             onClick={handleTableClick}
+            onPaginate={(offset) => {
+              setOffset(offset);
+            }}
+            total={data?.meta.tot}
           />
         </div>
       </div>

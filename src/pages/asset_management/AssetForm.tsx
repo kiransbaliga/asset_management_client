@@ -16,6 +16,8 @@ import {
 } from './api';
 import CategoryType from '../../types/CategoryType';
 import subcategoryType from '../../types/SubcategoryType';
+import Button from '../../components/button';
+import { Link } from 'react-router-dom';
 
 function AssetForm() {
   const [assetData, setAssetData] = useState<AssetType>(emptyAsset);
@@ -114,26 +116,36 @@ function AssetForm() {
             />
           </div>
           <div className='column'>
-            <SelectFied
-              id='categoryField'
-              label='Category'
-              placeholder='Choose a category'
-              options={categoryOptions}
-              value={currentCategory}
-              onChange={setCurrentCategory}
-            />
+            <div className='select-with-button'>
+              <SelectFied
+                id='categoryField'
+                label='Category'
+                placeholder='Choose a category'
+                options={categoryOptions}
+                value={currentCategory}
+                onChange={setCurrentCategory}
+              />
+              <Link to='/assets/category/create'>
+                <Button className='btn btn-primary' text='+' />
+              </Link>
+            </div>
           </div>
           {/* {!currentCategory && id && <div className='column'> </div>} */}
           {currentCategory && (
             <div className='column'>
-              <SelectFied
-                id='subCategoryField'
-                label='Sub-category'
-                placeholder='Choose a sub-category'
-                options={subcategoryOptions}
-                value={assetData.subcategoryId}
-                onChange={(value) => handleChange('subcategoryId', Number(value))}
-              />
+              <div className='select-with-button'>
+                <SelectFied
+                  id='subCategoryField'
+                  label='Sub-category'
+                  placeholder='Choose a sub-category'
+                  options={subcategoryOptions}
+                  value={assetData.subcategoryId}
+                  onChange={(value) => handleChange('subcategoryId', Number(value))}
+                />
+                <Link to='/assets/subcategory/create'>
+                  <Button className='btn btn-primary' text='+' />
+                </Link>
+              </div>
             </div>
           )}
 

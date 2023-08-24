@@ -45,7 +45,7 @@ function RequestAdminForm() {
   const [createRequest, { data, isSuccess }] = useCreateRequestMutation();
   const [resolveRequest, { isSuccess: resolveSucccess }] = useResolveRequestMutation();
   const { data: categoriesDateset } = useGetCategoryListQuery();
-  const { data: employeeDataset } = useGetEmployeeListQuery();
+  const { data: employeeDataset } = useGetEmployeeListQuery({ offset: 0, take: 1000 });
   const categories = categoriesDateset?.data as CategoryType[];
   const subcategories = subcategoriesDateset?.data as subcategoryType[];
   const employees = employeeDataset?.data as EmployeeType[];

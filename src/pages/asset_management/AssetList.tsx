@@ -210,6 +210,10 @@ function AssetList() {
             columns={assetsColumn}
             dataset={assetDataset?.data}
             onClick={handleTableClick}
+            onPaginate={(offset) => {
+              handleFilterSelect('offset', offset);
+            }}
+            total={assetDataset?.meta.tot}
             emptyMessage='No assets found'
           />
         </div>

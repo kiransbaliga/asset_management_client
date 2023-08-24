@@ -22,10 +22,10 @@ export const assetApi = baseApi.injectEndpoints({
       providesTags: [ASSET_API_TAGS.ON_ASSET_DELETE]
     }),
     getCategoryList: builder.query<ResponseDataListType, void>({
-      query: () => '/category/'
+      query: () => '/category?length=1000'
     }),
     getSubcategoryList: builder.query<ResponseDataListType, void>({
-      query: () => '/subcategory/'
+      query: () => '/subcategory?length=1000'
     }),
 
     createAsset: builder.mutation<ResponseDataType, AssetType>({
