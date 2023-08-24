@@ -112,7 +112,7 @@ function AssetList() {
 
   useEffect(() => {
     getSubCategories();
-    handleFilterSelect('subcategoryId', '');
+    handleFilterSelect('subcategor', '');
   }, [filterData.category]);
 
   useEffect(() => {
