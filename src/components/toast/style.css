@@ -1,0 +1,58 @@
+.toast {
+  position: fixed;
+  z-index: 1000;
+  right: -100%;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  width: 300px;
+  color: var(--light-color);
+}
+
+.toast.start-from,
+.toast.end-to {
+  right: -100%;
+}
+
+.toast.start-to,
+.toast.end-from {
+  right: 0;
+}
+
+.toast .card.success {
+  background: var(--success-color);
+}
+
+.toast .card.danger {
+  background: var(--danger-color);
+}
+
+.toast .card.warning {
+  background: var(--warning-color);
+}
+
+.toast .card.info {
+  background: var(--info-color);
+}
+
+
+.toast-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.toast-footer {
+  width: 100%;
+  font-size: small;
+  height: 10px;
+  overflow: hidden;
+}
+
+.toast-title {
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.toast-close-btn {
+  margin-left: auto;
+}

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { classNames } from '../../utils/funcs';
 import './SelectField.css';
 import { OptionType } from '../../types/OptionType';
@@ -22,13 +22,22 @@ const SelectFied: FC<SelectFiedProps> = ({
   options,
   placeholder
 }) => {
+  const [_errors, setErrors] = useState<string[]>();
+
   const handleChange = (e: any) => {
+
+    setErrors([]);
+
     onChange(e.target.value);
   };
 
+  useEffect(() => {
+    setErrors(errors);
+  }, [errors]);
+
   return (
     <>
-      <div className={classNames('select-field-wrapper', errors?.length ? 'error' : '')}>
+      <div className={classNames('select-field-wrapper', _errors?.length ? 'error' : '')}>
         <div className='select-field'>
           <label htmlFor={id}>{label}</label>
           <select onChange={handleChange} {...{ id, value }}>
@@ -44,7 +53,7 @@ const SelectFied: FC<SelectFiedProps> = ({
             ))}
           </select>
         </div>
-        {errors?.map((error, i) => <p key={i}>{error}</p>)}
+        {_errors?.map((error, i) => <p key={i}>{error}</p>)}
       </div>
     </>
   );

@@ -4,7 +4,7 @@ import InputField from '../../components/InputField/InputField';
 import { useEffect, useState } from 'react';
 import SelectFied from '../../components/SelectField/SelectField';
 import AddressField from '../../components/AddressField/AddressField';
-import { addressFields, emptyEmployee, statusOptions } from './consts';
+import { addressFields, initialEmployeeData, statusOptions } from './consts';
 import {
   useGetDepartmentListQuery,
   useGetRoleListQuery,
@@ -15,10 +15,12 @@ import {
 import EmployeeType from '../../types/EmployeeType';
 import './style.css';
 import { OptionType } from '../../types/OptionType';
+import useForm from '../../hooks/form.hook';
+import useValidator from '../../hooks/validator.hook';
+import { employeeErrorsType } from './type';
+import { employeeValidators } from './validators';
 
 function EmployeeForm() {
-  const [employeeData, setEmployeeData] = useState<EmployeeType>(emptyEmployee);
-
   const [departmentOptions, setDepartementOptions] = useState<OptionType[]>([]);
   const [roleOptions, setRoleOptions] = useState<OptionType[]>([]);
 
@@ -28,16 +30,20 @@ function EmployeeForm() {
   const { data: departments } = useGetDepartmentListQuery();
   const { data: roles } = useGetRoleListQuery();
   const [updateEmployee, { isSuccess: isUpdated }] = useUpdateEmployeeMutation();
-  const [createEmployee, { isSuccess: isCreated }] = useLazyCreateEmployeeQuery();
+  const [createEmployee, { isSuccess: isCreated, error: createErrors }] =
+    useLazyCreateEmployeeQuery();
   const [getEmployeeById, { data: employeeDataResponse }] = useLazyGetEmployeeQuery();
 
-  const handleChange = (field: string, value: any) => {
-    setEmployeeData((prevData) => ({ ...prevData, [field]: value }));
-  };
+  const [employeeData, setEmployeeData] = useForm<EmployeeType>(initialEmployeeData);
+  const [employeeValidate, employeeErrors] = useValidator<employeeErrorsType, EmployeeType>(
+    employeeValidators,
+    employeeData,
+    createErrors ? createErrors['data'].errors : {}
+  );
 
   const handleSubmit = () => {
-    if (id) updateEmployee(employeeData);
-    else createEmployee(employeeData);
+    if (id && employeeValidate()) updateEmployee(employeeData);
+    else if (employeeValidate()) createEmployee(employeeData);
   };
 
   useEffect(() => {
@@ -88,7 +94,8 @@ function EmployeeForm() {
               label='Username'
               placeholder='Username'
               value={employeeData.username}
-              onChange={(value) => handleChange('username', value)}
+              onChange={(value) => setEmployeeData('username', value)}
+              errors={employeeErrors.username}
             />
           </div>
           <div className='column'>
@@ -97,7 +104,8 @@ function EmployeeForm() {
               label='Password'
               placeholder='Password'
               value={employeeData.password}
-              onChange={(value) => handleChange('password', value)}
+              onChange={(value) => setEmployeeData('password', value)}
+              errors={employeeErrors.password}
             />
           </div>
           <div className='column'>
@@ -106,7 +114,8 @@ function EmployeeForm() {
               label='Name'
               placeholder='Employee name'
               value={employeeData.name}
-              onChange={(value) => handleChange('name', value)}
+              onChange={(value) => setEmployeeData('name', value)}
+              errors={employeeErrors.name}
             />
           </div>
           <div className='column'>
@@ -115,7 +124,8 @@ function EmployeeForm() {
               type='date'
               label='Joining Date'
               value={employeeData.joining_date}
-              onChange={(value) => handleChange('joining_date', value)}
+              onChange={(value) => setEmployeeData('joining_date', value)}
+              errors={employeeErrors.joining_date}
             />
           </div>
           <div className='column'>
@@ -124,7 +134,8 @@ function EmployeeForm() {
               id='experienceField'
               label='Experience (Yrs)'
               value={employeeData.experience}
-              onChange={(value) => handleChange('experience', value)}
+              onChange={(value) => setEmployeeData('experience', value)}
+              errors={employeeErrors.experience}
             />
           </div>
           <div className='column'>
@@ -134,7 +145,8 @@ function EmployeeForm() {
               placeholder='Choose a department'
               options={departmentOptions}
               value={employeeData.departmentId}
-              onChange={(value) => handleChange('departmentId', Number(value))}
+              onChange={(value) => setEmployeeData('departmentId', Number(value))}
+              errors={employeeErrors.departmentId}
             />
           </div>
           <div className='column'>
@@ -144,7 +156,8 @@ function EmployeeForm() {
               placeholder='Choose a role'
               options={roleOptions}
               value={employeeData.role}
-              onChange={(value) => handleChange('role', value)}
+              onChange={(value) => setEmployeeData('role', value)}
+              errors={employeeErrors.role}
             />
           </div>
           <div className='column'>
@@ -154,7 +167,8 @@ function EmployeeForm() {
               placeholder='Choose a status'
               options={statusOptions}
               value={employeeData.status}
-              onChange={(value) => handleChange('status', value)}
+              onChange={(value) => setEmployeeData('status', value)}
+              errors={employeeErrors.status}
             />
           </div>
           <div className='column'>
@@ -162,7 +176,8 @@ function EmployeeForm() {
               label='Address'
               fields={addressFields}
               values={employeeData.address}
-              onChange={(value) => handleChange('address', value)}
+              onChange={(value) => setEmployeeData('address', value)}
+              errors={employeeErrors.address}
             />
           </div>
           <div className='column'>

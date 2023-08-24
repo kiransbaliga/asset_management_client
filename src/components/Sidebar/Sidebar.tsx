@@ -5,6 +5,8 @@ import { removeToken } from '../../utils/token';
 import { classNames } from '../../utils/funcs';
 import Dialog from '../Dialog/Dialog';
 import { useState } from 'react';
+import { useUI } from '../../contexts/UIContexts';
+import { TOAST_TIMOUT, TOAST_TYPE } from '../toast/consts';
 
 const links: LinkType[] = [
   { label: 'Employee', icon: '/assets/icons/employees.svg', path: '/employees' },
@@ -17,10 +19,12 @@ function Sidebar() {
 
   const location = useLocation();
   const navigate = useNavigate();
+  const { createToast } = useUI();
 
   function logout() {
     removeToken();
     navigate('/login');
+    createToast(TOAST_TYPE.SUCCESS, 'Logout success', '', TOAST_TIMOUT.SHORT);
   }
 
   const handleLogout = () => {

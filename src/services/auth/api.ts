@@ -1,12 +1,13 @@
 import baseApi from '..';
-import { LoginType } from '../../pages/login/types';
+import { LoginDataType } from '../../pages/login/types';
 import { ResponseDataType } from '../../types/ResponseType';
+import { removeToken } from '../../utils/token';
 import { clearUser, setUser } from './reducer';
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation({
-      query: (body: LoginType) => ({
+      query: (body: LoginDataType) => ({
         url: '/employees/login',
         method: 'POST',
         body
@@ -21,6 +22,7 @@ export const authApi = baseApi.injectEndpoints({
           dispatch(setUser(data.data));
         } catch (error) {
           clearUser();
+          removeToken();
         }
       }
     })
