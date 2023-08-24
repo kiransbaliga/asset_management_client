@@ -28,3 +28,5 @@ export const requestStatusOptions: OptionType[] = [
   { text: 'Resolved', value: 'Resolved' },
   { text: 'Rejected', value: 'Rejected' }
 ];
+
+export const AdminRoles = ['Admin'];

@@ -16,10 +16,12 @@ import {
 import Table from '../../components/Table/Table';
 import { requestedListColumns } from '../../columns/requestList.columns';
 import subcategoryType from '../../types/SubcategoryType';
+import { useSelector } from 'react-redux';
+import { AdminRoles } from './consts';
 // import { useSelector } from 'react-redux';
 
 function Request() {
-  // const user = useSelector((state: any) => state.auth.user);
+  const user = useSelector((state: any) => state.auth.user);
 
   const { id } = useParams();
   const [requestData, setRequestData] = useState<RequestType>();
@@ -76,16 +78,23 @@ function Request() {
   return (
     <div>
       <TitleBar title='Request Details'>
-        {requestData && requestData.status === 'Pending' && (
-          <div className='flex-row'>
-            <IconButton
-              text='Resolve'
-              icon='/assets/icons/resolve.svg'
-              onClick={handleResolveClick}
-            />
-            <IconButton text='Reject' icon='/assets/icons/reject.svg' onClick={handleRejectClick} />
-          </div>
-        )}
+        {user &&
+          AdminRoles.includes(user.role) &&
+          requestData &&
+          requestData.status === 'Pending' && (
+            <div className='flex-row'>
+              <IconButton
+                text='Resolve'
+                icon='/assets/icons/resolve.svg'
+                onClick={handleResolveClick}
+              />
+              <IconButton
+                text='Reject'
+                icon='/assets/icons/reject.svg'
+                onClick={handleRejectClick}
+              />
+            </div>
+          )}
       </TitleBar>
       {requestData && (
         <>

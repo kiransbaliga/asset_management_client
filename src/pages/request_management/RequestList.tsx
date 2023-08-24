@@ -5,15 +5,6 @@ import Table from '../../components/Table/Table';
 import './styles.css';
 // import { assetColumns } from '../../columns/assets.columns';
 import Filter from '../../components/filter';
-// import {
-//   useGetCategoryListQuery,
-//   useLazyGetAssetListQuery,``
-//   useLazyGetSubcategoryListQuery
-// } from './api';
-// import { useEffect, useState } from 'react';
-// import CategoryType from '../../types/CategoryType';
-// import subcategoryType from '../../types/SubcategoryType';
-// import AssetType from '../../types/AssetType';
 import { requestColumns } from '../../columns/requests.columns';
 import {
   useDeleteRequestMutation,
@@ -23,7 +14,7 @@ import {
 import Actions from '../../components/Actions/inedx';
 import { useEffect, useState } from 'react';
 import Dialog, { DialogStateType } from '../../components/Dialog/Dialog';
-import { requestStatusOptions } from './consts';
+import { AdminRoles, requestStatusOptions } from './consts';
 import AssetFilterType from '../../types/AssetFilterType';
 import { empltyAssetFilter } from '../asset_management/consts';
 import RequestType from '../../types/RequestType';
@@ -35,10 +26,6 @@ function RequestList() {
     params: {}
   });
   const user = useSelector((state: any) => state.auth.user);
-
-  // useEffect(() => {
-  //   setRequestData((prevData) => ({ ...prevData, ['employeeId']: user.id }));
-  // }, [user]);
   const [getRequests, { data: allrequestDataset, isSuccess: allrequestsSuccess }] =
     useLazyGetRequestsListQuery();
   const [
@@ -47,15 +34,12 @@ function RequestList() {
   ] = useLazyGetRequestsOfEmployeeQuery();
 
   const [filterData, setFilterData] = useState<AssetFilterType>(empltyAssetFilter);
-  // const { data: request } = useGetRequestsListQuery();
-  // const requests = request?.data;
   const navigate = useNavigate();
 
   const [deleteRequest, { isSuccess: isDeleted }] = useDeleteRequestMutation();
 
   const handleCreate = () => {
-    if (user && user.role === 'Admin') navigate('/requests/create/admin');
-    else if (user) navigate('/requests/create');
+    navigate('/requests/create');
   };
 
   const action = (id: string) => {
@@ -84,7 +68,7 @@ function RequestList() {
   }, [isDeleted]);
 
   useEffect(() => {
-    if (user && user.role === 'Admin') getRequests(filterData);
+    if (user && AdminRoles.includes(user.role)) getRequests(filterData);
     else if (user) getEmployeeRequests(user.id);
   }, [filterData, user]);
 
@@ -124,7 +108,7 @@ function RequestList() {
       </Dialog>
       <div className='flex-column'>
         <TitleBar title='Request List'>
-          {user && user.role === 'Admin' && (
+          {user && AdminRoles.includes(user.role) && (
             <Filter
               label='Status'
               options={requestStatusOptions}
@@ -132,8 +116,14 @@ function RequestList() {
               onSelect={(value) => handleFilterSelect('status', value)}
             />
           )}
-
           <IconButton icon='/assets/icons/plus.png' text='Create Request' onClick={handleCreate} />
+          {user && AdminRoles.includes(user.role) && (
+            <IconButton
+              icon='/assets/icons/plus.png'
+              text='Allocate items'
+              onClick={handleCreate}
+            />
+          )}
         </TitleBar>
         <div className='grow-scroll'>
           <Table

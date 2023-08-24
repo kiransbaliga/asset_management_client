@@ -89,9 +89,8 @@ function RequestForm() {
     } else if (field === 'requestType') {
       setRequestData((prevData) => {
         setRequestType(value);
-        const employeeId = localStorage.getItem('employeeId');
 
-        if (value === 'exchange') getOwnedAssets(Number(employeeId));
+        if (value === 'exchange') getOwnedAssets(Number(user.id));
         console.log(requestType);
 
         return { ...prevData, requestItem: [] };
@@ -156,7 +155,7 @@ function RequestForm() {
   return (
     <div className='request-form '>
       <TitleBar title={'Create Request'}></TitleBar>
-      <div className='flex-column center'>
+      <div className='flex-column '>
         <div className='card'>
           <div className='flex-row'>
             <div className='column'>
@@ -271,10 +270,6 @@ function RequestForm() {
             </div>
           </div>
         )}
-
-        <div className='column'></div>
-
-        <div className='blank'></div>
       </div>
     </div>
   );
