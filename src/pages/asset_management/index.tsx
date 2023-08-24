@@ -60,6 +60,14 @@ function AssetManagement() {
           // </PermissionGuard>
         }
       />
+      <Route
+        path='/subcategory/edit/:id'
+        element={
+          // <PermissionGuard userRoles={AdminRoles} redirect='/forbidden'>
+          <SubcategoryForm />
+          // </PermissionGuard>
+        }
+      />
     </Routes>
   );
 }

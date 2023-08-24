@@ -53,6 +53,9 @@ export const assetApi = baseApi.injectEndpoints({
     getAssetById: builder.query({
       query: (id) => `/assets/${id}`
     }),
+    getSubcategoryById: builder.query({
+      query: (id) => `/subcategory/${id}`
+    }),
     uploadFile: builder.mutation<ResponseDataType, FormData>({
       query: (formData) => ({
         url: '/assets/upload/', // Replace with your upload URL
@@ -65,6 +68,13 @@ export const assetApi = baseApi.injectEndpoints({
       query: (body) => ({
         url: '/category/',
         method: 'POST',
+        body
+      })
+    }),
+    updateSubcategory: builder.mutation<ResponseDataType, SubcategoryType>({
+      query: (body) => ({
+        url: '/subcategory/',
+        method: 'PUT',
         body
       })
     }),
@@ -93,5 +103,7 @@ export const {
   useCreateSubcategoryMutation,
   useLazyGetHistoryByAssetIdQuery,
   useLazyGetAssetsOfEmployeeQuery,
-  useLazyGetPerishableAssetsOfEmployeeQuery
+  useLazyGetPerishableAssetsOfEmployeeQuery,
+  useLazyGetSubcategoryByIdQuery,
+  useUpdateSubcategoryMutation
 } = assetApi;

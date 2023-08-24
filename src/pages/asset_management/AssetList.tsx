@@ -2,7 +2,11 @@ import { useNavigate } from 'react-router-dom';
 import TitleBar from '../../components/TitleBar/TitleBar';
 import IconButton from '../../components/IconButton/IconButton';
 import Table from '../../components/Table/Table';
-import { assetColumns, perishableAssetsColumns } from '../../columns/assets.columns';
+import {
+  assetColumns,
+  perishableAssetsColumns,
+  perishableAssetsofEmployeeColumns
+} from '../../columns/assets.columns';
 import Filter from '../../components/filter';
 import {
   useDeleteAssetMutation,
@@ -99,9 +103,7 @@ function AssetList() {
   const allPerishableSubcategories = subcategories
     ? subcategories.filter((subcategory) => subcategory.perishable === true)
     : [];
-  const perishableSubcategoriesOfEmployee = perishableSubcategories
-    ? perishableSubcategories.filter((subcategory) => subcategory.perishable === true)
-    : [];
+  const perishableSubcategoriesOfEmployee = perishableSubcategories;
   const categoriesOptions = categories
     ? categories.map((category) => ({ value: category.id, text: category.name }))
     : [];
@@ -131,8 +133,14 @@ function AssetList() {
     if (isDeleted) setDeleteDialogState({ show: false, params: {} });
   }, [isDeleted]);
 
-  console.log(assets.filter((asset) => asset.status === 'Allocated'));
-  console.log(perishableSubcategories);
+  const actionPerishable = (id) => {
+    return <Actions onEdit={() => navigate(`/assets/subcategory/edit/${id}`)} />;
+  };
+
+  const perishableColumns = [
+    ...perishableAssetsColumns,
+    { key: 'id', label: 'Action', adapter: actionPerishable }
+  ];
 
   return (
     <>
@@ -204,8 +212,7 @@ function AssetList() {
           </div>
         </PermissionGuard>
 
-        <div className='grow-scroll padding-top'>
-          <h2 className='margin-top-bottom'>Assets</h2>
+        <div className='grow-scroll padding-top margin-top-bottom'>
           <Table
             columns={assetsColumn}
             dataset={assetDataset?.data}
@@ -221,7 +228,7 @@ function AssetList() {
           <div className='grow-scroll padding-top'>
             <h2>Perishable assets</h2>
             <Table
-              columns={perishableAssetsColumns}
+              columns={perishableColumns}
               dataset={allPerishableSubcategories ? allPerishableSubcategories : []}
               emptyMessage='No perishable assets found'
               onClick={() => {}}
@@ -232,7 +239,7 @@ function AssetList() {
           <div className='grow-scroll padding-top'>
             <h2>Perishable assets of employee</h2>
             <Table
-              columns={perishableAssetsColumns}
+              columns={perishableAssetsofEmployeeColumns}
               dataset={perishableSubcategoriesOfEmployee ? perishableSubcategoriesOfEmployee : []}
               emptyMessage='No perishable assets found'
               onClick={() => {}}

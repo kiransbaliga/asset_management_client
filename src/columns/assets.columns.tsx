@@ -1,6 +1,5 @@
 import Status from '../components/Status/Status';
 import { assetStatusToClassName } from './consts';
-
 export const status = (value: string) => (
   <Status value={value} className={assetStatusToClassName[value]} />
 );
@@ -15,6 +14,7 @@ export const assetColumns = [
   },
   { key: 'status', label: 'Status', adapter: status }
 ];
+
 export const perishableAssetsColumns = [
   { key: 'name', label: 'Subcategory' },
   { key: 'count', label: 'Count' }

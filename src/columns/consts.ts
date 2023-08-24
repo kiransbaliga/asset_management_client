@@ -9,6 +9,14 @@ export const employeeStatusToClassName = {
   [EmployeeStatusEnum.PROBATION]: 'warning',
   [EmployeeStatusEnum.INACTIVE]: 'danger'
 };
+export enum IsDoneStatus {
+  RESOLVED = 'true',
+  PENDING = 'false'
+}
+export const isDoneToClassName = {
+  [IsDoneStatus.RESOLVED]: 'success',
+  [IsDoneStatus.PENDING]: 'warning'
+};
 
 export enum AssetsStatusEnum {
   ALLOCATED = 'Allocated',

@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import TitleBar from '../../components/TitleBar/TitleBar';
 import InputField from '../../components/InputField/InputField';
 import { useEffect, useState } from 'react';
-import SelectFied from '../../components/SelectField/SelectField';
+import SelectField from '../../components/SelectField/SelectField';
 import { emptyAsset, statusOptions } from './consts';
 import './styles.css';
 import AssetType from '../../types/AssetType';
@@ -51,7 +51,6 @@ function AssetForm() {
 
   const handleChange = (field: string, value: any) => {
     setAssetData((prevData) => ({ ...prevData, [field]: value }));
-    console.log(assetData);
   };
 
   const handleSubmit = () => {
@@ -117,7 +116,7 @@ function AssetForm() {
           </div>
           <div className='column'>
             <div className='select-with-button'>
-              <SelectFied
+              <SelectField
                 id='categoryField'
                 label='Category'
                 placeholder='Choose a category'
@@ -134,7 +133,7 @@ function AssetForm() {
           {currentCategory && (
             <div className='column'>
               <div className='select-with-button'>
-                <SelectFied
+                <SelectField
                   id='subCategoryField'
                   label='Sub-category'
                   placeholder='Choose a sub-category'
@@ -151,7 +150,7 @@ function AssetForm() {
 
           {id && (
             <div className='column'>
-              <SelectFied
+              <SelectField
                 id='statusField'
                 label='Status'
                 placeholder='Choose a status'
