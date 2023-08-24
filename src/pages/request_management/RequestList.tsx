@@ -41,6 +41,9 @@ function RequestList() {
   const handleCreate = () => {
     navigate('/requests/create');
   };
+  const handleAllocate = () => {
+    navigate('/requests/create/admin');
+  };
 
   const action = (id: string) => {
     return (
@@ -121,7 +124,7 @@ function RequestList() {
             <IconButton
               icon='/assets/icons/plus.png'
               text='Allocate items'
-              onClick={handleCreate}
+              onClick={handleAllocate}
             />
           )}
         </TitleBar>

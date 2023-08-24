@@ -99,9 +99,7 @@ function RequestAdminForm() {
     } else if (field === 'requestType') {
       setRequestData((prevData) => {
         setRequestType(value);
-        const employeeId = localStorage.getItem('employeeId');
-
-        if (value === 'exchange') getOwnedAssets(Number(employeeId));
+        if (value === 'exchange') getOwnedAssets(user.id);
         console.log(requestType);
 
         return { ...prevData, requestItem: [] };
