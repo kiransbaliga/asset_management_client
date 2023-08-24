@@ -169,7 +169,7 @@ function AssetForm() {
                 </Link>
               </div>
             </div>
-            {!currentCategory && <div className='column'> </div>}
+            {!currentCategory && !id && <div className='column'> </div>}
             {currentCategory && (
               <div className='column'>
                 <div className='select-with-button'>
@@ -213,6 +213,9 @@ function AssetForm() {
                 )}
               </div>
             )}
+            {!currentCategory && id && <div className='column'> </div>}
+            {!currentCategory && id && <div className='column'> </div>}
+            {currentCategory && id && <div className='column'> </div>}
             <div className='column'></div>
             <div className='column request-btn'>
               <div className='btn-group'>
