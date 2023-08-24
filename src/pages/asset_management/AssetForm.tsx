@@ -156,7 +156,7 @@ function AssetForm() {
             </div>
             <div className='column'>
               <div className='select-with-button'>
-              <SelectFied
+                <SelectFied
                   id='categoryField'
                   label='Category'
                   placeholder='Choose a category'
@@ -165,15 +165,15 @@ function AssetForm() {
                   onChange={setCurrentCategory}
                 />
                 <Link to='/assets/category/create'>
-                <Button className='btn btn-primary' text='+' />
-              </Link>
+                  <Button className='btn btn-primary' text='+' />
+                </Link>
+              </div>
             </div>
-          </div>
             {/* {!currentCategory && id && <div className='column'> </div>} */}
             {currentCategory && (
               <div className='column'>
                 <div className='select-with-button'>
-                <SelectFied
+                  <SelectFied
                     id='subCategoryField'
                     label='Sub-category'
                     placeholder='Choose a sub-category'
@@ -182,10 +182,10 @@ function AssetForm() {
                     onChange={(value) => handleChange('subcategoryId', Number(value))}
                   />
                   <Link to='/assets/subcategory/create'>
-                  <Button className='btn btn-primary' text='+' />
-                </Link>
+                    <Button className='btn btn-primary' text='+' />
+                  </Link>
+                </div>
               </div>
-            </div>
             )}
 
             {id && (
