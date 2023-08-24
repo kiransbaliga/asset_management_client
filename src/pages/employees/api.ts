@@ -27,7 +27,8 @@ export const employeesApi = baseApi.injectEndpoints({
         url: `/employees/${body.id}`,
         method: 'PUT',
         body
-      })
+      }),
+      invalidatesTags: [EMPLOYEE_API_TAGS.ON_EMPLOYEE_DELETE]
     }),
     deleteEmployee: builder.mutation<ResponseDataType, number>({
       query: (id) => ({

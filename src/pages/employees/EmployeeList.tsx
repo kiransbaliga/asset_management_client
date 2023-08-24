@@ -71,7 +71,11 @@ const EmployeeList: FC = () => {
       <div className='flex-column'>
         <TitleBar title='Employee List'>
           <PermissionGuard userRoles={AdminRoles}>
-            <IconButton icon='/assets/icons/plus.png' text='Create employee' onClick={handleCreate} />
+            <IconButton
+              icon='/assets/icons/plus.png'
+              text='Create employee'
+              onClick={handleCreate}
+            />
           </PermissionGuard>
         </TitleBar>
         <div className='grow-scroll'>
