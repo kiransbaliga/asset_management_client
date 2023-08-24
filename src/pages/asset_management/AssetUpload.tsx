@@ -36,6 +36,9 @@ const UploadExcel = () => {
         <button className='btn btn-primary' onClick={handleUpload}>
           Upload
         </button>
+        <a href='.public/assets/filetemplate.csv' download='filetemplate.csv'>
+          Download template
+        </a>
       </div>
     </div>
   );

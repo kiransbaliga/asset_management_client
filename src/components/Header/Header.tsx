@@ -23,7 +23,7 @@ function Header() {
             style={{ right: '0' }}
           >
             <div className='name'>{user.name}</div>
-            <div className='flex-row user-content'>
+            <div className='flex-row user-content custom'>
               <div className='text-muted'>@{user.username}</div>
               <div className='chip chip-sm chip-primary'>{user.role}</div>
             </div>

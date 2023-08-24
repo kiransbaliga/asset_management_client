@@ -12,6 +12,7 @@
 .header-logo img {
   width: 100%;
   height: 100%;
+  object-fit: contain;
 }
 
 .header-navbar {
@@ -26,7 +27,7 @@
 .header-navbar .name {
   font-size: 20px;
   font-weight: bold;
-  color: var(--primary-color);
+  color: black;
   white-space: nowrap;
 }
 
@@ -37,9 +38,15 @@
 .header-navbar .user-dropdown .circle {
   width: 50px;
   height: 50px;
-  background: var(--primary-color);
+  background: rgb(212, 239, 255);
 }
 
 .header-navbar .user-dropdown .user-content .name {
   margin-right: 10px;
+}
+
+.custom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
