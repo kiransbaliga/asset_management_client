@@ -36,7 +36,14 @@ function AssetManagement() {
           </PermissionGuard>
         }
       />
-      <Route path='/details/:id' element={<AssetDetails />} />
+      <Route
+        path='/details/:id'
+        element={
+          <PermissionGuard userRoles={AdminRoles} redirect='/forbidden'>
+            <AssetDetails />
+          </PermissionGuard>
+        }
+      />
       <Route
         path='/category/create'
         element={

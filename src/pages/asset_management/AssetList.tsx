@@ -89,6 +89,9 @@ function AssetList() {
           text: subcategory.name
         }))
     : [];
+  const perishableSubcategories = subcategories
+    ? subcategories.filter((subcategory) => subcategory.perishable === true)
+    : [];
 
   const categoriesOptions = categories
     ? categories.map((category) => ({ value: category.id, text: category.name }))
@@ -103,7 +106,7 @@ function AssetList() {
   };
 
   const handleTableClick = (data) => {
-    navigate(`/assets/details/${data.id}`);
+    if (user && AdminRoles.includes(user.role)) navigate(`/assets/details/${data.id}`);
   };
 
   const handleFilterSelect = (field: string, value: any) => {
@@ -112,7 +115,7 @@ function AssetList() {
 
   useEffect(() => {
     getSubCategories();
-    handleFilterSelect('subcategor', '');
+    handleFilterSelect('subcategory', '');
   }, [filterData.category]);
 
   useEffect(() => {
@@ -195,6 +198,14 @@ function AssetList() {
           <Table
             columns={assetsColumn}
             dataset={assetDataset?.data}
+            onClick={handleTableClick}
+            emptyMessage='No assets found'
+          />
+        </div>
+        <div className='grow-scroll padding-top'>
+          <Table
+            columns={perishableAssetsColumn}
+            dataset={perishableAssetDataset?.data}
             onClick={handleTableClick}
             emptyMessage='No assets found'
           />
