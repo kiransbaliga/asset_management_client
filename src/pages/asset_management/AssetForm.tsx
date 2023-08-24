@@ -123,7 +123,7 @@ function AssetForm() {
               onChange={setCurrentCategory}
             />
           </div>
-          {!currentCategory && <div className='column'> </div>}
+          {/* {!currentCategory && id && <div className='column'> </div>} */}
           {currentCategory && (
             <div className='column'>
               <SelectFied

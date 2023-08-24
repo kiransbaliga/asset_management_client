@@ -5,7 +5,8 @@ export const status = (value: string) => (
   <Status value={value} className={requestStatusToClassName[value]} />
 );
 export const requestColumns = [
-  { key: 'employee', label: 'Employee', adapter: (value: any) => value.name },
+  { key: 'id', label: 'Request ID' },
+  { key: 'employee', label: 'Employee', adapter: (value: any) => (value ? value.name : null) },
   { key: 'reason', label: 'Reason' },
   { key: 'status', label: 'Status', adapter: status }
 ];

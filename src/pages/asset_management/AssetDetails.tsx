@@ -59,7 +59,13 @@ function AssetDetails() {
     <div>
       <TitleBar title='Asset Details' />
       <DetailsViewer rows={assetDetailsRow} data={assetData} />
-      <Table columns={historyColumns} dataset={historyData} onClick={() => {}} />
+      <h2 className='margin-top-bottom card'>History of the asset</h2>
+      <Table
+        columns={historyColumns}
+        dataset={historyData}
+        onClick={() => {}}
+        emptyMessage='No history found'
+      />
     </div>
   );
 }
