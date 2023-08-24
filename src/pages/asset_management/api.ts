@@ -54,9 +54,7 @@ export const assetApi = baseApi.injectEndpoints({
         url: '/assets/upload/', // Replace with your upload URL
         method: 'POST',
         body: formData,
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+        headers: {}
       })
     }),
     createCategory: builder.mutation<ResponseDataType, CategoryType>({

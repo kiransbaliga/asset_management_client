@@ -15,3 +15,7 @@ export const assetColumns = [
   },
   { key: 'status', label: 'Status', adapter: status }
 ];
+export const perishableAssetsColumns = [
+  { key: 'name', label: 'Subcategory' },
+  { key: 'count', label: 'Count' }
+];

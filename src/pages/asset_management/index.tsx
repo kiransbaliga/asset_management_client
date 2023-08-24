@@ -36,21 +36,28 @@ function AssetManagement() {
           </PermissionGuard>
         }
       />
-      <Route path='/details/:id' element={<AssetDetails />} />
+      <Route
+        path='/details/:id'
+        element={
+          <PermissionGuard userRoles={AdminRoles} redirect='/forbidden'>
+            <AssetDetails />
+          </PermissionGuard>
+        }
+      />
       <Route
         path='/category/create'
         element={
-          <PermissionGuard userRoles={AdminRoles} redirect='/forbidden'>
-            <CategoryForm />
-          </PermissionGuard>
+          // <PermissionGuard userRoles={AdminRoles} redirect='/forbidden'>
+          <CategoryForm />
+          // {/* </PermissionGuard> */}
         }
       />
       <Route
         path='/subcategory/create'
         element={
-          <PermissionGuard userRoles={AdminRoles} redirect='/forbidden'>
-            <SubcategoryForm />
-          </PermissionGuard>
+          // <PermissionGuard userRoles={AdminRoles} redirect='/forbidden'>
+          <SubcategoryForm />
+          // </PermissionGuard>
         }
       />
     </Routes>
