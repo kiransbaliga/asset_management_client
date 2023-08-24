@@ -1,21 +1,17 @@
-export const requiredValidator = (
-  message: string = 'Required field',
-  nullValue: any = '',
-  getState = (states: any[]) => states[0]
-) => {
+export const requiredValidator = (message: string = 'Required field', nullValue: any = '') => {
   return (states: any) => {
-    if (getState(states) === nullValue) return [message];
+    if (states === nullValue) return message;
   };
 };
 
-export const includeBackendValidators = (func: (states: any[]) => any) => {
-  return (states: any[]) => {
-    try {
-      const errors = func(states);
+// export const includeBackendValidators = (func: (states: any[]) => any) => {
+//   return (states: any[]) => {
+//     try {
+//       const errors = func(states);
 
-      return errors;
-    } catch {
-      return [];
-    }
-  };
-};
+//       return errors;
+//     } catch {
+//       return [];
+//     }
+//   };
+// };

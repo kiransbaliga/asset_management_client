@@ -4,47 +4,41 @@ import LoginInputField from '../../components/LoginInputField/LoginInputField';
 import { useNavigate } from 'react-router-dom';
 import useValidator from '../../hooks/validator.hook';
 import { useLoginMutation } from '../../services/auth/api';
-import { includeBackendValidators, requiredValidator } from '../../utils/validators.utils';
 import Button from '../../components/button';
 import Dialog from '../../components/Dialog/Dialog';
 import { setToken } from '../../utils/token';
+import useForm from '../../hooks/form.hook';
+import { initialLoginData } from './consts';
+import { LoginDataType, LoginErrorsType } from './types';
+import { loginValidators } from './validators';
+import { useUI } from '../../contexts/UIContexts';
+import { TOAST_TIMOUT, TOAST_TYPE } from '../../components/toast/consts';
 
 const Login: FC = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [login, loginResponse] = useLoginMutation();
+
+  const [loginData, setLoginData] = useForm<LoginDataType>(initialLoginData);
+  const [loginValidate, loginErrors] = useValidator<LoginErrorsType, LoginDataType>(
+    loginValidators,
+    loginData,
+    loginResponse.error ? loginResponse.error['data'].errors : {}
+  );
+
   const [showErrorDialog, setShowErrorDialog] = useState({ show: false });
 
   const navigate = useNavigate();
-  const [login, loginResponse] = useLoginMutation();
+
+  const { createToast } = useUI();
 
   function handleLogin() {
-    if (username && password)
-      login({
-        username,
-        password
-      });
+    if (loginValidate()) login(loginData);
   }
-
-  const usernameErrors = useValidator(
-    [
-      requiredValidator('username is required'),
-      includeBackendValidators((states) => states[1].error.data.errors.username)
-    ],
-    [username, loginResponse]
-  );
-
-  const passwordErrors = useValidator(
-    [
-      requiredValidator('Password is required'),
-      includeBackendValidators((states) => states[1].error.data.errors.password)
-    ],
-    [password, loginResponse]
-  );
 
   useEffect(() => {
     if (loginResponse.isSuccess) {
       setToken(loginResponse.data.data.token);
       navigate('/employees');
+      createToast(TOAST_TYPE.SUCCESS, 'Login success', '', TOAST_TIMOUT.SHORT);
     } else if (loginResponse.isError) {
       setShowErrorDialog({ show: true });
     }
@@ -77,17 +71,17 @@ const Login: FC = () => {
                 id='usernameInputField'
                 label='username'
                 type='text'
-                value={username}
-                onChange={setUsername}
-                errors={usernameErrors}
+                value={loginData.username}
+                onChange={(value) => setLoginData('username', value)}
+                errors={loginErrors.username}
               />
               <LoginInputField
                 id='passwordInputField'
                 label='Password'
                 type='password'
-                value={password}
-                onChange={setPassword}
-                errors={passwordErrors}
+                value={loginData.password}
+                onChange={(value) => setLoginData('password', value)}
+                errors={loginErrors.password}
               />
               <Button
                 className='btn-primary'

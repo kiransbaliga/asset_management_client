@@ -15,6 +15,8 @@
   --success-tint-color: #d3f4be;
   --danger-color: #7e3333;
   --danger-tint-color: #ffbfbf;
+  --info-color: #03aeee;
+  --info-tint-color: #eaf9ff;
 }
 
 * {
@@ -66,6 +68,14 @@ a {
 .full-screen {
   width: 100vw;
   height: 100vh;
+}
+
+.relative{
+  position: relative
+}
+
+.absolute{
+  position: absolute;
 }
 
 .flex-column {
@@ -149,7 +159,7 @@ a {
   color: var(--light-color);
 }
 
-.icon-sm {
+/* .icon-sm {
   width: 20px;
 }
 
@@ -160,7 +170,7 @@ a {
 
 .icon-lg {
   width: 50px;
-}
+} */
 
 @media only screen and (max-width: 768px) {
   .row {
