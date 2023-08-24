@@ -10,6 +10,7 @@ import RequestAdminForm from '../../pages/request_management/RequestAdminForm';
 import Request from '../../pages/request_management/Request';
 import PermissionGuard from '../../wrappers/PermissionGuard';
 import { AdminRoles } from '../../pages/request_management/consts';
+import Forbidden from '../forbidden';
 
 function Dashboard() {
   return (
@@ -28,12 +29,13 @@ function Dashboard() {
                 <Route
                   path='/requests/create/admin'
                   element={
-                    <PermissionGuard userRoles={AdminRoles} redirect='/requests/create'>
+                    <PermissionGuard userRoles={AdminRoles} redirect='/forbidden'>
                       <RequestAdminForm />
                     </PermissionGuard>
                   }
                 />
                 <Route path='/requests/details/:id' element={<Request />} />
+                <Route path='/forbidden' element={<Forbidden />} />
               </Routes>
             </div>
           </div>

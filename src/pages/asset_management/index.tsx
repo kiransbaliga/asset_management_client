@@ -15,7 +15,7 @@ function AssetManagement() {
       <Route
         path='/create'
         element={
-          <PermissionGuard userRoles={AdminRoles} redirect='/assets'>
+          <PermissionGuard userRoles={AdminRoles} redirect='/forbidden'>
             <AssetForm />
           </PermissionGuard>
         }
@@ -23,7 +23,7 @@ function AssetManagement() {
       <Route
         path='/create/upload'
         element={
-          <PermissionGuard userRoles={AdminRoles} redirect='/assets'>
+          <PermissionGuard userRoles={AdminRoles} redirect='/forbidden'>
             <UploadExcel />
           </PermissionGuard>
         }
@@ -31,26 +31,33 @@ function AssetManagement() {
       <Route
         path='/edit/:id'
         element={
-          <PermissionGuard userRoles={AdminRoles} redirect='/assets'>
+          <PermissionGuard userRoles={AdminRoles} redirect='/forbidden'>
             <AssetForm />
           </PermissionGuard>
         }
       />
-      <Route path='/details/:id' element={<AssetDetails />} />
+      <Route
+        path='/details/:id'
+        element={
+          <PermissionGuard userRoles={AdminRoles} redirect='/forbidden'>
+            <AssetDetails />
+          </PermissionGuard>
+        }
+      />
       <Route
         path='/category/create'
         element={
-          <PermissionGuard userRoles={AdminRoles} redirect='/assets'>
-            <CategoryForm />
-          </PermissionGuard>
+          // <PermissionGuard userRoles={AdminRoles} redirect='/forbidden'>
+          <CategoryForm />
+          // {/* </PermissionGuard> */}
         }
       />
       <Route
         path='/subcategory/create'
         element={
-          <PermissionGuard userRoles={AdminRoles} redirect='/assets'>
-            <SubcategoryForm />
-          </PermissionGuard>
+          // <PermissionGuard userRoles={AdminRoles} redirect='/forbidden'>
+          <SubcategoryForm />
+          // </PermissionGuard>
         }
       />
     </Routes>

@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import Table from '../../components/Table/Table';
 import HistoryType from '../../types/HistoryType';
 import { historyColumns } from '../../columns/history.columns';
+import PermissionGuard from '../../wrappers/PermissionGuard';
 
 const assetDetailsRow = [
   [
@@ -59,7 +60,17 @@ function AssetDetails() {
     <div>
       <TitleBar title='Asset Details' />
       <DetailsViewer rows={assetDetailsRow} data={assetData} />
-      <Table columns={historyColumns} dataset={historyData} onClick={() => {}} />
+      <PermissionGuard>
+        <>
+          <h2 className='margin-top-bottom card'>History of the asset</h2>
+          <Table
+            columns={historyColumns}
+            dataset={historyData}
+            onClick={() => {}}
+            emptyMessage='No history found'
+          />
+        </>
+      </PermissionGuard>
     </div>
   );
 }

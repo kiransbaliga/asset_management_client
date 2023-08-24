@@ -19,6 +19,7 @@ import AssetFilterType from '../../types/AssetFilterType';
 import { empltyAssetFilter } from '../asset_management/consts';
 import RequestType from '../../types/RequestType';
 import { useSelector } from 'react-redux';
+import PermissionGuard from '../../wrappers/PermissionGuard';
 
 function RequestList() {
   const [deleteDialogState, setDeleteDialogState] = useState<DialogStateType>({
@@ -95,7 +96,8 @@ function RequestList() {
 
   if (allrequestsSuccess)
     requestsColumn = [...requestColumns, { key: 'id', label: 'Action', adapter: action }];
-  else if (employeerequestsSuccess) requestsColumn = [...requestColumns.slice(1)];
+  else if (employeerequestsSuccess)
+    requestsColumn = [...requestColumns.slice(0, 1), ...requestColumns.slice(2)];
   else requestsColumn = [];
 
   return (
@@ -111,22 +113,23 @@ function RequestList() {
       </Dialog>
       <div className='flex-column'>
         <TitleBar title='Request List'>
-          {user && AdminRoles.includes(user.role) && (
+          <PermissionGuard>
             <Filter
               label='Status'
               options={requestStatusOptions}
               value={filterData.status}
               onSelect={(value) => handleFilterSelect('status', value)}
             />
-          )}
+          </PermissionGuard>
+
           <IconButton icon='/assets/icons/plus.png' text='Create Request' onClick={handleCreate} />
-          {user && AdminRoles.includes(user.role) && (
+          <PermissionGuard>
             <IconButton
               icon='/assets/icons/plus.png'
               text='Allocate items'
               onClick={handleAllocate}
             />
-          )}
+          </PermissionGuard>
         </TitleBar>
         <div className='grow-scroll'>
           <Table

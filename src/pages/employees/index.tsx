@@ -13,7 +13,7 @@ function Employees() {
       <Route
         path='/create'
         element={
-          <PermissionGuard userRoles={AdminRoles} redirect='/'>
+          <PermissionGuard userRoles={AdminRoles} redirect='/forbidden'>
             <EmployeeForm />
           </PermissionGuard>
         }
@@ -21,7 +21,7 @@ function Employees() {
       <Route
         path='/edit/:id'
         element={
-          <PermissionGuard userRoles={AdminRoles} redirect='/'>
+          <PermissionGuard userRoles={AdminRoles} redirect='/forbidden'>
             <EmployeeForm />
           </PermissionGuard>
         }

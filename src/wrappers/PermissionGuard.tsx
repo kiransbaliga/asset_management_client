@@ -6,7 +6,7 @@ import { AdminRoles } from '../pages/request_management/consts';
 interface PermissionGuardProps {
   children: ReactElement | null;
   redirect?: string;
-  userRoles: string[];
+  userRoles?: string[];
 }
 
 const PermissionGuard: FC<PermissionGuardProps> = ({
@@ -16,8 +16,9 @@ const PermissionGuard: FC<PermissionGuardProps> = ({
 }) => {
   const user = useSelector((state: any) => state.auth.user);
 
+  console.log(user);
   if (user && userRoles.includes(user.role)) return children;
-  else if (redirect) return <Navigate to={redirect} />;
+  else if (redirect && user) return <Navigate to={redirect} />;
 };
 
 export default PermissionGuard;

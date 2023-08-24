@@ -41,5 +41,5 @@ export const emptySubcategory: SubcategoryType = {
   name: '',
   categoryId: null,
   perishable: null,
-  count: 0
+  count: null
 };

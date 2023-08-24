@@ -13,6 +13,10 @@ export const assetApi = baseApi.injectEndpoints({
       query: (filter) => createQueryUrl('/assets', filter),
       providesTags: [ASSET_API_TAGS.ON_ASSET_DELETE]
     }),
+    getAssetsOfEmployee: builder.query<ResponseDataListType, number>({
+      query: (id) => `/assets/employee/${id}`,
+      providesTags: [ASSET_API_TAGS.ON_ASSET_DELETE]
+    }),
     getCategoryList: builder.query<ResponseDataListType, void>({
       query: () => '/category/'
     }),
@@ -50,9 +54,7 @@ export const assetApi = baseApi.injectEndpoints({
         url: '/assets/upload/', // Replace with your upload URL
         method: 'POST',
         body: formData,
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+        headers: {}
       })
     }),
     createCategory: builder.mutation<ResponseDataType, CategoryType>({
@@ -85,5 +87,6 @@ export const {
   useUploadFileMutation,
   useCreateCategoryMutation,
   useCreateSubcategoryMutation,
-  useLazyGetHistoryByAssetIdQuery
+  useLazyGetHistoryByAssetIdQuery,
+  useLazyGetAssetsOfEmployeeQuery
 } = assetApi;
