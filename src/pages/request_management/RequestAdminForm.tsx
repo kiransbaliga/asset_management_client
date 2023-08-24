@@ -22,9 +22,15 @@ import { useNavigate } from 'react-router';
 import { useGetEmployeeListQuery } from '../employees/api';
 import EmployeeType from '../../types/EmployeeType';
 import Actions from '../../components/Actions/inedx';
+import { useSelector } from 'react-redux';
 
 function RequestAdminForm() {
   const [requestData, setRequestData] = useState<RequestType>(emptyAdminRequest);
+  const user = useSelector((state: any) => state.auth.user);
+
+  useEffect(() => {
+    setRequestData((prevData) => ({ ...prevData, ['employeeId']: user.id }));
+  }, [user]);
   const [listId, setListId] = useState(2);
   const [newItem, setNewItem] = useState<RequestItemType>({
     count: 0,
@@ -39,7 +45,7 @@ function RequestAdminForm() {
   const [createRequest, { data, isSuccess }] = useCreateRequestMutation();
   const [resolveRequest, { isSuccess: resolveSucccess }] = useResolveRequestMutation();
   const { data: categoriesDateset } = useGetCategoryListQuery();
-  const { data: employeeDataset } = useGetEmployeeListQuery();
+  const { data: employeeDataset } = useGetEmployeeListQuery({ offset: 0, take: 1000 });
   const categories = categoriesDateset?.data as CategoryType[];
   const subcategories = subcategoriesDateset?.data as subcategoryType[];
   const employees = employeeDataset?.data as EmployeeType[];
@@ -93,9 +99,7 @@ function RequestAdminForm() {
     } else if (field === 'requestType') {
       setRequestData((prevData) => {
         setRequestType(value);
-        const employeeId = localStorage.getItem('employeeId');
-
-        if (value === 'exchange') getOwnedAssets(Number(employeeId));
+        if (value === 'exchange') getOwnedAssets(user.id);
         console.log(requestType);
 
         return { ...prevData, requestItem: [] };

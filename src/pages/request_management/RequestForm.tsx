@@ -19,9 +19,16 @@ import subcategoryType from '../../types/SubcategoryType';
 import AssetType from '../../types/AssetType';
 import { useNavigate } from 'react-router';
 import Actions from '../../components/Actions/inedx';
+import { useSelector } from 'react-redux';
 
 function RequestForm() {
   const [requestData, setRequestData] = useState<RequestType>(emptyRequest);
+
+  const user = useSelector((state: any) => state.auth.user);
+
+  useEffect(() => {
+    setRequestData((prevData) => ({ ...prevData, ['employeeId']: user.id }));
+  }, [user]);
   const [listId, setListId] = useState(2);
   const [newItem, setNewItem] = useState<RequestItemType>({
     count: 0,
@@ -82,9 +89,8 @@ function RequestForm() {
     } else if (field === 'requestType') {
       setRequestData((prevData) => {
         setRequestType(value);
-        const employeeId = localStorage.getItem('employeeId');
 
-        if (value === 'exchange') getOwnedAssets(Number(employeeId));
+        if (value === 'exchange') getOwnedAssets(user.id);
         console.log(requestType);
 
         return { ...prevData, requestItem: [] };
@@ -149,7 +155,7 @@ function RequestForm() {
   return (
     <div className='request-form '>
       <TitleBar title={'Create Request'}></TitleBar>
-      <div className='flex-column center'>
+      <div className='flex-column '>
         <div className='card'>
           <div className='flex-row'>
             <div className='column'>
@@ -264,10 +270,6 @@ function RequestForm() {
             </div>
           </div>
         )}
-
-        <div className='column'></div>
-
-        <div className='blank'></div>
       </div>
     </div>
   );

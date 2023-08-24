@@ -16,6 +16,8 @@ import {
 } from './api';
 import CategoryType from '../../types/CategoryType';
 import subcategoryType from '../../types/SubcategoryType';
+import Button from '../../components/button';
+import { Link } from 'react-router-dom';
 
 function AssetForm() {
   const [assetData, setAssetData] = useState<AssetType>(emptyAsset);
@@ -23,12 +25,13 @@ function AssetForm() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [getSubCategories, { data: subcategoriesDateset }] = useLazyGetSubcategoryListQuery();
-  const { data: categoriesDateset } = useGetCategoryListQuery();
+  const subcategories = subcategoriesDateset?.data as subcategoryType[];
+
   const [createAsset, { isSuccess: isCreateSuccess }] = useCreateAssetMutation();
   const [updateAsset, { isSuccess: isUpdateSuccess }] = useUpdateAssetMutation();
   const [getAssetById, { data: getAssetData }] = useLazyGetAssetByIdQuery();
+  const { data: categoriesDateset } = useGetCategoryListQuery();
   const categories = categoriesDateset?.data as CategoryType[];
-  const subcategories = subcategoriesDateset?.data as subcategoryType[];
 
   const categoryOptions = categories
     ? categories.map((category) => ({ value: category.id, text: category.name }))
@@ -113,26 +116,36 @@ function AssetForm() {
             />
           </div>
           <div className='column'>
-            <SelectFied
-              id='categoryField'
-              label='Category'
-              placeholder='Choose a category'
-              options={categoryOptions}
-              value={currentCategory}
-              onChange={setCurrentCategory}
-            />
+            <div className='select-with-button'>
+              <SelectFied
+                id='categoryField'
+                label='Category'
+                placeholder='Choose a category'
+                options={categoryOptions}
+                value={currentCategory}
+                onChange={setCurrentCategory}
+              />
+              <Link to='/assets/category/create'>
+                <Button className='btn btn-primary' text='+' />
+              </Link>
+            </div>
           </div>
-          {!currentCategory && <div className='column'> </div>}
+          {/* {!currentCategory && id && <div className='column'> </div>} */}
           {currentCategory && (
             <div className='column'>
-              <SelectFied
-                id='subCategoryField'
-                label='Sub-category'
-                placeholder='Choose a sub-category'
-                options={subcategoryOptions}
-                value={assetData.subcategoryId}
-                onChange={(value) => handleChange('subcategoryId', Number(value))}
-              />
+              <div className='select-with-button'>
+                <SelectFied
+                  id='subCategoryField'
+                  label='Sub-category'
+                  placeholder='Choose a sub-category'
+                  options={subcategoryOptions}
+                  value={assetData.subcategoryId}
+                  onChange={(value) => handleChange('subcategoryId', Number(value))}
+                />
+                <Link to='/assets/subcategory/create'>
+                  <Button className='btn btn-primary' text='+' />
+                </Link>
+              </div>
             </div>
           )}
 

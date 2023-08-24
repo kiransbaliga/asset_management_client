@@ -9,9 +9,20 @@ import {
   useUpdateRequestMutation
 } from './api';
 import RequestType from '../../types/RequestType';
-import { requestDetailColumns } from '../../columns/requests.columns';
+import {
+  requestExchangeDetailColumns,
+  requestNewDetailColumns
+} from '../../columns/requests.columns';
+import Table from '../../components/Table/Table';
+import { requestedListColumns } from '../../columns/requestList.columns';
+import subcategoryType from '../../types/SubcategoryType';
+import { useSelector } from 'react-redux';
+import { AdminRoles } from './consts';
+// import { useSelector } from 'react-redux';
 
 function Request() {
+  const user = useSelector((state: any) => state.auth.user);
+
   const { id } = useParams();
   const [requestData, setRequestData] = useState<RequestType>();
   const [updatedData, setUpdatedData] = useState<RequestType>();
@@ -52,23 +63,58 @@ function Request() {
     if (rejectSuccess) navigate('/requests');
   }, [rejectSuccess]);
 
-  const detailsColumns = [requestDetailColumns.slice(0, 5), requestDetailColumns.slice(5)];
+  const detailsExchangeColumns = [
+    requestExchangeDetailColumns.slice(0, 4),
+    requestExchangeDetailColumns.slice(4, 8)
+  ];
+
+  const detailsNewColumns = [requestNewDetailColumns];
+
+  const requestListColumns = [
+    { key: 'subcategory', label: 'Subcategory', adapter: (value: subcategoryType) => value.name },
+    ...requestedListColumns
+  ];
 
   return (
     <div>
       <TitleBar title='Request Details'>
-        {requestData && requestData.status === 'Pending' && (
-          <div className='flex-row'>
-            <IconButton
-              text='Resolve'
-              icon='/assets/icons/resolve.svg'
-              onClick={handleResolveClick}
-            />
-            <IconButton text='Reject' icon='/assets/icons/reject.svg' onClick={handleRejectClick} />
-          </div>
-        )}
+        {user &&
+          AdminRoles.includes(user.role) &&
+          requestData &&
+          requestData.status === 'Pending' && (
+            <div className='flex-row'>
+              <IconButton
+                text='Resolve'
+                icon='/assets/icons/resolve.svg'
+                onClick={handleResolveClick}
+              />
+              <IconButton
+                text='Reject'
+                icon='/assets/icons/reject.svg'
+                onClick={handleRejectClick}
+              />
+            </div>
+          )}
       </TitleBar>
-      <DetailsViewer rows={detailsColumns} data={requestData} />
+      {requestData && (
+        <>
+          <DetailsViewer
+            rows={requestData && requestData.assetId ? detailsExchangeColumns : detailsNewColumns}
+            data={requestData}
+          />
+          {requestData.requestItem.length !== 0 && (
+            <div>
+              <div className='table-heading'> Requested items</div>
+              <Table
+                columns={requestListColumns}
+                dataset={requestData.requestItem}
+                onClick={() => {}}
+                emptyMessage='No data'
+              />
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }

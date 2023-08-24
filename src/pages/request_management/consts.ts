@@ -9,7 +9,7 @@ export const requestTypeOptions: OptionType[] = [
 export const emptyRequest: RequestType = {
   assetId: null,
   reason: '',
-  employeeId: Number(localStorage.getItem('employeeId')),
+  employeeId: null,
   requestItem: []
 };
 export const emptyAdminRequest: RequestType = {
@@ -19,7 +19,8 @@ export const emptyAdminRequest: RequestType = {
   requestItem: []
 };
 export const REQUEST_API_TAGS = {
-  GET_LIST: 'get list'
+  GET_LIST: 'get list',
+  GET_LIST_EMPLOYEE: 'get list associated with employee'
 };
 
 export const requestStatusOptions: OptionType[] = [
@@ -27,3 +28,5 @@ export const requestStatusOptions: OptionType[] = [
   { text: 'Resolved', value: 'Resolved' },
   { text: 'Rejected', value: 'Rejected' }
 ];
+
+export const AdminRoles = ['Admin'];

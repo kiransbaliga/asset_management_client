@@ -76,8 +76,9 @@ function EmployeeForm() {
 
   useEffect(() => {
     if (employeeDataResponse?.data) {
-      const employeeData = employeeDataResponse.data as EmployeeType;
+      const employeeData = { ...(employeeDataResponse.data as EmployeeType) };
 
+      employeeData.password = '';
       setEmployeeData(employeeData);
     }
   }, [employeeDataResponse]);
