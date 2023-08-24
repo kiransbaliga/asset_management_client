@@ -5,53 +5,43 @@ import Table from '../../components/Table/Table';
 import './styles.css';
 // import { assetColumns } from '../../columns/assets.columns';
 import Filter from '../../components/filter';
-// import {
-//   useGetCategoryListQuery,
-//   useLazyGetAssetListQuery,``
-//   useLazyGetSubcategoryListQuery
-// } from './api';
-// import { useEffect, useState } from 'react';
-// import CategoryType from '../../types/CategoryType';
-// import subcategoryType from '../../types/SubcategoryType';
-// import AssetType from '../../types/AssetType';
 import { requestColumns } from '../../columns/requests.columns';
-import { useDeleteRequestMutation, useLazyGetRequestsListQuery } from './api';
+import {
+  useDeleteRequestMutation,
+  useLazyGetRequestsListQuery,
+  useLazyGetRequestsOfEmployeeQuery
+} from './api';
 import Actions from '../../components/Actions/inedx';
 import { useEffect, useState } from 'react';
 import Dialog, { DialogStateType } from '../../components/Dialog/Dialog';
-import { requestStatusOptions } from './consts';
+import { AdminRoles, requestStatusOptions } from './consts';
 import AssetFilterType from '../../types/AssetFilterType';
 import { empltyAssetFilter } from '../asset_management/consts';
 import RequestType from '../../types/RequestType';
+import { useSelector } from 'react-redux';
 
 function RequestList() {
-  //   const [currentCategory, setCurrentCategory] = useState();
   const [deleteDialogState, setDeleteDialogState] = useState<DialogStateType>({
     show: false,
     params: {}
   });
-  const [getRequests, { data: requestDataset }] = useLazyGetRequestsListQuery();
+  const user = useSelector((state: any) => state.auth.user);
+  const [getRequests, { data: allrequestDataset, isSuccess: allrequestsSuccess }] =
+    useLazyGetRequestsListQuery();
+  const [
+    getEmployeeRequests,
+    { data: requestEmployeeDataset, isSuccess: employeerequestsSuccess }
+  ] = useLazyGetRequestsOfEmployeeQuery();
 
   const [filterData, setFilterData] = useState<AssetFilterType>(empltyAssetFilter);
-  // const { data: request } = useGetRequestsListQuery();
-  // const requests = request?.data;
   const navigate = useNavigate();
 
   const [deleteRequest, { isSuccess: isDeleted }] = useDeleteRequestMutation();
 
   const handleCreate = () => {
-    navigate('/requests/create/');
+    navigate('/requests/create');
   };
 
-  const requests = requestDataset
-    ? requestDataset.data.map((request: RequestType) => {
-        const newRequest = {
-          ...request
-        };
-
-        return newRequest;
-      })
-    : [];
   const action = (id: string) => {
     return (
       <Actions
@@ -61,7 +51,6 @@ function RequestList() {
       />
     );
   };
-  const requestsColumn = [...requestColumns, { key: 'id', label: 'Action', adapter: action }];
 
   const handleFilterSelect = (field: string, value: any) => {
     setFilterData((prevData) => ({ ...prevData, [field]: value }));
@@ -77,9 +66,34 @@ function RequestList() {
   useEffect(() => {
     if (isDeleted) setDeleteDialogState({ show: false, params: {} });
   }, [isDeleted]);
+
   useEffect(() => {
-    getRequests(filterData);
-  }, [filterData]);
+    if (user && AdminRoles.includes(user.role)) getRequests(filterData);
+    else if (user) getEmployeeRequests(user.id);
+  }, [filterData, user]);
+
+  const requestDataset = allrequestsSuccess
+    ? allrequestDataset
+    : employeerequestsSuccess
+    ? requestEmployeeDataset
+    : null;
+
+  const requests = requestDataset
+    ? requestDataset.data.map((request: RequestType) => {
+        const newRequest = {
+          ...request
+        };
+
+        return newRequest;
+      })
+    : [];
+
+  let requestsColumn;
+
+  if (allrequestsSuccess)
+    requestsColumn = [...requestColumns, { key: 'id', label: 'Action', adapter: action }];
+  else if (employeerequestsSuccess) requestsColumn = [...requestColumns.slice(1)];
+  else requestsColumn = [];
 
   return (
     <>
@@ -94,20 +108,29 @@ function RequestList() {
       </Dialog>
       <div className='flex-column'>
         <TitleBar title='Request List'>
-          <Filter
-            label='Status'
-            options={requestStatusOptions}
-            value={filterData.status}
-            onSelect={(value) => handleFilterSelect('status', value)}
-          />
+          {user && AdminRoles.includes(user.role) && (
+            <Filter
+              label='Status'
+              options={requestStatusOptions}
+              value={filterData.status}
+              onSelect={(value) => handleFilterSelect('status', value)}
+            />
+          )}
           <IconButton icon='/assets/icons/plus.png' text='Create Request' onClick={handleCreate} />
+          {user && AdminRoles.includes(user.role) && (
+            <IconButton
+              icon='/assets/icons/plus.png'
+              text='Allocate items'
+              onClick={handleCreate}
+            />
+          )}
         </TitleBar>
         <div className='grow-scroll'>
           <Table
             columns={requestsColumn}
             dataset={requests}
             onClick={handleTableClick}
-            emptyMessage='No items requested'
+            emptyMessage='No requests found'
           />
         </div>
       </div>
