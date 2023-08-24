@@ -39,4 +39,18 @@
       width: 100%;
     }
   }
+  .select-with-button{
+    height: 100%;
+    display: flex;
+    align-items: end;
+  }
+
+  .select-with-button .select-field-wrapper {
+    width: 100%;
+  }
+
+  .select-with-button .btn{
+    margin-bottom: 25px;
+    margin-left: 10px;
+  }
   
