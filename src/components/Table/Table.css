@@ -1,28 +1,37 @@
 .table {
+  position: relative;
+  top: -10px;
   width: 100%;
   border-spacing: 0 15px;
 }
 
-.table tr{
+.table tr {
   box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
   height: 60px;
+  position: relative;
 }
-.table-head {
-  background: #eaf9ff;
-  color: #12779c;
-}
+.table-head  {
+  background: var(--primary-shade-color);
+  color: #ffffff;
 
+  align-items: start;
+}
+.table th {
+  text-align: left;
+  padding-left: 10px;
+}
 .table-row {
   background: #fff;
   cursor: pointer;
   transition: all 0.3s;
 }
 
-.table-row:hover{
+.table-row:hover {
   background: #eaf9ff;
 }
 
 .table-row td span {
   display: flex;
-  justify-content: center;
+  justify-content: left;
+  padding-left: 10px;
 }

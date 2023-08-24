@@ -1,5 +1,6 @@
 .header {
   height: fit-content;
+  width: 100vw;
 }
 
 .header-logo {
@@ -39,6 +40,6 @@
   background: var(--primary-color);
 }
 
-.header-navbar .user-dropdown .user-content .name{
+.header-navbar .user-dropdown .user-content .name {
   margin-right: 10px;
 }
