@@ -13,6 +13,10 @@ export const assetApi = baseApi.injectEndpoints({
       query: (filter) => createQueryUrl('/assets', filter),
       providesTags: [ASSET_API_TAGS.ON_ASSET_DELETE]
     }),
+    getAssetsOfEmployee: builder.query<ResponseDataListType, number>({
+      query: (id) => `/assets/employee/${id}`,
+      providesTags: [ASSET_API_TAGS.ON_ASSET_DELETE]
+    }),
     getCategoryList: builder.query<ResponseDataListType, void>({
       query: () => '/category/'
     }),
@@ -85,5 +89,6 @@ export const {
   useUploadFileMutation,
   useCreateCategoryMutation,
   useCreateSubcategoryMutation,
-  useLazyGetHistoryByAssetIdQuery
+  useLazyGetHistoryByAssetIdQuery,
+  useLazyGetAssetsOfEmployeeQuery
 } = assetApi;

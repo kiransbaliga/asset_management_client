@@ -59,7 +59,7 @@ const SubcategoryForm = () => {
             placeholder='Choose a category'
             options={categoryOptions}
             value={subcategoryData.categoryId}
-            onChange={(value) => handleChange('categoryId', Number(value))}
+            onChange={(value) => handleChange('categoryId', value)}
           />
         </div>
         <div className='column'>
@@ -68,9 +68,7 @@ const SubcategoryForm = () => {
             label='Perishable?'
             placeholder='Is the subcategory perishable?'
             options={perishableTypeOptions}
-            value={
-              subcategoryData.perishable === null ? '' : subcategoryData.perishable ? '1' : '0'
-            }
+            value={subcategoryData.perishable ? '1' : '0'}
             onChange={(value) => handleChange('perishable', value === '1')}
           />
         </div>
