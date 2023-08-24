@@ -90,7 +90,7 @@ function RequestForm() {
       setRequestData((prevData) => {
         setRequestType(value);
 
-        if (value === 'exchange') getOwnedAssets(Number(user.id));
+        if (value === 'exchange') getOwnedAssets(user.id);
         console.log(requestType);
 
         return { ...prevData, requestItem: [] };
