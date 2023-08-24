@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import { address, employeeColumns } from '../../columns/employee.columns';
 import EmployeeType from '../../types/EmployeeType';
 import { useLazyGetEmployeeQuery } from './api';
+import PermissionGuard from '../../wrappers/PermissionGuard';
+import { AdminRoles } from '../request_management/consts';
 
 const employeeDetailsRow = [
   employeeColumns.slice(0, 5),
@@ -35,7 +37,9 @@ function Employee() {
   return (
     <div>
       <TitleBar title='Employee Details'>
-        <IconButton text='Edit' icon='/assets/icons/edit.svg' onClick={handleEditClick} />
+        <PermissionGuard userRoles={AdminRoles}>
+          <IconButton text='Edit' icon='/assets/icons/edit.svg' onClick={handleEditClick} />
+        </PermissionGuard>
       </TitleBar>
       <DetailsViewer rows={employeeDetailsRow} data={employeeData} />
     </div>

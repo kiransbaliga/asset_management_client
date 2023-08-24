@@ -8,9 +8,14 @@ import Actions from '../../components/Actions/inedx';
 import { employeeColumns } from '../../columns/employee.columns';
 import Dialog, { DialogStateType } from '../../components/Dialog/Dialog';
 import { useDeleteEmployeeMutation, useGetEmployeeListQuery } from './api';
+import PermissionGuard from '../../wrappers/PermissionGuard';
+import { AdminRoles } from '../request_management/consts';
+import { useSelector } from 'react-redux';
 
 const EmployeeList: FC = () => {
   const [deleteDialogState, setDeleteDialogState] = useState<DialogStateType>({ show: false });
+
+  const user = useSelector((state: any) => state.auth.user);
 
   const { data } = useGetEmployeeListQuery();
   const [deleteEmplyee, { isSuccess: isDeleted }] = useDeleteEmployeeMutation();
@@ -33,7 +38,7 @@ const EmployeeList: FC = () => {
 
   const employeeTableColumns = [
     ...employeeColumns,
-    { key: 'id', label: 'Action', adapter: action }
+    AdminRoles.includes(user.role) && { key: 'id', label: 'Action', adapter: action }
   ];
 
   const handleCreate = () => {
@@ -65,7 +70,9 @@ const EmployeeList: FC = () => {
       </Dialog>
       <div className='flex-column'>
         <TitleBar title='Employee List'>
-          <IconButton icon='/assets/icons/plus.png' text='Create employee' onClick={handleCreate} />
+          <PermissionGuard userRoles={AdminRoles}>
+            <IconButton icon='/assets/icons/plus.png' text='Create employee' onClick={handleCreate} />
+          </PermissionGuard>
         </TitleBar>
         <div className='grow-scroll'>
           <Table
