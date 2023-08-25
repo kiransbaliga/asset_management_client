@@ -42,10 +42,6 @@ const Toast: FC<ToastProps> = ({
       show={show === true}
       className='toast'
       style={{ bottom: bottom + 'px' }}
-      startFrom='start-from'
-      startTo='start-to'
-      endFrom='end-from'
-      endTo='end-to'
       afterEnd={onHide}
       duration={250}
     >

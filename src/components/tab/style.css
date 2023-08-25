@@ -1,0 +1,64 @@
+/* Icon tab adapter styles */
+.icon-tab {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.tab:first-of-type .icon-tab {
+  border-radius: 10px 0px 0px 0px;
+}
+
+.tab:last-of-type .icon-tab {
+  border-radius: 0px 10px 0px 0px;
+}
+
+.icon-tab .icon {
+  margin-right: 10px;
+}
+
+.icon-tab.selected {
+  background: var(--primary-shade-color);
+  color: var(--primary-tint-color);
+}
+
+.icon-tab.not-selected {
+  background: var(--primary-tint-color);
+  color: var(--primary-shade-color);
+}
+
+.icon-tab.not-selected:hover {
+  background: var(--primary-shade-color);
+  color: var(--primary-tint-color);
+}
+
+/* TabView styles */
+.tab-view.start-from {
+  display: none;
+  opacity: 0;
+}
+
+.tab-view.start-through {
+  display: block;
+  opacity: 0;
+}
+
+.tab-view.start-to {
+  opacity: 1;
+}
+
+.tab-view.end-from {
+  opacity: 1;
+}
+
+.tab-view.end-through {
+  display: block;
+  opacity: 0;
+}
+
+.tab-view.end-to {
+  display: none;
+  opacity: 0;
+}

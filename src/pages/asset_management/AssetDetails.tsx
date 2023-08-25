@@ -57,18 +57,21 @@ function AssetDetails() {
   }, [HistoryResponseData, isHistorySuccess]);
 
   return (
-    <div>
+    <div className='flex-column height-full'>
       <TitleBar title='Asset Details' />
       <DetailsViewer rows={assetDetailsRow} data={assetData} />
       <PermissionGuard>
         <>
           <h2 className='margin-top-bottom card'>History of the asset</h2>
-          <Table
-            columns={historyColumns}
-            dataset={historyData}
-            onClick={() => {}}
-            emptyMessage='No history found'
-          />
+          <div className='height-full'>
+            <Table
+              className='height-full'
+              columns={historyColumns}
+              dataset={historyData}
+              onClick={() => {}}
+              emptyMessage='No history found'
+            />
+          </div>
         </>
       </PermissionGuard>
     </div>

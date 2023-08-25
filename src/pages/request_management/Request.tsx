@@ -76,7 +76,7 @@ function Request() {
   ];
 
   return (
-    <div>
+    <div className='height-full flex-column'>
       <TitleBar title='Request Details'>
         {user &&
           AdminRoles.includes(user.role) &&
@@ -102,17 +102,14 @@ function Request() {
             rows={requestData && requestData.assetId ? detailsExchangeColumns : detailsNewColumns}
             data={requestData}
           />
-          {requestData.requestItem.length !== 0 && (
-            <div>
-              <div className='table-heading'> Requested items</div>
-              <Table
-                columns={requestListColumns}
-                dataset={requestData.requestItem}
-                onClick={() => {}}
-                emptyMessage='No data'
-              />
-            </div>
-          )}
+          <div className='table-heading'> Requested items</div>
+          <Table
+            className='grow'
+            columns={requestListColumns}
+            dataset={requestData.requestItem}
+            onClick={() => {}}
+            emptyMessage='No data'
+          />
         </>
       )}
     </div>

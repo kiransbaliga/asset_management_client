@@ -68,7 +68,7 @@ const EmployeeList: FC = () => {
       >
         <p>Do you really want to delete employee ?</p>
       </Dialog>
-      <div className='flex-column'>
+      <div className='flex-column height-full'>
         <TitleBar title='Employee List'>
           <PermissionGuard userRoles={AdminRoles}>
             <IconButton
@@ -80,6 +80,7 @@ const EmployeeList: FC = () => {
         </TitleBar>
         <div className='grow-scroll'>
           <Table
+            className='height-full'
             columns={employeeTableColumns}
             dataset={employeesDataset}
             onClick={handleTableClick}

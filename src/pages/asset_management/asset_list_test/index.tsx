@@ -1,51 +1,30 @@
 import { useNavigate } from 'react-router-dom';
-import TitleBar from '../../components/TitleBar/TitleBar';
-import IconButton from '../../components/IconButton/IconButton';
-import Table from '../../components/Table/Table';
-import { assetColumns, perishableAssetsColumns } from '../../columns/assets.columns';
-import Filter from '../../components/filter';
+import TitleBar from '../../../components/TitleBar/TitleBar';
+import IconButton from '../../../components/IconButton/IconButton';
+import Table from '../../../components/Table/Table';
+import { perishableAssetsColumns } from '../../../columns/assets.columns';
+import Filter from '../../../components/filter';
 import {
   useDeleteAssetMutation,
   useGetCategoryListQuery,
   useLazyGetAssetListQuery,
   useLazyGetAssetsOfEmployeeQuery,
   useLazyGetSubcategoryListQuery
-} from './api';
+} from '../api';
 import { useEffect, useState } from 'react';
-import CategoryType from '../../types/CategoryType';
-import subcategoryType from '../../types/SubcategoryType';
-import AssetFilterType from '../../types/AssetFilterType';
-import { empltyAssetFilter, statusOptions } from './consts';
-import Dialog, { DialogStateType } from '../../components/Dialog/Dialog';
-import Actions from '../../components/Actions/inedx';
-import AssetType from '../../types/AssetType';
+import CategoryType from '../../../types/CategoryType';
+import subcategoryType from '../../../types/SubcategoryType';
+import AssetFilterType from '../../../types/AssetFilterType';
+import { empltyAssetFilter, statusOptions } from '../consts';
+import Dialog, { DialogStateType } from '../../../components/Dialog/Dialog';
+// import Actions from '../../../components/Actions/inedx';
+import AssetType from '../../../types/AssetType';
 import { useSelector } from 'react-redux';
-import { AdminRoles } from '../request_management/consts';
-import PermissionGuard from '../../wrappers/PermissionGuard';
-import TabBar from '../../components/tab/TabBar';
-import { iconTabAdapter } from '../../components/tab/adapters';
-import { faList } from '@fortawesome/free-solid-svg-icons';
-import TabView from '../../components/tab/TabView';
-
-const TABS = [
-  {
-    tab: 'assets',
-    props: {
-      label: 'Assets',
-      icon: faList
-    }
-  },
-  {
-    tab: 'consumables',
-    props: {
-      label: 'Consumables',
-      icon: faList
-    }
-  }
-];
+import { AdminRoles } from '../../request_management/consts';
+import PermissionGuard from '../../../wrappers/PermissionGuard';
+import AssetListTabs from './tabs';
 
 function AssetList() {
-  const [currentTab, setCurrentTab] = useState('assets');
   const [filterData, setFilterData] = useState<AssetFilterType>(empltyAssetFilter);
   const [deleteDialogState, setDeleteDialogState] = useState<DialogStateType>({ show: false });
   const user = useSelector((state: any) => state.auth.user);
@@ -83,25 +62,25 @@ function AssetList() {
       })
     : [];
 
-  const action = (id: string) => {
-    return (
-      <Actions
-        onDelete={() => {
-          setDeleteDialogState({ show: true, params: { id } });
-        }}
-        onEdit={() => {
-          navigate(`/assets/edit/${id}`);
-        }}
-      />
-    );
-  };
+  // const action = (id: string) => {
+  //   return (
+  //     <Actions
+  //       onDelete={() => {
+  //         setDeleteDialogState({ show: true, params: { id } });
+  //       }}
+  //       onEdit={() => {
+  //         navigate(`/assets/edit/${id}`);
+  //       }}
+  //     />
+  //   );
+  // };
 
-  let assetsColumn;
+  // let assetsColumn;
 
-  if (allAssetsSuccess)
-    assetsColumn = [...assetColumns, { key: 'id', label: 'Action', adapter: action }];
-  else if (employeeAssetsSuccess) assetsColumn = [...assetColumns.slice(0, 3)];
-  else assetsColumn = [];
+  // if (allAssetsSuccess)
+  //   assetsColumn = [...assetColumns, { key: 'id', label: 'Action', adapter: action }];
+  // else if (employeeAssetsSuccess) assetsColumn = [...assetColumns.slice(0, 3)];
+  // else assetsColumn = [];
 
   const subcategoryOptions = subcategories
     ? subcategories
@@ -111,7 +90,6 @@ function AssetList() {
           text: subcategory.name
         }))
     : [];
-
   const perishableSubcategories = subcategories
     ? subcategories.filter((subcategory) => subcategory.perishable === true)
     : [];
@@ -145,6 +123,9 @@ function AssetList() {
     if (isDeleted) setDeleteDialogState({ show: false, params: {} });
   }, [isDeleted]);
 
+  console.log(assets.filter((asset) => asset.status === 'Allocated'));
+  console.log(perishableSubcategories);
+
   return (
     <>
       <Dialog
@@ -157,7 +138,7 @@ function AssetList() {
       >
         <p>Do you really want to delete asset ?</p>
       </Dialog>
-      <div className='flex-column height-full'>
+      <div className='flex-column'>
         <TitleBar title='Asset List'>
           <PermissionGuard userRoles={AdminRoles}>
             <>
@@ -214,44 +195,18 @@ function AssetList() {
             </div>
           </div>
         </PermissionGuard>
+        <AssetListTabs />
 
-        <div className='grow flex-column margin-top-1'>
-          <TabBar
-            className='flex-row'
-            tabs={TABS}
-            tab={currentTab}
-            onChange={setCurrentTab}
-            adapter={iconTabAdapter}
-          />
-          <TabView className='grow margin-top-1' tab={currentTab} name='assets'>
-            <div className='height-full padding-top'>
-              <Table
-                className='height-full'
-                columns={assetsColumn}
-                dataset={assetDataset?.data}
-                onClick={handleTableClick}
-                onPaginate={(offset) => {
-                  handleFilterSelect('offset', offset);
-                }}
-                total={assetDataset?.meta.tot}
-                emptyMessage='No assets found'
-              />
-            </div>
-          </TabView>
-
-          <TabView className='grow margin-top-1' tab={currentTab} name='consumables'>
-            <PermissionGuard>
-              <div className='height-full padding-top'>
-                <Table
-                  className='height-full'
-                  columns={perishableAssetsColumns}
-                  dataset={perishableSubcategories ? perishableSubcategories : []}
-                  emptyMessage='No perishable assets found'
-                />
-              </div>
-            </PermissionGuard>
-          </TabView>
-        </div>
+        <PermissionGuard>
+          <div className='grow-scroll padding-top'>
+            <Table
+              columns={perishableAssetsColumns}
+              dataset={perishableSubcategories ? perishableSubcategories : []}
+              onClick={handleTableClick}
+              emptyMessage='No perishable assets found'
+            />
+          </div>
+        </PermissionGuard>
       </div>
     </>
   );

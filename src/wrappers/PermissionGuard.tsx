@@ -16,7 +16,6 @@ const PermissionGuard: FC<PermissionGuardProps> = ({
 }) => {
   const user = useSelector((state: any) => state.auth.user);
 
-  console.log(user);
   if (user && userRoles.includes(user.role)) return children;
   else if (redirect && user) return <Navigate to={redirect} />;
 };
