@@ -88,7 +88,6 @@ function RequestAdminForm() {
         const updatedNewItem = { ...prevItem };
 
         updatedNewItem[subfield] = Number(value);
-        console.log(value);
         if (subfield === 'subcategoryId')
           updatedNewItem['subcategoryName'] = findSubcategoryName(Number(value));
 
@@ -123,8 +122,6 @@ function RequestAdminForm() {
     } else {
       setRequestData((prevData) => ({ ...prevData, [field]: value }));
     }
-    console.log(newItem);
-    console.log(requestData);
   };
 
   const handleSubmit = () => {

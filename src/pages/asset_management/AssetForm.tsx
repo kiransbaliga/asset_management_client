@@ -102,8 +102,6 @@ function AssetForm() {
 
     try {
       await uploadFile(formData);
-      console.log(selectedFile);
-      console.log('File uploaded successfully');
       setHide('hidenow');
     } catch (error) {
       console.error('Error uploading file:', error);
