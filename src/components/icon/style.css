@@ -4,11 +4,29 @@
 }
 
 .icon.clickable:hover {
-  color: var(--primary-color);
-}
-.icon.clickable:active {
   color: var(--primary-shade-color);
 }
+
 .icon.disabled {
   color: var(--muted-color);
+}
+
+.icon.box{
+  padding: 5px 3px;
+  border-radius: 5px;
+}
+
+.icon.box.clickable{
+  background: var(--primary-color);
+  color: var(--light-color);
+}
+
+.icon.box.clickable:hover{
+  background: var(--primary-shade-color);
+  color: var(--light-color);
+}
+
+.icon.box.disabled{
+  background: var(--muted-color);
+  color: var(--light-color);
 }

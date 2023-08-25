@@ -57,23 +57,24 @@ function AssetDetails() {
   }, [HistoryResponseData, isHistorySuccess]);
 
   return (
-    <PermissionGuard>
-      <div>
-        <TitleBar title='Asset Details' />
-        <DetailsViewer rows={assetDetailsRow} data={assetData} />
-        <PermissionGuard>
-          <>
-            <h2 className='margin-top-bottom card'>History of the asset</h2>
+    <div className='flex-column height-full'>
+      <TitleBar title='Asset Details' />
+      <DetailsViewer rows={assetDetailsRow} data={assetData} />
+      <PermissionGuard>
+        <>
+          <h2 className='margin-top-bottom card'>History of the asset</h2>
+          <div className='height-full'>
             <Table
+              className='height-full'
               columns={historyColumns}
               dataset={historyData}
               onClick={() => {}}
               emptyMessage='No history found'
             />
-          </>
-        </PermissionGuard>
-      </div>
-    </PermissionGuard>
+          </div>
+        </>
+      </PermissionGuard>
+    </div>
   );
 }
 export default AssetDetails;

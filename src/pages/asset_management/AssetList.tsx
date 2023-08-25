@@ -27,8 +27,30 @@ import AssetType from '../../types/AssetType';
 import { useSelector } from 'react-redux';
 import { AdminRoles } from '../request_management/consts';
 import PermissionGuard from '../../wrappers/PermissionGuard';
+import TabBar from '../../components/tab/TabBar';
+import { iconTabAdapter } from '../../components/tab/adapters';
+import { faList } from '@fortawesome/free-solid-svg-icons';
+import TabView from '../../components/tab/TabView';
+
+const TABS = [
+  {
+    tab: 'assets',
+    props: {
+      label: 'Assets',
+      icon: faList
+    }
+  },
+  {
+    tab: 'consumables',
+    props: {
+      label: 'Consumables',
+      icon: faList
+    }
+  }
+];
 
 function AssetList() {
+  const [currentTab, setCurrentTab] = useState('assets');
   const [filterData, setFilterData] = useState<AssetFilterType>(empltyAssetFilter);
   const [deleteDialogState, setDeleteDialogState] = useState<DialogStateType>({ show: false });
   const user = useSelector((state: any) => state.auth.user);
@@ -100,6 +122,7 @@ function AssetList() {
           text: subcategory.name
         }))
     : [];
+  const perishableSubcategories = subcategories
   const allPerishableSubcategories = subcategories
     ? subcategories.filter((subcategory) => subcategory.perishable === true)
     : [];
@@ -211,32 +234,45 @@ function AssetList() {
                 </div>
               </div>
             </div>
-          </PermissionGuard>
-
-          <div className='grow-scroll padding-top margin-top-bottom'>
-            <Table
-              columns={assetsColumn}
-              dataset={assetDataset?.data}
-              onClick={handleTableClick}
-              onPaginate={(offset) => {
-                handleFilterSelect('offset', offset);
-              }}
-              total={assetDataset?.meta.tot}
-              emptyMessage='No assets found'
-            />
           </div>
-          <PermissionGuard>
-            <div className='grow-scroll padding-top'>
-              <h2>Perishable assets</h2>
+        </PermissionGuard>
+
+        <div className='grow flex-column margin-top-1'>
+          <TabBar
+            className='flex-row'
+            tabs={TABS}
+            tab={currentTab}
+            onChange={setCurrentTab}
+            adapter={iconTabAdapter}
+          />
+          <TabView className='grow margin-top-1' tab={currentTab} name='assets'>
+            <div className='height-full padding-top'>
               <Table
-                columns={perishableColumns}
-                dataset={allPerishableSubcategories ? allPerishableSubcategories : []}
-                emptyMessage='No perishable assets found'
-                onClick={() => {}}
+                className='height-full'
+                columns={assetsColumn}
+                dataset={assetDataset?.data}
+                onClick={handleTableClick}
+                onPaginate={(offset) => {
+                  handleFilterSelect('offset', offset);
+                }}
+                total={assetDataset?.meta.tot}
+                emptyMessage='No assets found'
               />
             </div>
-          </PermissionGuard>
-          {user && !AdminRoles.includes(user.role) && (
+          </TabView>
+
+          <TabView className='grow margin-top-1' tab={currentTab} name='consumables'>
+            <PermissionGuard>
+              <div className='height-full padding-top'>
+                <Table
+                  className='height-full'
+                  columns={perishableAssetsColumns}
+                  dataset={perishableSubcategories ? perishableSubcategories : []}
+                  emptyMessage='No perishable assets found'
+                />
+              </div>
+            </PermissionGuard>
+            {user && !AdminRoles.includes(user.role) && (
             <div className='grow-scroll padding-top'>
               <h2>Perishable assets of employee</h2>
               <Table
@@ -247,9 +283,10 @@ function AssetList() {
               />
             </div>
           )}
+          </TabView>
         </div>
-      </>
-    </PermissionGuard>
+      </div>
+    </>
   );
 }
 

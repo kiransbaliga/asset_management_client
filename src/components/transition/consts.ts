@@ -1,7 +1,9 @@
 export const STAGES = {
-  INIT: 'init',
-  BEFORE_START: 'before-start',
-  AFTER_START: 'after-start',
-  BEFORE_END: 'before-end',
-  AFTER_END: 'after-end'
+  INIT: '',
+  START_FROM: 'start-from',
+  START_THROUGH: 'start-through',
+  START_TO: 'start-to',
+  END_FROM: 'end-from',
+  END_THROUGH: 'end-through',
+  END_TO: 'end-to'
 };

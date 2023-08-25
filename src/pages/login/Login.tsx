@@ -58,7 +58,7 @@ const Login: FC = () => {
         <p>Invalied username and password!</p>
       </Dialog>
       <div className='full-screen'>
-        <div className='flex-row'>
+        <div className='flex-row height-full'>
           <div className='column center login-image-column'>
             <div className='circle'>
               <img src='/assets/img/banner.png' alt='Login banner image' />
