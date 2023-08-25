@@ -42,6 +42,9 @@ export const assetApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [ASSET_API_TAGS.ON_ASSET_DELETE]
     }),
+    gettemplate: builder.query({
+      query: () => ({ url: '/assets/template' })
+    }),
     updateAsset: builder.mutation<ResponseDataType, AssetType>({
       query: (body) => ({
         url: `/assets/${body.id}`,
@@ -105,5 +108,7 @@ export const {
   useLazyGetAssetsOfEmployeeQuery,
   useLazyGetPerishableAssetsOfEmployeeQuery,
   useLazyGetSubcategoryByIdQuery,
-  useUpdateSubcategoryMutation
+  useUpdateSubcategoryMutation,
+  useGettemplateQuery,
+  useLazyGettemplateQuery
 } = assetApi;

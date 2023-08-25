@@ -111,7 +111,7 @@ function RequestList() {
       >
         <p>Do you really want to delete this request ?</p>
       </Dialog>
-      <div className='flex-column'>
+      <div className='flex-column height-full'>
         <TitleBar title='Request List'>
           <PermissionGuard>
             <Filter
@@ -133,6 +133,7 @@ function RequestList() {
         </TitleBar>
         <div className='grow-scroll'>
           <Table
+            className='height-full'
             columns={requestsColumn}
             dataset={requests}
             onClick={handleTableClick}

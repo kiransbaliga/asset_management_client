@@ -5,10 +5,6 @@ import usePrevious from '../../hooks/previous.hook';
 
 interface TransitionProps {
   show: boolean;
-  startFrom?: string;
-  startTo?: string;
-  endFrom?: string;
-  endTo?: string;
   afterEnd?: () => void;
   className?: string;
   children: ReactNode;
@@ -18,10 +14,6 @@ interface TransitionProps {
 
 const Transition: FC<TransitionProps> = ({
   show,
-  startFrom,
-  startTo,
-  endFrom,
-  endTo,
   className,
   children,
   style,
@@ -31,32 +23,28 @@ const Transition: FC<TransitionProps> = ({
   const [stage, setStage] = useState(STAGES.INIT);
   const prevShow = usePrevious(show);
 
-  const transitionClassName = {
-    [STAGES.INIT]: '',
-    [STAGES.BEFORE_START]: startFrom,
-    [STAGES.AFTER_START]: startTo,
-    [STAGES.BEFORE_END]: endFrom,
-    [STAGES.AFTER_END]: endTo
-  }[stage];
+  [stage];
 
   useEffect(() => {
-    if (prevShow === false && show === true) setStage(STAGES.BEFORE_START);
-    else if (prevShow === true && show === false) setStage(STAGES.BEFORE_END);
+    if (prevShow === false && show === true) setStage(STAGES.START_FROM);
+    else if (prevShow === true && show === false) setStage(STAGES.END_FROM);
   }, [show]);
 
   useEffect(() => {
     switch (stage) {
-      case STAGES.BEFORE_START:
-        setTimeout(() => {
-          setStage(STAGES.AFTER_START);
-        }, 0);
+      case STAGES.START_FROM:
+        setStage(STAGES.START_THROUGH);
         break;
-      case STAGES.BEFORE_END:
-        setTimeout(() => {
-          setStage(STAGES.AFTER_END);
-        }, 0);
+      case STAGES.START_THROUGH:
+        setStage(STAGES.START_TO);
         break;
-      case STAGES.AFTER_END:
+      case STAGES.END_FROM:
+        setStage(STAGES.END_THROUGH);
+        break;
+      case STAGES.END_THROUGH:
+        setStage(STAGES.END_TO);
+        break;
+      case STAGES.END_TO:
         setTimeout(() => {
           afterEnd();
         }, duration);
@@ -66,8 +54,8 @@ const Transition: FC<TransitionProps> = ({
 
   return (
     <div
-      className={classNames(className, transitionClassName)}
-      style={{ ...style, transition: `all ${duration}ms` }}
+      className={classNames(className, stage)}
+      style={{ ...style, transitionDuration: `${duration}ms` }}
     >
       {children}
     </div>

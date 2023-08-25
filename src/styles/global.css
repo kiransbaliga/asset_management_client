@@ -19,6 +19,21 @@
   --info-tint-color: #eaf9ff;
 }
 
+/* ---------- start: Scroll Bar ---------- */
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  box-shadow: inset 0 0 10px 10px var(--primary-shade-color);
+  border: solid 4px transparent;
+  border-radius: 30px;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -65,16 +80,24 @@ a {
   color: var(--danger-color);
 }
 
+.margin-top-1 {
+  margin-top: 10px;
+}
+
 .full-screen {
   width: 100vw;
   height: 100vh;
 }
 
-.relative{
-  position: relative
+.height-full {
+  height: 100%;
 }
 
-.absolute{
+.relative {
+  position: relative;
+}
+
+.absolute {
   position: absolute;
 }
 
@@ -84,7 +107,6 @@ a {
 }
 
 .flex-row {
-  height: 100%;
   display: flex;
 }
 
@@ -130,7 +152,6 @@ a {
 
 .card-group {
   display: flex;
-
 }
 
 .card-group .card {
@@ -139,7 +160,6 @@ a {
 }
 
 .card-group .card:not(:first-of-type) {
-
   margin-left: 20px;
 }
 
@@ -149,32 +169,19 @@ a {
   border-radius: 50px;
 }
 
-.chip-sm{
+.chip-sm {
   font-size: small;
   padding: 5px;
-} 
+}
 
-.chip-primary{
+.chip-primary {
   background: var(--primary-color);
   color: var(--light-color);
 }
 
-/* .icon-sm {
-  width: 20px;
-}
-
-.icon {
-  width: 35px;
-  margin: 10px;
-}
-
-.icon-lg {
-  width: 50px;
-} */
-
-.margin-top-bottom{
-margin-top: 15px;
-margin-bottom: 10px;
+.margin-top-bottom {
+  margin-top: 15px;
+  margin-bottom: 10px;
 }
 
 @media only screen and (max-width: 768px) {

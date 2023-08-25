@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import Icon from '../icon';
+import { faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { classNames } from '../../utils/funcs';
+import './Pagination.css';
 
 function Pagination({
   className = 'center',
@@ -32,23 +36,26 @@ function Pagination({
   }
 
   return (
-    <div className={className + ' pagination'}>
-      <div className='flex-row'>
-        <button onClick={prev} disabled={start === 0 || loading}>
-          Previous
-        </button>
-        <div className='bg-secondary-800 material h-6 rounded-lg flex items-center'>
-          {limit !== 0 && (
-            <div className='mx-2 text-xs'>
-              {start + 1} / {limit}
-            </div>
-          )}
-          {limit === 0 && <div className='mx-2 text-xs'>0 - 0</div>}
-        </div>
-        <button onClick={next} disabled={start === limit - 1 || loading}>
-          Next
-        </button>
+    <div className={classNames(className, ' pagination')}>
+      <a data-tooltip-id='my-tooltip' data-tooltip-content='Prevous' data-tooltip-place='top'>
+        <Icon className='box' icon={faAngleLeft} onClick={prev} disabled={start === 0 || loading} />
+      </a>
+      <div className='pagination-status'>
+        {limit !== 0 && (
+          <>
+            {start + 1} / {limit}
+          </>
+        )}
+        {limit === 0 && <>0 - 0</>}
       </div>
+      <a data-tooltip-id='my-tooltip' data-tooltip-content='Next' data-tooltip-place='top'>
+        <Icon
+          className='box'
+          icon={faAngleRight}
+          onClick={next}
+          disabled={start === limit - 1 || loading}
+        />
+      </a>
     </div>
   );
 }

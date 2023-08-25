@@ -64,7 +64,7 @@ function AssetDetails() {
 
   return (
     <PermissionGuard>
-      <div>
+      <div className='flex-column height-full'>
         <TitleBar title='Asset Details'>
           <PermissionGuard>
             <IconButton text='Edit' icon='/assets/icons/edit.svg' onClick={handleEditClick} />
@@ -76,6 +76,7 @@ function AssetDetails() {
           <>
             <h2 className='margin-top-bottom card'>History of the asset</h2>
             <Table
+              className='height-full'
               columns={historyColumns}
               dataset={historyData}
               onClick={() => {}}

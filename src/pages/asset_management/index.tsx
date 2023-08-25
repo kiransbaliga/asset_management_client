@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import AssetForm from './AssetForm';
 import AssetList from './AssetList';
+
 import AssetDetails from './AssetDetails';
 import CategoryForm from './CategoryForm';
 import SubcategoryForm from './SubcategoryForm';
