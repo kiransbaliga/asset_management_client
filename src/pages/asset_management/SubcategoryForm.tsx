@@ -57,9 +57,11 @@ const SubcategoryForm = () => {
   };
 
   useEffect(() => {
-    if (isCreateSubcategorySuccess || isUpdateSubcategorySuccess) navigate('/assets');
+    if (isUpdateSubcategorySuccess) navigate('/assets');
+  }, [isUpdateSubcategorySuccess]);
+  useEffect(() => {
+    if (isCreateSubcategorySuccess) navigate('/assets/create');
   }, [isCreateSubcategorySuccess]);
-  console.log(subcategoryData);
 
   const { data: categoriesDateset } = useGetCategoryListQuery();
   const categories = categoriesDateset?.data as CategoryType[];

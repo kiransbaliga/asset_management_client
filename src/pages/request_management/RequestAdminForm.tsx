@@ -97,7 +97,6 @@ function RequestAdminForm() {
       setRequestData((prevData) => {
         setRequestType(value);
         if (value === 'exchange') getOwnedAssets(user.id);
-        console.log(requestType);
 
         return { ...prevData, requestItem: [] };
       });
@@ -107,7 +106,6 @@ function RequestAdminForm() {
     } else if (field === 'category') {
       setCategory(value);
       getSubCategories();
-      console.log(requestType);
     } else if (field === 'addRequestItem') {
       setCategory(null);
       setRequestData((prevData) => {
@@ -129,23 +127,17 @@ function RequestAdminForm() {
   };
 
   useEffect(() => {
-    if (isSuccess) {
-      console.log(data.data.id);
-      resolveRequest(data.data.id);
-    }
+    if (isSuccess) resolveRequest(data.data.id);
   }, [isSuccess]);
   useEffect(() => {
     if (resolveSucccess) navigate('/requests');
   }, [resolveSucccess]);
 
   const handleReset = () => {
-    console.log('submitted');
     setRequestData(emptyRequest);
   };
 
-  const handleRowClick = (rowData) => {
-    console.log('Row clicked:', rowData);
-  };
+  const handleRowClick = () => {};
 
   const action = (id: number) => {
     return (

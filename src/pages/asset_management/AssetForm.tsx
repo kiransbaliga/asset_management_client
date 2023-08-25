@@ -12,7 +12,6 @@ import {
   useGetCategoryListQuery,
   useLazyGetAssetByIdQuery,
   useLazyGetSubcategoryListQuery,
-  useLazyGettemplateQuery,
   useUpdateAssetMutation,
   useUploadFileMutation
 } from './api';
@@ -34,8 +33,8 @@ function AssetForm() {
   const [updateAsset, { isSuccess: isUpdateSuccess }] = useUpdateAssetMutation();
   const [getAssetById, { data: getAssetData }] = useLazyGetAssetByIdQuery();
   const { data: categoriesDateset } = useGetCategoryListQuery();
-  const [getTemplate, { data: templateFile }] = useLazyGettemplateQuery();
   const categories = categoriesDateset?.data as CategoryType[];
+
   const categoryOptions = categories
     ? categories.map((category) => ({ value: category.id, text: category.name }))
     : [];
@@ -93,19 +92,6 @@ function AssetForm() {
     setSelectedFile(e.target.files[0]);
   };
 
-  const handleClick = async () => {
-    await getTemplate('');
-    let fileData = templateFile;
-    const url = URL.createObjectURL(new Blob([fileData]));
-    const a = document.createElement('a');
-
-    a.style.display = 'none';
-    a.href = url;
-    a.download = 'template.csv';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-  };
   const handleUpload = async (e) => {
     e.preventDefault();
     if (!selectedFile) return;
@@ -132,7 +118,9 @@ function AssetForm() {
             <button className='btn btn-primary' onClick={handleUpload}>
               Upload
             </button>
-            <button onClick={handleClick}>Download template</button>
+            <a href='.public/assets/filetemplate.csv' download='filetemplate.csv'>
+              Download template
+            </a>
           </div>
         </div>
         <div className='asset-form'>

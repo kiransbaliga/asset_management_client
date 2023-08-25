@@ -6,6 +6,7 @@ import './Pagination.css';
 
 function Pagination({
   className = 'center',
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   offset = 0,
   limit = 10,
   onChange,
@@ -17,7 +18,6 @@ function Pagination({
 
   limit = Math.ceil(total / limit);
   useEffect(() => {
-    if (!isFirst) console.log('start', start, offset);
     if (!isFirst) onChange(start);
   }, [start]);
 

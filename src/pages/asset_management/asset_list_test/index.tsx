@@ -123,9 +123,6 @@ function AssetList() {
     if (isDeleted) setDeleteDialogState({ show: false, params: {} });
   }, [isDeleted]);
 
-  console.log(assets.filter((asset) => asset.status === 'Allocated'));
-  console.log(perishableSubcategories);
-
   return (
     <>
       <Dialog

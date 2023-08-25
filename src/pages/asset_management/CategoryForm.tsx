@@ -24,7 +24,6 @@ const CategoryForm = () => {
   useEffect(() => {
     if (isCreateCategorySuccess) navigate('/assets/create');
   }, [isCreateCategorySuccess]);
-  console.log(categoryData);
 
   return (
     <PermissionGuard>

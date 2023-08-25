@@ -80,7 +80,6 @@ function RequestForm() {
         const updatedNewItem = { ...prevItem };
 
         updatedNewItem[subfield] = Number(value);
-        console.log(value);
         if (subfield === 'subcategoryId')
           updatedNewItem['subcategoryName'] = findSubcategoryName(Number(value));
 
@@ -91,14 +90,12 @@ function RequestForm() {
         setRequestType(value);
 
         if (value === 'exchange') getOwnedAssets(user.id);
-        console.log(requestType);
 
         return { ...prevData, requestItem: [] };
       });
     } else if (field === 'category') {
       setCategory(value);
       getSubCategories();
-      console.log(requestType);
     } else if (field === 'addRequestItem') {
       setCategory(null);
       setRequestData((prevData) => {
@@ -113,8 +110,6 @@ function RequestForm() {
     } else {
       setRequestData((prevData) => ({ ...prevData, [field]: value }));
     }
-    console.log(newItem);
-    console.log(requestData);
   };
 
   const handleSubmit = () => {
@@ -125,13 +120,11 @@ function RequestForm() {
     if (isSuccess) navigate('/requests/');
   }, [isSuccess]);
   const handleReset = () => {
-    console.log('submitted');
     setRequestData(emptyRequest);
   };
 
-  const handleRowClick = (rowData) => {
-    console.log('Row clicked:', rowData);
-  };
+  const handleRowClick = () => {};
+
   const action = (id: number) => {
     return (
       <Actions

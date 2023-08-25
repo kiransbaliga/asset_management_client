@@ -20,7 +20,6 @@ export const requestExchangeDetailColumns = [
     key: 'asset',
     label: 'ID of asset(exchange)',
     adapter: (value) => {
-      console.log(value);
       if (value) return value.id;
     }
   },
@@ -28,7 +27,6 @@ export const requestExchangeDetailColumns = [
     key: 'asset',
     label: 'Asset to be exchaged',
     adapter: (value) => {
-      console.log(value);
       if (value) return value.name;
     }
   },
@@ -36,7 +34,6 @@ export const requestExchangeDetailColumns = [
     key: 'asset',
     label: 'Subcategory of asset',
     adapter: (value) => {
-      console.log(value);
       if (value) return value.subcategory.name;
     }
   }
