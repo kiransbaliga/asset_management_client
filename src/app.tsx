@@ -8,6 +8,7 @@ import AuthRequired from './wrappers/AuthRequired';
 import DoNotAuth from './wrappers/DoNotAuth';
 import { Tooltip } from 'react-tooltip';
 import UIProvider from './contexts/UIContexts';
+// import PageNotFound from './pages/PageNotFound';
 
 const App: FC = () => {
   return (
@@ -24,13 +25,14 @@ const App: FC = () => {
             }
           />
           <Route
-            path='/*'
+            path='*'
             element={
               <AuthRequired>
                 <Dashboard />
               </AuthRequired>
             }
           />
+          {/* <Route path='*' element={<PageNotFound />} /> */}
         </Routes>
       </Router>
       <Tooltip id='my-tooltip' />
