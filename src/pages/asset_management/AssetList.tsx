@@ -122,7 +122,6 @@ function AssetList() {
           text: subcategory.name
         }))
     : [];
-  const perishableSubcategories = subcategories
   const allPerishableSubcategories = subcategories
     ? subcategories.filter((subcategory) => subcategory.perishable === true)
     : [];
@@ -166,72 +165,70 @@ function AssetList() {
   ];
 
   return (
-    <PermissionGuard>
-      <>
-        <Dialog
-          title='Are you sure?'
-          onSuccess={handleDelete}
-          successLabel='Confirm'
-          isLoading={isDeleteLoading}
-          state={deleteDialogState}
-          setState={setDeleteDialogState}
-        >
-          <p>Do you really want to delete asset ?</p>
-        </Dialog>
-        <div className='flex-column'>
-          <TitleBar title='Asset List'>
-            <PermissionGuard userRoles={AdminRoles}>
-              <>
-                <Filter
-                  label='Category'
-                  options={categoriesOptions}
-                  value={filterData.category}
-                  onSelect={(value) => handleFilterSelect('category', value)}
-                />
-                <Filter
-                  label='Sub category'
-                  options={subcategoryOptions}
-                  value={filterData.subcategory}
-                  onSelect={(value) => handleFilterSelect('subcategory', value)}
-                />
-                <Filter
-                  label='Status'
-                  options={statusOptions}
-                  value={filterData.status}
-                  onSelect={(value) => handleFilterSelect('status', value)}
-                />
-                <IconButton
-                  icon='/assets/icons/plus.png'
-                  text='Create asset'
-                  onClick={handleCreate}
-                />
-              </>
-            </PermissionGuard>
-          </TitleBar>
+    <>
+      <Dialog
+        title='Are you sure?'
+        onSuccess={handleDelete}
+        successLabel='Confirm'
+        isLoading={isDeleteLoading}
+        state={deleteDialogState}
+        setState={setDeleteDialogState}
+      >
+        <p>Do you really want to delete asset ?</p>
+      </Dialog>
+      <div className='flex-column height-full'>
+        <TitleBar title='Asset List'>
           <PermissionGuard userRoles={AdminRoles}>
-            <div className='card-group'>
-              <div className='card count-card'>
-                <div className='text-muted'>Total Assets</div>
-                <div className='count-value'>{assetDataset?.meta.tot}</div>
+            <>
+              <Filter
+                label='Category'
+                options={categoriesOptions}
+                value={filterData.category}
+                onSelect={(value) => handleFilterSelect('category', value)}
+              />
+              <Filter
+                label='Sub category'
+                options={subcategoryOptions}
+                value={filterData.subcategory}
+                onSelect={(value) => handleFilterSelect('subcategory', value)}
+              />
+              <Filter
+                label='Status'
+                options={statusOptions}
+                value={filterData.status}
+                onSelect={(value) => handleFilterSelect('status', value)}
+              />
+              <IconButton
+                icon='/assets/icons/plus.png'
+                text='Create asset'
+                onClick={handleCreate}
+              />
+            </>
+          </PermissionGuard>
+        </TitleBar>
+        <PermissionGuard userRoles={AdminRoles}>
+          <div className='card-group'>
+            <div className='card count-card'>
+              <div className='text-muted'>Total Assets</div>
+              <div className='count-value'>{assetDataset?.meta.tot}</div>
+            </div>
+            <div className='card count-card'>
+              <div className='text-muted'>Allocated Assets</div>
+              <div className='count-value'>
+                {assets.filter((asset) => asset.status === 'Allocated').length}
               </div>
-              <div className='card count-card'>
-                <div className='text-muted'>Allocated Assets</div>
-                <div className='count-value'>
-                  {assets.filter((asset) => asset.status === 'Allocated').length}
-                </div>
+            </div>
+            <div className='card count-card'>
+              <div className='text-muted'>Unallocated Assets</div>
+              <div className='count-value'>
+                {assets.filter((asset) => asset.status === 'Unallocated').length}
               </div>
-              <div className='card count-card'>
-                <div className='text-muted'>Unallocated Assets</div>
-                <div className='count-value'>
-                  {assets.filter((asset) => asset.status === 'Unallocated').length}
-                </div>
-              </div>
-              <div className='card count-card'>
-                <div className='text-muted'>Damaged Assets</div>
-                <div className='count-value '>
-                  {' '}
-                  {assets.filter((asset) => asset.status === 'Damaged').length}
-                </div>
+            </div>
+            <div className='card count-card'>
+              <div className='text-muted'>Damaged Assets</div>
+              <div className='count-value '>
+                {' '}
+                {assets.filter((asset) => asset.status === 'Damaged').length}
               </div>
             </div>
           </div>
@@ -266,23 +263,25 @@ function AssetList() {
               <div className='height-full padding-top'>
                 <Table
                   className='height-full'
-                  columns={perishableAssetsColumns}
-                  dataset={perishableSubcategories ? perishableSubcategories : []}
+                  columns={perishableColumns}
+                  dataset={allPerishableSubcategories ? allPerishableSubcategories : []}
                   emptyMessage='No perishable assets found'
                 />
               </div>
             </PermissionGuard>
             {user && !AdminRoles.includes(user.role) && (
-            <div className='grow-scroll padding-top'>
-              <h2>Perishable assets of employee</h2>
-              <Table
-                columns={perishableAssetsofEmployeeColumns}
-                dataset={perishableSubcategoriesOfEmployee ? perishableSubcategoriesOfEmployee : []}
-                emptyMessage='No perishable assets found'
-                onClick={() => {}}
-              />
-            </div>
-          )}
+              <div className='height-full'>
+                <h2>Perishable assets of employee</h2>
+                <Table
+                  columns={perishableAssetsofEmployeeColumns}
+                  dataset={
+                    perishableSubcategoriesOfEmployee ? perishableSubcategoriesOfEmployee : []
+                  }
+                  emptyMessage='No perishable assets found'
+                  onClick={() => {}}
+                />
+              </div>
+            )}
           </TabView>
         </div>
       </div>
