@@ -143,111 +143,113 @@ function AssetList() {
   ];
 
   return (
-    <>
-      <Dialog
-        title='Are you sure?'
-        onSuccess={handleDelete}
-        successLabel='Confirm'
-        isLoading={isDeleteLoading}
-        state={deleteDialogState}
-        setState={setDeleteDialogState}
-      >
-        <p>Do you really want to delete asset ?</p>
-      </Dialog>
-      <div className='flex-column'>
-        <TitleBar title='Asset List'>
+    <PermissionGuard>
+      <>
+        <Dialog
+          title='Are you sure?'
+          onSuccess={handleDelete}
+          successLabel='Confirm'
+          isLoading={isDeleteLoading}
+          state={deleteDialogState}
+          setState={setDeleteDialogState}
+        >
+          <p>Do you really want to delete asset ?</p>
+        </Dialog>
+        <div className='flex-column'>
+          <TitleBar title='Asset List'>
+            <PermissionGuard userRoles={AdminRoles}>
+              <>
+                <Filter
+                  label='Category'
+                  options={categoriesOptions}
+                  value={filterData.category}
+                  onSelect={(value) => handleFilterSelect('category', value)}
+                />
+                <Filter
+                  label='Sub category'
+                  options={subcategoryOptions}
+                  value={filterData.subcategory}
+                  onSelect={(value) => handleFilterSelect('subcategory', value)}
+                />
+                <Filter
+                  label='Status'
+                  options={statusOptions}
+                  value={filterData.status}
+                  onSelect={(value) => handleFilterSelect('status', value)}
+                />
+                <IconButton
+                  icon='/assets/icons/plus.png'
+                  text='Create asset'
+                  onClick={handleCreate}
+                />
+              </>
+            </PermissionGuard>
+          </TitleBar>
           <PermissionGuard userRoles={AdminRoles}>
-            <>
-              <Filter
-                label='Category'
-                options={categoriesOptions}
-                value={filterData.category}
-                onSelect={(value) => handleFilterSelect('category', value)}
-              />
-              <Filter
-                label='Sub category'
-                options={subcategoryOptions}
-                value={filterData.subcategory}
-                onSelect={(value) => handleFilterSelect('subcategory', value)}
-              />
-              <Filter
-                label='Status'
-                options={statusOptions}
-                value={filterData.status}
-                onSelect={(value) => handleFilterSelect('status', value)}
-              />
-              <IconButton
-                icon='/assets/icons/plus.png'
-                text='Create asset'
-                onClick={handleCreate}
-              />
-            </>
+            <div className='card-group'>
+              <div className='card count-card'>
+                <div className='text-muted'>Total Assets</div>
+                <div className='count-value'>{assetDataset?.meta.tot}</div>
+              </div>
+              <div className='card count-card'>
+                <div className='text-muted'>Allocated Assets</div>
+                <div className='count-value'>
+                  {assets.filter((asset) => asset.status === 'Allocated').length}
+                </div>
+              </div>
+              <div className='card count-card'>
+                <div className='text-muted'>Unallocated Assets</div>
+                <div className='count-value'>
+                  {assets.filter((asset) => asset.status === 'Unallocated').length}
+                </div>
+              </div>
+              <div className='card count-card'>
+                <div className='text-muted'>Damaged Assets</div>
+                <div className='count-value '>
+                  {' '}
+                  {assets.filter((asset) => asset.status === 'Damaged').length}
+                </div>
+              </div>
+            </div>
           </PermissionGuard>
-        </TitleBar>
-        <PermissionGuard userRoles={AdminRoles}>
-          <div className='card-group'>
-            <div className='card count-card'>
-              <div className='text-muted'>Total Assets</div>
-              <div className='count-value'>{assetDataset?.meta.tot}</div>
-            </div>
-            <div className='card count-card'>
-              <div className='text-muted'>Allocated Assets</div>
-              <div className='count-value'>
-                {assets.filter((asset) => asset.status === 'Allocated').length}
-              </div>
-            </div>
-            <div className='card count-card'>
-              <div className='text-muted'>Unallocated Assets</div>
-              <div className='count-value'>
-                {assets.filter((asset) => asset.status === 'Unallocated').length}
-              </div>
-            </div>
-            <div className='card count-card'>
-              <div className='text-muted'>Damaged Assets</div>
-              <div className='count-value '>
-                {' '}
-                {assets.filter((asset) => asset.status === 'Damaged').length}
-              </div>
-            </div>
-          </div>
-        </PermissionGuard>
 
-        <div className='grow-scroll padding-top margin-top-bottom'>
-          <Table
-            columns={assetsColumn}
-            dataset={assetDataset?.data}
-            onClick={handleTableClick}
-            onPaginate={(offset) => {
-              handleFilterSelect('offset', offset);
-            }}
-            total={assetDataset?.meta.tot}
-            emptyMessage='No assets found'
-          />
+          <div className='grow-scroll padding-top margin-top-bottom'>
+            <Table
+              columns={assetsColumn}
+              dataset={assetDataset?.data}
+              onClick={handleTableClick}
+              onPaginate={(offset) => {
+                handleFilterSelect('offset', offset);
+              }}
+              total={assetDataset?.meta.tot}
+              emptyMessage='No assets found'
+            />
+          </div>
+          <PermissionGuard>
+            <div className='grow-scroll padding-top'>
+              <h2>Perishable assets</h2>
+              <Table
+                columns={perishableColumns}
+                dataset={allPerishableSubcategories ? allPerishableSubcategories : []}
+                emptyMessage='No perishable assets found'
+                onClick={() => {}}
+              />
+            </div>
+          </PermissionGuard>
+          {user && !AdminRoles.includes(user.role) && (
+            <div className='grow-scroll padding-top'>
+              <h2>Perishable assets of employee</h2>
+              <Table
+                columns={perishableAssetsofEmployeeColumns}
+                dataset={perishableSubcategoriesOfEmployee ? perishableSubcategoriesOfEmployee : []}
+                emptyMessage='No perishable assets found'
+                onClick={() => {}}
+              />
+            </div>
+          )}
         </div>
-        <PermissionGuard>
-          <div className='grow-scroll padding-top'>
-            <h2>Perishable assets</h2>
-            <Table
-              columns={perishableColumns}
-              dataset={allPerishableSubcategories ? allPerishableSubcategories : []}
-              emptyMessage='No perishable assets found'
-              onClick={() => {}}
-            />
-          </div>
-        </PermissionGuard>
-        {user && !AdminRoles.includes(user.role) && (
-          <div className='grow-scroll padding-top'>
-            <h2>Perishable assets of employee</h2>
-            <Table
-              columns={perishableAssetsofEmployeeColumns}
-              dataset={perishableSubcategoriesOfEmployee ? perishableSubcategoriesOfEmployee : []}
-              emptyMessage='No perishable assets found'
-              onClick={() => {}}
-            />
-          </div>
-        )}
-      </div>
-    </>
+      </>
+    </PermissionGuard>
   );
 }
 
