@@ -29,8 +29,10 @@ import { AdminRoles } from '../request_management/consts';
 import PermissionGuard from '../../wrappers/PermissionGuard';
 import TabBar from '../../components/tab/TabBar';
 import { iconTabAdapter } from '../../components/tab/adapters';
-import { faList } from '@fortawesome/free-solid-svg-icons';
+import { faAdd, faList } from '@fortawesome/free-solid-svg-icons';
 import TabView from '../../components/tab/TabView';
+import { TOAST_TIMOUT, TOAST_TYPE } from '../../components/toast/consts';
+import { useUI } from '../../contexts/UIContexts';
 
 const TABS = [
   {
@@ -62,9 +64,18 @@ function AssetList() {
   const [getSubCategories, { data: subcategoriesDateset }] = useLazyGetSubcategoryListQuery();
   const [getPerishableAssetsOfEmployee, { data: perishableSubcategoriesDataset }] =
     useLazyGetPerishableAssetsOfEmployeeQuery();
-  const [deleteAsset, { isSuccess: isDeleted, isLoading: isDeleteLoading }] =
-    useDeleteAssetMutation();
+  const [
+    deleteAsset,
+    {
+      isSuccess: isDeleted,
+      isLoading: isDeleteLoading,
+      isError: isDeleteError,
+      error: deleteErrors
+    }
+  ] = useDeleteAssetMutation();
   const { data: categoriesDateset } = useGetCategoryListQuery();
+
+  const { createToast } = useUI();
 
   const categories = categoriesDateset?.data as CategoryType[];
   const subcategories = subcategoriesDateset?.data as subcategoryType[];
@@ -152,8 +163,16 @@ function AssetList() {
   }, [filterData.category]);
 
   useEffect(() => {
-    if (isDeleted) setDeleteDialogState({ show: false, params: {} });
+    if (isDeleted) {
+      setDeleteDialogState({ show: false, params: {} });
+      createToast(TOAST_TYPE.SUCCESS, 'Delete successfully', 'Employee deleted');
+    }
   }, [isDeleted]);
+
+  useEffect(() => {
+    if (isDeleteError && deleteErrors)
+      createToast(TOAST_TYPE.ERROR, 'Delete failed', 'Somthing went wrong', TOAST_TIMOUT.WAIT);
+  }, [isDeleteError]);
 
   const actionPerishable = (id) => {
     return <Actions onEdit={() => navigate(`/assets/subcategory/edit/${id}`)} />;
@@ -198,11 +217,7 @@ function AssetList() {
                 value={filterData.status}
                 onSelect={(value) => handleFilterSelect('status', value)}
               />
-              <IconButton
-                icon='/assets/icons/plus.png'
-                text='Create asset'
-                onClick={handleCreate}
-              />
+              <IconButton icon={faAdd} text='Create asset' onClick={handleCreate} />
             </>
           </PermissionGuard>
         </TitleBar>

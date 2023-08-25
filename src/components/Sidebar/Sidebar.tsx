@@ -7,11 +7,13 @@ import Dialog from '../Dialog/Dialog';
 import { useState } from 'react';
 import { useUI } from '../../contexts/UIContexts';
 import { TOAST_TIMOUT, TOAST_TYPE } from '../toast/consts';
+import { faCubes, faHand, faRightFromBracket, faUsers } from '@fortawesome/free-solid-svg-icons';
+import Icon from '../icon';
 
 const links: LinkType[] = [
-  { label: 'Employee', icon: '/assets/icons/employees.svg', path: '/employees' },
-  { label: 'Asset', icon: '/assets/icons/employees.svg', path: '/assets' },
-  { label: 'Request', icon: '/assets/icons/employees.svg', path: '/requests' }
+  { label: 'Employee', icon: faUsers, path: '/employees' },
+  { label: 'Asset', icon: faCubes, path: '/assets' },
+  { label: 'Request', icon: faHand, path: '/requests' }
 ];
 
 function Sidebar() {
@@ -54,9 +56,7 @@ function Sidebar() {
               to={link.path}
             >
               <li>
-                <div className='circle'>
-                  {link.icon && <img src={link.icon} alt={link.label + ' icon'} />}
-                </div>
+                <div className='circle'>{link.icon && <Icon icon={link.icon} />}</div>
                 <span>{link.label}</span>
               </li>
             </Link>
@@ -64,7 +64,7 @@ function Sidebar() {
           <div className='item'>
             <li onClick={handleLogout}>
               <div className='circle'>
-                <img src='/assets/icons/logout.svg' alt={'Logout icon'} />
+                <Icon icon={faRightFromBracket} />
               </div>
               <span>Logout</span>
             </li>

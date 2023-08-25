@@ -10,6 +10,7 @@ import HistoryType from '../../types/HistoryType';
 import { historyColumns } from '../../columns/history.columns';
 import PermissionGuard from '../../wrappers/PermissionGuard';
 import IconButton from '../../components/IconButton/IconButton';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
 const assetDetailsRow = [
   [
@@ -67,7 +68,7 @@ function AssetDetails() {
       <div className='flex-column height-full'>
         <TitleBar title='Asset Details'>
           <PermissionGuard>
-            <IconButton text='Edit' icon='/assets/icons/edit.svg' onClick={handleEditClick} />
+            <IconButton text='Edit' icon={faEdit} onClick={handleEditClick} />
           </PermissionGuard>
         </TitleBar>
         <DetailsViewer rows={assetDetailsRow} data={assetData} />

@@ -20,6 +20,9 @@ import { empltyAssetFilter } from '../asset_management/consts';
 import RequestType from '../../types/RequestType';
 import { useSelector } from 'react-redux';
 import PermissionGuard from '../../wrappers/PermissionGuard';
+import { TOAST_TIMOUT, TOAST_TYPE } from '../../components/toast/consts';
+import { useUI } from '../../contexts/UIContexts';
+import { faAdd, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 function RequestList() {
   const [deleteDialogState, setDeleteDialogState] = useState<DialogStateType>({
@@ -36,8 +39,10 @@ function RequestList() {
 
   const [filterData, setFilterData] = useState<AssetFilterType>(empltyAssetFilter);
   const navigate = useNavigate();
+  const { createToast } = useUI();
 
-  const [deleteRequest, { isSuccess: isDeleted }] = useDeleteRequestMutation();
+  const [deleteRequest, { isSuccess: isDeleted, isError: isDeleteError, error: deleteErrors }] =
+    useDeleteRequestMutation();
 
   const handleCreate = () => {
     navigate('/requests/create');
@@ -68,8 +73,16 @@ function RequestList() {
   };
 
   useEffect(() => {
-    if (isDeleted) setDeleteDialogState({ show: false, params: {} });
+    if (isDeleted) {
+      setDeleteDialogState({ show: false, params: {} });
+      createToast(TOAST_TYPE.SUCCESS, 'Delete successfully', 'Request deleted');
+    }
   }, [isDeleted]);
+
+  useEffect(() => {
+    if (isDeleteError && deleteErrors)
+      createToast(TOAST_TYPE.ERROR, 'Delete failed', 'Somthing went wrong', TOAST_TIMOUT.WAIT);
+  }, [isDeleteError]);
 
   useEffect(() => {
     if (user && AdminRoles.includes(user.role)) getRequests(filterData);
@@ -122,13 +135,9 @@ function RequestList() {
             />
           </PermissionGuard>
 
-          <IconButton icon='/assets/icons/plus.png' text='Create Request' onClick={handleCreate} />
+          <IconButton icon={faAdd} text='Create Request' onClick={handleCreate} />
           <PermissionGuard>
-            <IconButton
-              icon='/assets/icons/plus.png'
-              text='Allocate items'
-              onClick={handleAllocate}
-            />
+            <IconButton icon={faCheck} text='Allocate items' onClick={handleAllocate} />
           </PermissionGuard>
         </TitleBar>
         <div className='grow-scroll'>

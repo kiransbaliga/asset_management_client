@@ -50,3 +50,13 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.user-dropdown .circle {
+  color: var(--primary-shade-color);
+  transition: all 0.3s;
+}
+
+.user-dropdown .circle:hover {
+  background: var(--primary-shade-color);
+  color: var(--primary-tint-color);
+}

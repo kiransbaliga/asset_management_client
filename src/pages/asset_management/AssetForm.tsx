@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import TitleBar from '../../components/TitleBar/TitleBar';
 import InputField from '../../components/InputField/InputField';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import SelectField from '../../components/SelectField/SelectField';
 import { emptyAsset, statusOptions } from './consts';
 import './styles.css';
@@ -20,17 +20,29 @@ import subcategoryType from '../../types/SubcategoryType';
 import Button from '../../components/button';
 import { Link } from 'react-router-dom';
 import PermissionGuard from '../../wrappers/PermissionGuard';
+import Dialog from '../../components/Dialog/Dialog';
+import { TOAST_TIMOUT, TOAST_TYPE } from '../../components/toast/consts';
+import { useUI } from '../../contexts/UIContexts';
+import Icon from '../../components/icon';
+import { faUpload } from '@fortawesome/free-solid-svg-icons';
 
 function AssetForm() {
   const [assetData, setAssetData] = useState<AssetType>(emptyAsset);
   const [currentCategory, setCurrentCategory] = useState<any>(null); // Initialize with null
+
   const { id } = useParams();
   const navigate = useNavigate();
+  const { createToast } = useUI();
+
+  const uploadButtonRef = useRef<HTMLInputElement>(null);
+
   const [getSubCategories, { data: subcategoriesDateset }] = useLazyGetSubcategoryListQuery();
   const subcategories = subcategoriesDateset?.data as subcategoryType[];
-  const [hide, setHide] = useState('hidenow');
-  const [createAsset, { isSuccess: isCreateSuccess }] = useCreateAssetMutation();
-  const [updateAsset, { isSuccess: isUpdateSuccess }] = useUpdateAssetMutation();
+  const [uploadDialogState, setUploadDialogState] = useState({ show: false });
+  const [createAsset, { isSuccess: isCreateSuccess, error: createErrors, isError: isCreateError }] =
+    useCreateAssetMutation();
+  const [updateAsset, { isSuccess: isUpdateSuccess, error: updateErrors, isError: isUpdateError }] =
+    useUpdateAssetMutation();
   const [getAssetById, { data: getAssetData }] = useLazyGetAssetByIdQuery();
   const { data: categoriesDateset } = useGetCategoryListQuery();
   const categories = categoriesDateset?.data as CategoryType[];
@@ -48,8 +60,7 @@ function AssetForm() {
     : [];
 
   const handleEditClick = () => {
-    // navigate('/assets/create/upload');
-    setHide('suku');
+    setUploadDialogState({ show: true });
   };
 
   const handleChange = (field: string, value: any) => {
@@ -65,9 +76,6 @@ function AssetForm() {
   useEffect(() => {
     if (id) getAssetById(id);
   }, [id]);
-  useEffect(() => {
-    if (isCreateSuccess) navigate('/assets/');
-  }, [isCreateSuccess]);
 
   useEffect(() => {
     if (getAssetData?.data) {
@@ -78,8 +86,28 @@ function AssetForm() {
   }, [getAssetData]);
 
   useEffect(() => {
-    if (isUpdateSuccess) navigate('/assets/');
+    if (isCreateSuccess) {
+      navigate('/assets/');
+      createToast(TOAST_TYPE.SUCCESS, 'Created successfully', 'New asset created');
+    }
+  }, [isCreateSuccess]);
+
+  useEffect(() => {
+    if (isUpdateSuccess) {
+      navigate('/assets/');
+      createToast(TOAST_TYPE.SUCCESS, 'Edit successfully', 'Asset details edited');
+    }
   }, [isUpdateSuccess]);
+
+  useEffect(() => {
+    if (isCreateError && createErrors)
+      createToast(TOAST_TYPE.ERROR, 'Create failed', 'Somthing went wrong', TOAST_TIMOUT.WAIT);
+  }, [isCreateError]);
+
+  useEffect(() => {
+    if (isUpdateError && updateErrors)
+      createToast(TOAST_TYPE.ERROR, 'Create failed', 'Somthing went wrong', TOAST_TIMOUT.WAIT);
+  }, [isCreateError]);
 
   useEffect(() => {
     getSubCategories();
@@ -102,35 +130,39 @@ function AssetForm() {
 
     try {
       await uploadFile(formData);
-      setHide('hidenow');
+      setUploadDialogState({ show: false });
+      createToast(TOAST_TYPE.SUCCESS, 'Uploaded successfully', 'File uploaded successfully');
     } catch (error) {
-      console.error('Error uploading file:', error);
+      createToast(TOAST_TYPE.ERROR, 'Uploading failed', 'File uploading failed', TOAST_TIMOUT.WAIT);
     }
   };
 
   return (
     <PermissionGuard>
       <>
-        <div className={'blur ' + hide}>
-          <div className={'upload-card  card flex-column upload '}>
-            <button onClick={() => setHide('hidenow')}>X close</button>
-            <input type='file' onChange={handleFileChange} />
-            <button className='btn btn-primary' onClick={handleUpload}>
-              Upload
-            </button>
-            <a href='.public/assets/filetemplate.csv' download='filetemplate.csv'>
-              Download template
-            </a>
+        <Dialog
+          title='Upload assets file'
+          state={uploadDialogState}
+          setState={setUploadDialogState}
+          onSuccess={handleUpload}
+          successLabel='Upload'
+        >
+          <input
+            ref={uploadButtonRef}
+            className='display-none'
+            type='file'
+            onChange={handleFileChange}
+          />
+          <div className='upload-btn' onClick={() => uploadButtonRef.current.click()}>
+            <Icon icon={faUpload} />
+            {selectedFile ? selectedFile.name : 'Upload file'}
           </div>
-        </div>
+          <a href='http://localhost:3000/assets/template'>download template</a>
+        </Dialog>
         <div className='asset-form'>
           <TitleBar title={id ? 'Edit Asset' : 'Create Asset'}>
             {id === undefined && (
-              <IconButton
-                text='Upload via Excel'
-                icon='/assets/icons/upload.png'
-                onClick={handleEditClick}
-              />
+              <IconButton text='Upload via Excel' icon={faUpload} onClick={handleEditClick} />
             )}
           </TitleBar>
           <div className='card'>

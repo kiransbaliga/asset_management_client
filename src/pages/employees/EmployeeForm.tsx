@@ -20,6 +20,8 @@ import useValidator from '../../hooks/validator.hook';
 import { employeeErrorsType } from './type';
 import { employeeValidators } from './validators';
 import PermissionGuard from '../../wrappers/PermissionGuard';
+import { TOAST_TIMOUT, TOAST_TYPE } from '../../components/toast/consts';
+import { useUI } from '../../contexts/UIContexts';
 
 function EmployeeForm() {
   const [departmentOptions, setDepartementOptions] = useState<OptionType[]>([]);
@@ -27,11 +29,13 @@ function EmployeeForm() {
 
   const { id } = useParams();
   const navigate = useNavigate();
+  const { createToast } = useUI();
 
   const { data: departments } = useGetDepartmentListQuery();
   const { data: roles } = useGetRoleListQuery();
-  const [updateEmployee, { isSuccess: isUpdated }] = useUpdateEmployeeMutation();
-  const [createEmployee, { isSuccess: isCreated, error: createErrors }] =
+  const [updateEmployee, { isSuccess: isUpdated, error: updateErrors, isError: isUpdateError }] =
+    useUpdateEmployeeMutation();
+  const [createEmployee, { isSuccess: isCreated, error: createErrors, isError: isCreateError }] =
     useLazyCreateEmployeeQuery();
   const [getEmployeeById, { data: employeeDataResponse }] = useLazyGetEmployeeQuery();
 
@@ -39,7 +43,10 @@ function EmployeeForm() {
   const [employeeValidate, employeeErrors] = useValidator<employeeErrorsType, EmployeeType>(
     employeeValidators,
     employeeData,
-    createErrors ? createErrors['data'].errors : {}
+    {
+      ...(createErrors ? createErrors['data'].errors : {}),
+      ...(updateErrors ? updateErrors['data'].errors : {})
+    }
   );
 
   const handleSubmit = () => {
@@ -72,8 +79,24 @@ function EmployeeForm() {
   }, [roles]);
 
   useEffect(() => {
-    if (isCreated || isUpdated) navigate('/employees');
+    if (isCreated) {
+      navigate('/employees');
+      createToast(TOAST_TYPE.SUCCESS, 'Created successfully', 'New employee created');
+    } else if (isUpdated) {
+      navigate('/employees');
+      createToast(TOAST_TYPE.SUCCESS, 'Edited successfully', 'Employee details edited');
+    }
   }, [isCreated, isUpdated]);
+
+  useEffect(() => {
+    if (isCreateError && createErrors)
+      createToast(TOAST_TYPE.ERROR, 'Create failed', 'Somthing went wrong', TOAST_TIMOUT.WAIT);
+  }, [isCreateError]);
+
+  useEffect(() => {
+    if (isUpdateError && updateErrors)
+      createToast(TOAST_TYPE.ERROR, 'Edit failed', 'Somthing went wrong', TOAST_TIMOUT.WAIT);
+  }, [isUpdateError]);
 
   useEffect(() => {
     if (employeeDataResponse?.data) {
@@ -191,7 +214,12 @@ function EmployeeForm() {
                 <button className='btn btn-primary' onClick={handleSubmit}>
                   {id ? 'Edit' : 'Create'}
                 </button>
-                <button className='btn btn-secondary'>Reset</button>
+                <button
+                  className='btn btn-secondary'
+                  onClick={() => setEmployeeData(initialEmployeeData)}
+                >
+                  Reset
+                </button>
               </div>
             </div>
           </div>

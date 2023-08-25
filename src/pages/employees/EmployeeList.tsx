@@ -11,6 +11,9 @@ import { useDeleteEmployeeMutation, useGetEmployeeListQuery } from './api';
 import PermissionGuard from '../../wrappers/PermissionGuard';
 import { AdminRoles } from '../request_management/consts';
 import { useSelector } from 'react-redux';
+import { TOAST_TIMOUT, TOAST_TYPE } from '../../components/toast/consts';
+import { useUI } from '../../contexts/UIContexts';
+import { faAdd } from '@fortawesome/free-solid-svg-icons';
 
 const EmployeeList: FC = () => {
   const [deleteDialogState, setDeleteDialogState] = useState<DialogStateType>({ show: false });
@@ -18,10 +21,12 @@ const EmployeeList: FC = () => {
   const user = useSelector((state: any) => state.auth.user);
   const [offset, setOffset] = useState(0);
   const { data } = useGetEmployeeListQuery({ offset: offset, take: 10 });
-  const [deleteEmplyee, { isSuccess: isDeleted }] = useDeleteEmployeeMutation();
+  const [deleteEmplyee, { isSuccess: isDeleted, isError: isDeleteError, error: deleteErrors }] =
+    useDeleteEmployeeMutation();
   const employeesDataset = data?.data;
 
   const navigate = useNavigate();
+  const { createToast } = useUI();
 
   const action = (id: string) => {
     return (
@@ -54,8 +59,16 @@ const EmployeeList: FC = () => {
   };
 
   useEffect(() => {
-    if (isDeleted) setDeleteDialogState({ show: false, params: {} });
+    if (isDeleted) {
+      if (isDeleted) setDeleteDialogState({ show: false, params: {} });
+      createToast(TOAST_TYPE.SUCCESS, 'Delete successfully', 'Employee deleted');
+    }
   }, [isDeleted]);
+
+  useEffect(() => {
+    if (isDeleteError && deleteErrors)
+      createToast(TOAST_TYPE.ERROR, 'Delete failed', 'Somthing went wrong', TOAST_TIMOUT.WAIT);
+  }, [isDeleteError]);
 
   return (
     <>
@@ -71,11 +84,7 @@ const EmployeeList: FC = () => {
       <div className='flex-column height-full'>
         <TitleBar title='Employee List'>
           <PermissionGuard userRoles={AdminRoles}>
-            <IconButton
-              icon='/assets/icons/plus.png'
-              text='Create employee'
-              onClick={handleCreate}
-            />
+            <IconButton icon={faAdd} text='Create employee' onClick={handleCreate} />
           </PermissionGuard>
         </TitleBar>
         <div className='grow-scroll'>

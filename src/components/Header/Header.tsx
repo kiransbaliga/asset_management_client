@@ -1,6 +1,8 @@
 import { useSelector } from 'react-redux';
 import './Header.css';
 import Dropdown from '../dropdown';
+import Icon from '../icon';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 function Header() {
   const user = useSelector((state: any) => state.auth.user);
@@ -17,16 +19,16 @@ function Header() {
             className='user-dropdown'
             toggler={
               <div className='circle center'>
-                <img src='/assets/icons/user.svg' alt='User icon' />
+                <Icon icon={faUser} />
               </div>
             }
             style={{ right: '0' }}
           >
-            <div className='name'>{user.name}</div>
             <div className='flex-row user-content custom'>
-              <div className='text-muted'>@{user.username}</div>
+              <div className='name'>{user.name}</div>
               <div className='chip chip-sm chip-primary'>{user.role}</div>
             </div>
+            <div className='text-muted'>@{user.username}</div>
           </Dropdown>
         </div>
       </div>

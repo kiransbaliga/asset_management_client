@@ -17,19 +17,29 @@ import Table from '../../components/Table/Table';
 import { requestedListColumns } from '../../columns/requestList.columns';
 import { useSelector } from 'react-redux';
 import { AdminRoles } from './consts';
+import { TOAST_TIMOUT, TOAST_TYPE } from '../../components/toast/consts';
+import { useUI } from '../../contexts/UIContexts';
+import Dialog from '../../components/Dialog/Dialog';
+import { faCheck, faX } from '@fortawesome/free-solid-svg-icons';
 
 function Request() {
   const user = useSelector((state: any) => state.auth.user);
+  const { createToast } = useUI();
 
   const { id } = useParams();
   const [requestData, setRequestData] = useState<RequestType>();
 
   const [getRequestById, { data, isSuccess }] = useLazyGetRequestByIdQuery();
-  const [resolveRequest, { isSuccess: resolveSucccess }] = useResolveRequestMutation();
+  const [
+    resolveRequest,
+    { isSuccess: resolveSucccess, error: resolveErrors, isError: isResolveError }
+  ] = useResolveRequestMutation();
 
-  const [rejectRequest, { isSuccess: rejectSuccess }] = useUpdateRequestMutation();
+  const [rejectRequest, { isSuccess: rejectSuccess, isError: isRejectError, error: rejectErrors }] =
+    useUpdateRequestMutation();
 
   const navigate = useNavigate();
+  const [resolveErrorDialog, setResolveErrorDialog] = useState({ show: false });
 
   useEffect(() => {
     if (id) getRequestById(id);
@@ -44,15 +54,36 @@ function Request() {
   };
 
   useEffect(() => {
-    if (resolveSucccess) navigate('/requests');
+    if (resolveSucccess) {
+      createToast(TOAST_TYPE.SUCCESS, 'Resolved successfully', 'Request resolved successfully');
+      navigate('/requests');
+    }
   }, [resolveSucccess]);
+
+  useEffect(() => {
+    if (isResolveError && resolveErrors) {
+      if (resolveErrors['data'].error) setResolveErrorDialog({ show: true });
+      createToast(TOAST_TYPE.ERROR, 'Rresolved failed', 'Somthing went wrong', TOAST_TIMOUT.WAIT);
+    }
+  }, [isResolveError]);
+
+  useEffect(() => {
+    if (isRejectError && rejectErrors)
+      createToast(TOAST_TYPE.SUCCESS, 'Rejected successfully', 'Request reject successfully');
+    navigate('/requests');
+
+    // createToast(TOAST_TYPE.ERROR, 'Rreject failed', 'Somthing went wrong', TOAST_TIMOUT.WAIT);
+  }, [isRejectError]);
 
   const handleRejectClick = () => {
     rejectRequest({ ...requestData, ['status']: 'Rejected' });
   };
 
   useEffect(() => {
-    if (rejectSuccess) navigate('/requests');
+    if (rejectSuccess) {
+      navigate('/requests');
+      createToast(TOAST_TYPE.SUCCESS, 'Rejected successfully', 'Request reject successfully');
+    }
   }, [rejectSuccess]);
 
   const detailsExchangeColumns = [
@@ -69,43 +100,46 @@ function Request() {
   else requestListColumns = [...requestedListColumns.slice(0, 2)];
 
   return (
-    <div className='height-full flex-column'>
-      <TitleBar title='Request Details'>
-        {user &&
-          AdminRoles.includes(user.role) &&
-          requestData &&
-          requestData.status === 'Pending' && (
-            <div className='flex-row'>
-              <IconButton
-                text='Resolve'
-                icon='/assets/icons/resolve.svg'
-                onClick={handleResolveClick}
-              />
-              <IconButton
-                text='Reject'
-                icon='/assets/icons/reject.svg'
-                onClick={handleRejectClick}
-              />
-            </div>
-          )}
-      </TitleBar>
-      {requestData && (
-        <>
-          <DetailsViewer
-            rows={requestData && requestData.assetId ? detailsExchangeColumns : detailsNewColumns}
-            data={requestData}
-          />
-          <div className='table-heading'> Requested items</div>
-          <Table
-            className='grow'
-            columns={requestListColumns}
-            dataset={requestData.requestItem}
-            onClick={() => {}}
-            emptyMessage='No data'
-          />
-        </>
-      )}
-    </div>
+    <>
+      <Dialog
+        title='Could not resolve!'
+        state={resolveErrorDialog}
+        setState={setResolveErrorDialog}
+        successLabel='Back to List'
+        onSuccess={() => navigate('/requests')}
+      >
+        <p>{resolveErrors ? resolveErrors['data'].error : ''}</p>
+      </Dialog>
+      <div className='height-full flex-column'>
+        <TitleBar title='Request Details'>
+          {user &&
+            AdminRoles.includes(user.role) &&
+            requestData &&
+            requestData.status === 'Pending' && (
+              <div className='flex-row'>
+                <IconButton text='Resolve' icon={faCheck} onClick={handleResolveClick} />
+                <IconButton text='Reject' icon={faX} onClick={handleRejectClick} />
+              </div>
+            )}
+        </TitleBar>
+        {requestData && (
+          <>
+            <DetailsViewer
+              rows={requestData && requestData.assetId ? detailsExchangeColumns : detailsNewColumns}
+              data={requestData}
+            />
+            <div className='table-heading'> Requested items</div>
+            <Table
+              className='grow'
+              columns={requestListColumns}
+              dataset={requestData.requestItem}
+              onClick={() => {}}
+              emptyMessage='No data'
+            />
+          </>
+        )}
+      </div>
+    </>
   );
 }
 

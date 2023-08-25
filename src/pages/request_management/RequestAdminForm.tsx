@@ -24,6 +24,8 @@ import EmployeeType from '../../types/EmployeeType';
 import Actions from '../../components/Actions/inedx';
 import { useSelector } from 'react-redux';
 import PermissionGuard from '../../wrappers/PermissionGuard';
+import { TOAST_TIMOUT, TOAST_TYPE } from '../../components/toast/consts';
+import { useUI } from '../../contexts/UIContexts';
 
 function RequestAdminForm() {
   const [requestData, setRequestData] = useState<RequestType>(emptyAdminRequest);
@@ -40,14 +42,18 @@ function RequestAdminForm() {
   const [category, setCategory] = useState(null);
   const [getSubCategories, { data: subcategoriesDateset }] = useLazyGetSubcategoryListQuery();
   const [getOwnedAssets, { data: OwnedAssetsDateset }] = useLazyGetOwnedAssetListQuery();
-  const [createRequest, { data, isSuccess }] = useCreateRequestMutation();
-  const [resolveRequest, { isSuccess: resolveSucccess }] = useResolveRequestMutation();
+  const [createRequest, { data, isSuccess, isError, error }] = useCreateRequestMutation();
+  const [
+    resolveRequest,
+    { isSuccess: resolveSucccess, isError: isResolveError, error: resolveErrors }
+  ] = useResolveRequestMutation();
   const { data: categoriesDateset } = useGetCategoryListQuery();
   const { data: employeeDataset } = useGetEmployeeListQuery({ offset: 0, take: 1000 });
   const categories = categoriesDateset?.data as CategoryType[];
   const subcategories = subcategoriesDateset?.data as subcategoryType[];
   const employees = employeeDataset?.data as EmployeeType[];
   const ownedAssets = OwnedAssetsDateset?.data as AssetType[];
+  const { createToast } = useUI();
   const navigate = useNavigate();
 
   const categoryOptions = categories
@@ -129,9 +135,22 @@ function RequestAdminForm() {
   useEffect(() => {
     if (isSuccess) resolveRequest(data.data.id);
   }, [isSuccess]);
+
   useEffect(() => {
-    if (resolveSucccess) navigate('/requests');
+    if (resolveSucccess) {
+      navigate('/requests');
+      createToast(
+        TOAST_TYPE.SUCCESS,
+        'Created successfully',
+        'Request cerated and resolved successfully'
+      );
+    }
   }, [resolveSucccess]);
+
+  useEffect(() => {
+    if ((isError && error) || (isResolveError && resolveErrors))
+      createToast(TOAST_TYPE.ERROR, 'Create failed', 'Somthing went wrong', TOAST_TIMOUT.WAIT);
+  }, [isError, isResolveError]);
 
   const handleReset = () => {
     setRequestData(emptyRequest);

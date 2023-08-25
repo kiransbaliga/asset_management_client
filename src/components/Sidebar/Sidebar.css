@@ -33,6 +33,11 @@
   color: var(--light-color);
 }
 
+.sidebar ul .item.active .icon,
+.sidebar ul .item:hover .icon {
+  color: var(--primary-shade-color);
+}
+
 .sidebar ul .item li {
   display: flex;
   align-items: center;

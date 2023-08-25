@@ -1,4 +1,4 @@
-import { FC, ReactElement, useRef } from 'react';
+import { FC, ReactNode, useRef } from 'react';
 import './Dialog.css';
 import Button from '../button';
 
@@ -9,7 +9,7 @@ export interface DialogStateType {
 
 interface DialogProps {
   title: string;
-  children?: ReactElement;
+  children?: ReactNode;
   state: DialogStateType;
   setState: (state: DialogStateType) => void;
   successLabel: string;
@@ -36,21 +36,19 @@ const Dialog: FC<DialogProps> = ({
     e.stopPropagation();
     onSuccess(state.params);
   };
-  const handleCancel = (e) => {
-    if (dialogRef.current && !(dialogRef.current === e.target)) {
-      onCancel();
-      setState({ show: false });
-    }
+  const handleCancel = () => {
+    onCancel();
+    setState({ show: false });
   };
 
   return (
     <>
       {state.show && (
-        <div className='dialog-outer center' onClick={handleCancel}>
+        <div className='dialog-outer center'>
           <div className='dialog' ref={dialogRef}>
             <h3>{title}</h3>
             <div className='dialog-content'>{children}</div>
-            <div className='btn-group'>
+            <div className='dialog-footer btn-group'>
               <Button
                 className='btn btn-primary'
                 onClick={handleSuccess}

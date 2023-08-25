@@ -18,3 +18,7 @@
 .dialog .dialog-content{
     margin: 20px 0px;
 }
+
+.dialog-footer.btn-group{
+  justify-content: center;
+}

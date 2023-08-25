@@ -20,6 +20,8 @@ import AssetType from '../../types/AssetType';
 import { useNavigate } from 'react-router';
 import Actions from '../../components/Actions/inedx';
 import { useSelector } from 'react-redux';
+import { TOAST_TIMOUT, TOAST_TYPE } from '../../components/toast/consts';
+import { useUI } from '../../contexts/UIContexts';
 
 function RequestForm() {
   const [requestData, setRequestData] = useState<RequestType>(emptyRequest);
@@ -40,12 +42,15 @@ function RequestForm() {
   const [category, setCategory] = useState(null);
   const [getSubCategories, { data: subcategoriesDateset }] = useLazyGetSubcategoryListQuery();
   const [getOwnedAssets, { data: OwnedAssetsDateset }] = useLazyGetOwnedAssetListQuery();
-  const [createRequest, { isSuccess }] = useCreateRequestMutation();
+  const [createRequest, { isSuccess, isError, error }] = useCreateRequestMutation();
   const { data: categoriesDateset } = useGetCategoryListQuery();
   const categories = categoriesDateset?.data as CategoryType[];
   const subcategories = subcategoriesDateset?.data as subcategoryType[];
   const ownedAssets = OwnedAssetsDateset?.data as AssetType[];
+
   const navigate = useNavigate();
+  const { createToast } = useUI();
+
   const categoryOptions = categories
     ? categories.map((category) => ({ value: category.id, text: category.name }))
     : [];
@@ -117,13 +122,20 @@ function RequestForm() {
   };
 
   useEffect(() => {
-    if (isSuccess) navigate('/requests/');
+    if (isSuccess) {
+      navigate('/requests/');
+      createToast(TOAST_TYPE.SUCCESS, 'Created successfully', 'Request created successfully');
+    }
   }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError && error)
+      createToast(TOAST_TYPE.ERROR, 'Create failed', 'Somthing went wrong', TOAST_TIMOUT.WAIT);
+  }, [isError]);
+
   const handleReset = () => {
     setRequestData(emptyRequest);
   };
-
-  const handleRowClick = () => {};
 
   const action = (id: number) => {
     return (
@@ -146,124 +158,120 @@ function RequestForm() {
   ];
 
   return (
-    <div className='request-form '>
+    <div className='flex-column height-full '>
       <TitleBar title={'Create Request'}></TitleBar>
-      <div className='flex-column '>
-        <div className='card'>
-          <div className='flex-row'>
-            <div className='column'>
-              <InputField
-                id='requestReason'
-                type='text'
-                label='Reason'
-                placeholder='Reason'
-                value={requestData.reason}
-                onChange={(value) => handleChange('reason', value)}
-              />
+      <div className='card'>
+        <div className='flex-row'>
+          <div className='column'>
+            <InputField
+              id='requestReason'
+              type='text'
+              label='Reason'
+              placeholder='Reason'
+              value={requestData.reason}
+              onChange={(value) => handleChange('reason', value)}
+            />
+          </div>
+          <div className='column'>
+            <SelectField
+              id='requestType'
+              label='Request Type'
+              placeholder='Request Type'
+              options={requestTypeOptions}
+              value={requestType}
+              onChange={(value) => handleChange('requestType', value)}
+            />
+          </div>
+
+          <div className=' request-btn '>
+            <div className='btn-group'>
+              <button className='btn btn-primary' onClick={handleSubmit}>
+                {'Create'}
+              </button>
+              <button className='btn btn-secondary' onClick={handleReset}>
+                Reset{' '}
+              </button>
             </div>
+          </div>
+        </div>
+      </div>
+      {requestType === 'new' && (
+        <div className='card'>
+          <div className='flex-row center'>
             <div className='column'>
               <SelectField
-                id='requestType'
-                label='Request Type'
-                placeholder='Request Type'
-                options={requestTypeOptions}
-                value={requestType}
-                onChange={(value) => handleChange('requestType', value)}
+                id='categoryId'
+                label='Category'
+                placeholder='Choose a category'
+                options={categoryOptions}
+                value={category === null ? '' : category}
+                onChange={(value) => handleChange('category', value)}
+              />
+            </div>
+            {category && (
+              <div className='column'>
+                <SelectField
+                  id='subcategoryField'
+                  label='Subcategory'
+                  placeholder='Choose a subcategory'
+                  options={subcategoryOptions}
+                  value={newItem.subcategoryId === 0 ? '' : newItem.subcategoryId}
+                  onChange={(value) => handleChange('requestItem', value, 'subcategoryId')}
+                />
+              </div>
+            )}
+            <div className='column'>
+              <InputField
+                id='countField'
+                type='number'
+                label='Count'
+                placeholder='Enter the count'
+                value={newItem.count === 0 ? '' : newItem.count}
+                onChange={(value) => handleChange('requestItem', value, 'count')}
               />
             </div>
 
-            <div className=' request-btn '>
-              <div className='btn-group'>
-                <button className='btn btn-primary' onClick={handleSubmit}>
-                  {'Create'}
-                </button>
-                <button className='btn btn-secondary' onClick={handleReset}>
-                  Reset{' '}
+            <div className=''>
+              <div className='request-btn'>
+                <button className='btn btn-primary' onClick={() => handleChange('addRequestItem')}>
+                  Add new item
                 </button>
               </div>
             </div>
           </div>
         </div>
-        {requestType === 'new' && (
-          <div className='card'>
-            <div className='flex-row center'>
-              <div className='column'>
-                <SelectField
-                  id='categoryId'
-                  label='Category'
-                  placeholder='Choose a category'
-                  options={categoryOptions}
-                  value={category === null ? '' : category}
-                  onChange={(value) => handleChange('category', value)}
-                />
-              </div>
-              {category && (
-                <div className='column'>
-                  <SelectField
-                    id='subcategoryField'
-                    label='Subcategory'
-                    placeholder='Choose a subcategory'
-                    options={subcategoryOptions}
-                    value={newItem.subcategoryId === 0 ? '' : newItem.subcategoryId}
-                    onChange={(value) => handleChange('requestItem', value, 'subcategoryId')}
-                  />
-                </div>
-              )}
-              <div className='column'>
-                <InputField
-                  id='countField'
-                  type='number'
-                  label='Count'
-                  placeholder='Enter the count'
-                  value={newItem.count === 0 ? '' : newItem.count}
-                  onChange={(value) => handleChange('requestItem', value, 'count')}
-                />
-              </div>
-
-              <div className=''>
-                <div className='request-btn'>
-                  <button
-                    className='btn btn-primary'
-                    onClick={() => handleChange('addRequestItem')}
-                  >
-                    Add new item
-                  </button>
-                </div>
-              </div>
-            </div>
+      )}
+      {requestType === 'new' && (
+        <>
+          <h2 className='margin-top-1'>Currently requested items</h2>
+          <div className='grow'>
+            <Table
+              className='height-full'
+              columns={requestItemColumns}
+              dataset={requestData.requestItem}
+              emptyMessage='No requested items'
+            />
           </div>
-        )}
-        {requestType === 'new' &&
-          requestData.requestItem.length > 0 &&
-          JSON.stringify(requestData.requestItem) && (
-            <div className='grow-scroll  '>
-              <h2>Currently requested items</h2>
-              <Table
-                columns={requestItemColumns}
-                dataset={requestData.requestItem}
-                onClick={handleRowClick}
+        </>
+      )}
+      {requestType === 'exchange' && (
+        <div className='card'>
+          <div className='flex-row'>
+            <div className='column'>
+              <SelectField
+                id='ownedAssetsField'
+                label='Choose the asset'
+                placeholder='Choose the asset'
+                options={ownedAssetOptions}
+                value={requestData.assetId === 0 ? '' : requestData.assetId}
+                onChange={(value) => handleChange('assetId', Number(value))}
               />
             </div>
-          )}
-        {requestType === 'exchange' && (
-          <div className='card'>
-            <div className='flex-row'>
-              <div className='column'>
-                <SelectField
-                  id='ownedAssetsField'
-                  label='Choose the asset'
-                  placeholder='Choose the asset'
-                  options={ownedAssetOptions}
-                  value={requestData.assetId === 0 ? '' : requestData.assetId}
-                  onChange={(value) => handleChange('assetId', Number(value))}
-                />
-              </div>
-              <div className='column'></div>
-              <div className='column'></div>
-            </div>
+            <div className='column'></div>
+            <div className='column'></div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

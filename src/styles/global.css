@@ -80,6 +80,10 @@ a {
   color: var(--danger-color);
 }
 
+.display-none{
+  display: none;
+}
+
 .margin-top-1 {
   margin-top: 10px;
 }

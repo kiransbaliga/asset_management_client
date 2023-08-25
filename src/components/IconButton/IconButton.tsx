@@ -1,8 +1,10 @@
 import { FC } from 'react';
 import './IconButton.css';
+import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import Icon from '../icon';
 
 export interface IconButtonProps {
-  icon?: string;
+  icon?: IconDefinition;
   text: string;
   onClick?: () => void;
 }
@@ -12,7 +14,7 @@ const IconButton: FC<IconButtonProps> = ({ icon, text, onClick }) => {
     <>
       <div className='icon-button' onClick={onClick} data-testid='iconButtonTestId'>
         <div className='circle'>
-          <img src={icon} alt={text + ' icon button'} data-testid='iconButtonIconTestId' />
+          <Icon icon={icon} />
         </div>
         <p data-testid='iconButtonTextTestId'>{text}</p>
       </div>

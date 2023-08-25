@@ -8,6 +8,7 @@ import EmployeeType from '../../types/EmployeeType';
 import { useLazyGetEmployeeQuery } from './api';
 import PermissionGuard from '../../wrappers/PermissionGuard';
 import { AdminRoles } from '../request_management/consts';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
 const employeeDetailsRow = [
   employeeColumns.slice(0, 5),
@@ -38,7 +39,7 @@ function Employee() {
     <div>
       <TitleBar title='Employee Details'>
         <PermissionGuard userRoles={AdminRoles}>
-          <IconButton text='Edit' icon='/assets/icons/edit.svg' onClick={handleEditClick} />
+          <IconButton text='Edit' icon={faEdit} onClick={handleEditClick} />
         </PermissionGuard>
       </TitleBar>
       <DetailsViewer rows={employeeDetailsRow} data={employeeData} />
