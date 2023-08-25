@@ -17,6 +17,10 @@ export const assetApi = baseApi.injectEndpoints({
       query: (id) => `/assets/employee/${id}`,
       providesTags: [ASSET_API_TAGS.ON_ASSET_DELETE]
     }),
+    getPerishableAssetsOfEmployee: builder.query<ResponseDataListType, number>({
+      query: (id) => `/subcategory/employee/${id}`,
+      providesTags: [ASSET_API_TAGS.ON_ASSET_DELETE]
+    }),
     getCategoryList: builder.query<ResponseDataListType, void>({
       query: () => '/category?length=1000'
     }),
@@ -49,6 +53,9 @@ export const assetApi = baseApi.injectEndpoints({
     getAssetById: builder.query({
       query: (id) => `/assets/${id}`
     }),
+    getSubcategoryById: builder.query({
+      query: (id) => `/subcategory/${id}`
+    }),
     uploadFile: builder.mutation<ResponseDataType, FormData>({
       query: (formData) => ({
         url: '/assets/upload/', // Replace with your upload URL
@@ -61,6 +68,13 @@ export const assetApi = baseApi.injectEndpoints({
       query: (body) => ({
         url: '/category/',
         method: 'POST',
+        body
+      })
+    }),
+    updateSubcategory: builder.mutation<ResponseDataType, SubcategoryType>({
+      query: (body) => ({
+        url: '/subcategory/',
+        method: 'PUT',
         body
       })
     }),
@@ -88,5 +102,8 @@ export const {
   useCreateCategoryMutation,
   useCreateSubcategoryMutation,
   useLazyGetHistoryByAssetIdQuery,
-  useLazyGetAssetsOfEmployeeQuery
+  useLazyGetAssetsOfEmployeeQuery,
+  useLazyGetPerishableAssetsOfEmployeeQuery,
+  useLazyGetSubcategoryByIdQuery,
+  useUpdateSubcategoryMutation
 } = assetApi;

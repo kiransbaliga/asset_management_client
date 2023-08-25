@@ -2,13 +2,18 @@ import { useNavigate } from 'react-router-dom';
 import TitleBar from '../../components/TitleBar/TitleBar';
 import IconButton from '../../components/IconButton/IconButton';
 import Table from '../../components/Table/Table';
-import { assetColumns, perishableAssetsColumns } from '../../columns/assets.columns';
+import {
+  assetColumns,
+  perishableAssetsColumns,
+  perishableAssetsofEmployeeColumns
+} from '../../columns/assets.columns';
 import Filter from '../../components/filter';
 import {
   useDeleteAssetMutation,
   useGetCategoryListQuery,
   useLazyGetAssetListQuery,
   useLazyGetAssetsOfEmployeeQuery,
+  useLazyGetPerishableAssetsOfEmployeeQuery,
   useLazyGetSubcategoryListQuery
 } from './api';
 import { useEffect, useState } from 'react';
@@ -33,17 +38,23 @@ function AssetList() {
   const [getAssetsEmployee, { data: employeeAssetsDataset, isSuccess: employeeAssetsSuccess }] =
     useLazyGetAssetsOfEmployeeQuery();
   const [getSubCategories, { data: subcategoriesDateset }] = useLazyGetSubcategoryListQuery();
+  const [getPerishableAssetsOfEmployee, { data: perishableSubcategoriesDataset }] =
+    useLazyGetPerishableAssetsOfEmployeeQuery();
   const [deleteAsset, { isSuccess: isDeleted, isLoading: isDeleteLoading }] =
     useDeleteAssetMutation();
   const { data: categoriesDateset } = useGetCategoryListQuery();
 
   const categories = categoriesDateset?.data as CategoryType[];
   const subcategories = subcategoriesDateset?.data as subcategoryType[];
+  const perishableSubcategories = perishableSubcategoriesDataset?.data as subcategoryType[];
 
   useEffect(() => {
     if (user && AdminRoles.includes(user.role)) getAllAssets(filterData);
     else if (user) getAssetsEmployee(user.id);
   }, [filterData, user]);
+  useEffect(() => {
+    if (user && !AdminRoles.includes(user.role)) getPerishableAssetsOfEmployee(user.id);
+  }, [user]);
 
   const assetDataset = allAssetsSuccess
     ? allAssetsDataset
@@ -89,10 +100,10 @@ function AssetList() {
           text: subcategory.name
         }))
     : [];
-  const perishableSubcategories = subcategories
+  const allPerishableSubcategories = subcategories
     ? subcategories.filter((subcategory) => subcategory.perishable === true)
     : [];
-
+  const perishableSubcategoriesOfEmployee = perishableSubcategories;
   const categoriesOptions = categories
     ? categories.map((category) => ({ value: category.id, text: category.name }))
     : [];
@@ -122,8 +133,14 @@ function AssetList() {
     if (isDeleted) setDeleteDialogState({ show: false, params: {} });
   }, [isDeleted]);
 
-  console.log(assets.filter((asset) => asset.status === 'Allocated'));
-  console.log(perishableSubcategories);
+  const actionPerishable = (id) => {
+    return <Actions onEdit={() => navigate(`/assets/subcategory/edit/${id}`)} />;
+  };
+
+  const perishableColumns = [
+    ...perishableAssetsColumns,
+    { key: 'id', label: 'Action', adapter: actionPerishable }
+  ];
 
   return (
     <>
@@ -195,7 +212,7 @@ function AssetList() {
           </div>
         </PermissionGuard>
 
-        <div className='grow-scroll padding-top'>
+        <div className='grow-scroll padding-top margin-top-bottom'>
           <Table
             columns={assetsColumn}
             dataset={assetDataset?.data}
@@ -209,14 +226,26 @@ function AssetList() {
         </div>
         <PermissionGuard>
           <div className='grow-scroll padding-top'>
+            <h2>Perishable assets</h2>
             <Table
-              columns={perishableAssetsColumns}
-              dataset={perishableSubcategories ? perishableSubcategories : []}
-              onClick={handleTableClick}
+              columns={perishableColumns}
+              dataset={allPerishableSubcategories ? allPerishableSubcategories : []}
               emptyMessage='No perishable assets found'
+              onClick={() => {}}
             />
           </div>
         </PermissionGuard>
+        {user && !AdminRoles.includes(user.role) && (
+          <div className='grow-scroll padding-top'>
+            <h2>Perishable assets of employee</h2>
+            <Table
+              columns={perishableAssetsofEmployeeColumns}
+              dataset={perishableSubcategoriesOfEmployee ? perishableSubcategoriesOfEmployee : []}
+              emptyMessage='No perishable assets found'
+              onClick={() => {}}
+            />
+          </div>
+        )}
       </div>
     </>
   );

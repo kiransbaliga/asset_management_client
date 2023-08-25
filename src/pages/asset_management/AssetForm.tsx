@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import TitleBar from '../../components/TitleBar/TitleBar';
 import InputField from '../../components/InputField/InputField';
 import { useEffect, useState } from 'react';
-import SelectFied from '../../components/SelectField/SelectField';
+import SelectField from '../../components/SelectField/SelectField';
 import { emptyAsset, statusOptions } from './consts';
 import './styles.css';
 import AssetType from '../../types/AssetType';
@@ -156,7 +156,7 @@ function AssetForm() {
             </div>
             <div className='column'>
               <div className='select-with-button'>
-                <SelectFied
+                <SelectField
                   id='categoryField'
                   label='Category'
                   placeholder='Choose a category'
@@ -169,11 +169,11 @@ function AssetForm() {
                 </Link>
               </div>
             </div>
-            {/* {!currentCategory && id && <div className='column'> </div>} */}
+            {!currentCategory && !id && <div className='column'> </div>}
             {currentCategory && (
               <div className='column'>
                 <div className='select-with-button'>
-                  <SelectFied
+                  <SelectField
                     id='subCategoryField'
                     label='Sub-category'
                     placeholder='Choose a sub-category'
@@ -190,7 +190,7 @@ function AssetForm() {
 
             {id && (
               <div className='column'>
-                <SelectFied
+                <SelectField
                   id='statusField'
                   label='Status'
                   placeholder='Choose a status'
@@ -213,6 +213,9 @@ function AssetForm() {
                 )}
               </div>
             )}
+            {!currentCategory && id && <div className='column'> </div>}
+            {!currentCategory && id && <div className='column'> </div>}
+            {currentCategory && id && <div className='column'> </div>}
             <div className='column'></div>
             <div className='column request-btn'>
               <div className='btn-group'>

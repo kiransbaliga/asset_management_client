@@ -3,7 +3,7 @@ import { classNames } from '../../utils/funcs';
 import './SelectField.css';
 import { OptionType } from '../../types/OptionType';
 
-interface SelectFiedProps {
+interface SelectFieldProps {
   id: string;
   label: string;
   options: OptionType[];
@@ -13,7 +13,7 @@ interface SelectFiedProps {
   placeholder?: string;
 }
 
-const SelectFied: FC<SelectFiedProps> = ({
+const SelectField: FC<SelectFieldProps> = ({
   id,
   label,
   value,
@@ -25,7 +25,6 @@ const SelectFied: FC<SelectFiedProps> = ({
   const [_errors, setErrors] = useState<string[]>();
 
   const handleChange = (e: any) => {
-
     setErrors([]);
 
     onChange(e.target.value);
@@ -59,13 +58,13 @@ const SelectFied: FC<SelectFiedProps> = ({
   );
 };
 
-export default SelectFied;
+export default SelectField;
 // import { FC } from 'react';
 // import { classNames } from '../../utils/funcs';
 // import './SelectField.css';
 // import { OptionType } from '../../types/OptionType';
 // import Select from 'react-select';
-// interface SelectFiedProps {
+// interface SelectFieldProps {
 //   id: string;
 //   label: string;
 //   options: OptionType[];
@@ -74,7 +73,7 @@ export default SelectFied;
 //   errors?: string[];
 //   placeholder?: string;
 // }
-// const SelectFied: FC<SelectFiedProps> = ({
+// const SelectField: FC<SelectFieldProps> = ({
 //   id,
 //   label,
 //   value,
@@ -124,4 +123,4 @@ export default SelectFied;
 //   );
 // };
 
-// export default SelectFied;
+// export default SelectField;

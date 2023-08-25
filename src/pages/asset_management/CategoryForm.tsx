@@ -28,7 +28,7 @@ const CategoryForm = () => {
   return (
     <div className='category-form'>
       <TitleBar title={'Create Category'}></TitleBar>
-      <div className='card flex-row center'>
+      <div className='card flex-row'>
         <div className='column'>
           <InputField
             id='categoryNameField'

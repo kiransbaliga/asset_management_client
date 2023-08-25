@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import TitleBar from '../../components/TitleBar/TitleBar';
 import InputField from '../../components/InputField/InputField';
 import { useEffect, useState } from 'react';
-import SelectFied from '../../components/SelectField/SelectField';
+import SelectField from '../../components/SelectField/SelectField';
 import AddressField from '../../components/AddressField/AddressField';
 import { addressFields, initialEmployeeData, statusOptions } from './consts';
 import {
@@ -139,7 +139,7 @@ function EmployeeForm() {
             />
           </div>
           <div className='column'>
-            <SelectFied
+            <SelectField
               id='departmentField'
               label='Department'
               placeholder='Choose a department'
@@ -150,7 +150,7 @@ function EmployeeForm() {
             />
           </div>
           <div className='column'>
-            <SelectFied
+            <SelectField
               id='roleField'
               label='Role'
               placeholder='Choose a role'
@@ -161,7 +161,7 @@ function EmployeeForm() {
             />
           </div>
           <div className='column'>
-            <SelectFied
+            <SelectField
               id='statusField'
               label='Status'
               placeholder='Choose a status'
