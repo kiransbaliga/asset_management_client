@@ -4,11 +4,12 @@ import DetailsViewer from '../../components/DetailsViewer/DetailsViewer';
 import TitleBar from '../../components/TitleBar/TitleBar';
 import AssetType from '../../types/AssetType';
 import { useLazyGetAssetByIdQuery, useLazyGetHistoryByAssetIdQuery } from './api';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Table from '../../components/Table/Table';
 import HistoryType from '../../types/HistoryType';
 import { historyColumns } from '../../columns/history.columns';
 import PermissionGuard from '../../wrappers/PermissionGuard';
+import IconButton from '../../components/IconButton/IconButton';
 
 const assetDetailsRow = [
   [
@@ -22,6 +23,7 @@ const assetDetailsRow = [
 ];
 
 function AssetDetails() {
+  const navigate = useNavigate();
   const [assetData, setAssetData] = useState<AssetType>();
   const [historyData, setHistoryData] = useState<HistoryType[]>();
   const { id } = useParams();
@@ -56,14 +58,23 @@ function AssetDetails() {
     }
   }, [HistoryResponseData, isHistorySuccess]);
 
+  const handleEditClick = () => {
+    navigate('/assets/edit/' + id);
+  };
+
   return (
-    <div className='flex-column height-full'>
-      <TitleBar title='Asset Details' />
-      <DetailsViewer rows={assetDetailsRow} data={assetData} />
-      <PermissionGuard>
-        <>
-          <h2 className='margin-top-bottom card'>History of the asset</h2>
-          <div className='height-full'>
+    <PermissionGuard>
+      <div className='flex-column height-full'>
+        <TitleBar title='Asset Details'>
+          <PermissionGuard>
+            <IconButton text='Edit' icon='/assets/icons/edit.svg' onClick={handleEditClick} />
+          </PermissionGuard>
+        </TitleBar>
+        <DetailsViewer rows={assetDetailsRow} data={assetData} />
+
+        <PermissionGuard>
+          <>
+            <h2 className='margin-top-bottom card'>History of the asset</h2>
             <Table
               className='height-full'
               columns={historyColumns}
@@ -71,10 +82,10 @@ function AssetDetails() {
               onClick={() => {}}
               emptyMessage='No history found'
             />
-          </div>
-        </>
-      </PermissionGuard>
-    </div>
+          </>
+        </PermissionGuard>
+      </div>
+    </PermissionGuard>
   );
 }
 export default AssetDetails;

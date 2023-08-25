@@ -76,8 +76,8 @@ export const assetApi = baseApi.injectEndpoints({
     }),
     updateSubcategory: builder.mutation<ResponseDataType, SubcategoryType>({
       query: (body) => ({
-        url: '/subcategory/',
-        method: 'PUT',
+        url: `/subcategory/${body.id}`,
+        method: 'PATCH',
         body
       })
     }),
