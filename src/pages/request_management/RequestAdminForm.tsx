@@ -23,14 +23,12 @@ import { useGetEmployeeListQuery } from '../employees/api';
 import EmployeeType from '../../types/EmployeeType';
 import Actions from '../../components/Actions/inedx';
 import { useSelector } from 'react-redux';
+import PermissionGuard from '../../wrappers/PermissionGuard';
 
 function RequestAdminForm() {
   const [requestData, setRequestData] = useState<RequestType>(emptyAdminRequest);
   const user = useSelector((state: any) => state.auth.user);
 
-  useEffect(() => {
-    setRequestData((prevData) => ({ ...prevData, ['employeeId']: user.id }));
-  }, [user]);
   const [listId, setListId] = useState(2);
   const [newItem, setNewItem] = useState<RequestItemType>({
     count: 0,
@@ -173,140 +171,142 @@ function RequestAdminForm() {
   ];
 
   return (
-    <div className='request-form '>
-      <TitleBar title={'Allocate Assets'}></TitleBar>
-      <div className='flex-column'>
-        <div className='card'>
-          <div className='flex-row center'>
-            <div className='column'>
-              <InputField
-                id='requestReason'
-                type='text'
-                label='Reason'
-                placeholder='Reason'
-                value={requestData.reason}
-                onChange={(value) => handleChange('reason', value)}
-              />
-            </div>
-            <div className='column'>
-              <SelectField
-                id='employeeId'
-                label='Employee Name'
-                placeholder='Employee name'
-                options={employeeOptions}
-                value={requestData.employeeId}
-                onChange={(value) => handleChange('employeeId', value)}
-              />
-            </div>
-            <div className='column'>
-              <SelectField
-                id='requestType'
-                label='Request Type'
-                placeholder='Request Type'
-                options={requestTypeOptions}
-                value={requestType}
-                onChange={(value) => handleChange('requestType', value)}
-              />
-            </div>
-            <div className=' requestadmin-btn '>
-              <div className='btn-group'>
-                <button className='btn btn-primary' onClick={handleSubmit}>
-                  {'Allocate'}
-                </button>
-                <button className='btn btn-secondary' onClick={handleReset}>
-                  Reset{' '}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        {requestType === 'new' && (
+    <PermissionGuard>
+      <div className='request-form '>
+        <TitleBar title={'Allocate Assets'}></TitleBar>
+        <div className='flex-column'>
           <div className='card'>
             <div className='flex-row center'>
-              <div className='flex-row column'>
-                <div className='column'>
-                  <SelectField
-                    id='categoryId'
-                    label='Category'
-                    placeholder='Choose a category'
-                    options={categoryOptions}
-                    value={category === null ? '' : category}
-                    onChange={(value) => handleChange('category', value)}
-                  />
-                </div>
-                {category && (
-                  <div className='column'>
-                    <SelectField
-                      id='subcategoryField'
-                      label='Subcategory'
-                      placeholder='Choose a subcategory'
-                      options={subcategoryOptions}
-                      value={newItem.subcategoryId === 0 ? '' : newItem.subcategoryId}
-                      onChange={(value) => handleChange('requestItem', value, 'subcategoryId')}
-                    />
-                  </div>
-                )}
-
-                <div className='column'>
-                  <InputField
-                    id='countField'
-                    type='number'
-                    label='Count'
-                    placeholder='Enter the count'
-                    value={newItem.count === 0 ? '' : newItem.count}
-                    onChange={(value) => handleChange('requestItem', value, 'count')}
-                  />
-                </div>
+              <div className='column'>
+                <InputField
+                  id='requestReason'
+                  type='text'
+                  label='Reason'
+                  placeholder='Reason'
+                  value={requestData.reason}
+                  onChange={(value) => handleChange('reason', value)}
+                />
               </div>
-              <div className=''>
-                <div className='request-btn'>
-                  <button
-                    className='btn btn-primary'
-                    onClick={() => handleChange('addRequestItem')}
-                  >
-                    Add new item
+              <div className='column'>
+                <SelectField
+                  id='employeeId'
+                  label='Employee Name'
+                  placeholder='Employee name'
+                  options={employeeOptions}
+                  value={requestData.employeeId}
+                  onChange={(value) => handleChange('employeeId', Number(value))}
+                />
+              </div>
+              <div className='column'>
+                <SelectField
+                  id='requestType'
+                  label='Request Type'
+                  placeholder='Request Type'
+                  options={requestTypeOptions}
+                  value={requestType}
+                  onChange={(value) => handleChange('requestType', value)}
+                />
+              </div>
+              <div className=' requestadmin-btn '>
+                <div className='btn-group'>
+                  <button className='btn btn-primary' onClick={handleSubmit}>
+                    {'Allocate'}
+                  </button>
+                  <button className='btn btn-secondary' onClick={handleReset}>
+                    Reset{' '}
                   </button>
                 </div>
               </div>
             </div>
           </div>
-        )}
-        {requestType === 'new' &&
-          requestData.requestItem.length > 0 &&
-          JSON.stringify(requestData.requestItem) && (
-            <div className=' '>
-              <h2>Currently requested items</h2>
-              <Table
-                columns={requestItemColumns}
-                dataset={requestData.requestItem}
-                onClick={handleRowClick}
-              />
+          {requestType === 'new' && (
+            <div className='card'>
+              <div className='flex-row center'>
+                <div className='flex-row column'>
+                  <div className='column'>
+                    <SelectField
+                      id='categoryId'
+                      label='Category'
+                      placeholder='Choose a category'
+                      options={categoryOptions}
+                      value={category === null ? '' : category}
+                      onChange={(value) => handleChange('category', value)}
+                    />
+                  </div>
+                  {category && (
+                    <div className='column'>
+                      <SelectField
+                        id='subcategoryField'
+                        label='Subcategory'
+                        placeholder='Choose a subcategory'
+                        options={subcategoryOptions}
+                        value={newItem.subcategoryId === 0 ? '' : newItem.subcategoryId}
+                        onChange={(value) => handleChange('requestItem', value, 'subcategoryId')}
+                      />
+                    </div>
+                  )}
+
+                  <div className='column'>
+                    <InputField
+                      id='countField'
+                      type='number'
+                      label='Count'
+                      placeholder='Enter the count'
+                      value={newItem.count === 0 ? '' : newItem.count}
+                      onChange={(value) => handleChange('requestItem', value, 'count')}
+                    />
+                  </div>
+                </div>
+                <div className=''>
+                  <div className='request-btn'>
+                    <button
+                      className='btn btn-primary'
+                      onClick={() => handleChange('addRequestItem')}
+                    >
+                      Add new item
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
-        {requestType === 'exchange' && (
-          <div className='card'>
-            <div className='flex-row'>
-              <div className='column'>
-                <SelectField
-                  id='ownedAssetsField'
-                  label='Choose the asset'
-                  placeholder='Choose the asset'
-                  options={ownedAssetOptions}
-                  value={requestData.assetId === 0 ? '' : requestData.assetId}
-                  onChange={(value) => handleChange('assetId', Number(value))}
+          {requestType === 'new' &&
+            requestData.requestItem.length > 0 &&
+            JSON.stringify(requestData.requestItem) && (
+              <div className=' '>
+                <h2>Currently requested items</h2>
+                <Table
+                  columns={requestItemColumns}
+                  dataset={requestData.requestItem}
+                  onClick={handleRowClick}
                 />
               </div>
-              <div className='column'></div>
-              <div className='column'></div>
+            )}
+          {requestType === 'exchange' && (
+            <div className='card'>
+              <div className='flex-row'>
+                <div className='column'>
+                  <SelectField
+                    id='ownedAssetsField'
+                    label='Choose the asset'
+                    placeholder='Choose the asset'
+                    options={ownedAssetOptions}
+                    value={requestData.assetId === 0 ? '' : requestData.assetId}
+                    onChange={(value) => handleChange('assetId', Number(value))}
+                  />
+                </div>
+                <div className='column'></div>
+                <div className='column'></div>
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        <div className='column'></div>
+          <div className='column'></div>
 
-        <div className='blank'></div>
+          <div className='blank'></div>
+        </div>
       </div>
-    </div>
+    </PermissionGuard>
   );
 }
 

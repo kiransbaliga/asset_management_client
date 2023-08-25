@@ -46,7 +46,10 @@ function Sidebar() {
         <ul>
           {links.map((link, i) => (
             <Link
-              className={classNames('item', location.pathname === link.path ? 'active' : '')}
+              className={classNames(
+                'item',
+                location.pathname.startsWith(link.path) ? 'active' : ''
+              )}
               key={i}
               to={link.path}
             >

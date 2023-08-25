@@ -15,17 +15,14 @@ import {
 } from '../../columns/requests.columns';
 import Table from '../../components/Table/Table';
 import { requestedListColumns } from '../../columns/requestList.columns';
-import subcategoryType from '../../types/SubcategoryType';
 import { useSelector } from 'react-redux';
 import { AdminRoles } from './consts';
-// import { useSelector } from 'react-redux';
 
 function Request() {
   const user = useSelector((state: any) => state.auth.user);
 
   const { id } = useParams();
   const [requestData, setRequestData] = useState<RequestType>();
-  const [updatedData, setUpdatedData] = useState<RequestType>();
 
   const [getRequestById, { data, isSuccess }] = useLazyGetRequestByIdQuery();
   const [resolveRequest, { isSuccess: resolveSucccess }] = useResolveRequestMutation();
@@ -39,10 +36,7 @@ function Request() {
   }, [id]);
 
   useEffect(() => {
-    if (data && isSuccess) {
-      setRequestData(data.data as RequestType);
-      setUpdatedData(data.data as RequestType);
-    }
+    if (data && isSuccess) setRequestData(data.data as RequestType);
   }, [data, isSuccess]);
 
   const handleResolveClick = () => {
@@ -54,9 +48,7 @@ function Request() {
   }, [resolveSucccess]);
 
   const handleRejectClick = () => {
-    // setUpdatedData((prevData) => ({ ...prevData, [status]: 'Rejected' }));
     rejectRequest({ ...requestData, ['status']: 'Rejected' });
-    console.log(updatedData);
   };
 
   useEffect(() => {
@@ -70,10 +62,11 @@ function Request() {
 
   const detailsNewColumns = [requestNewDetailColumns];
 
-  const requestListColumns = [
-    { key: 'subcategory', label: 'Subcategory', adapter: (value: subcategoryType) => value.name },
-    ...requestedListColumns
-  ];
+  let requestListColumns = [];
+
+  if (requestData && requestData.status === 'Pending')
+    requestListColumns = [...requestedListColumns];
+  else requestListColumns = [...requestedListColumns.slice(0, 2)];
 
   return (
     <div className='height-full flex-column'>
